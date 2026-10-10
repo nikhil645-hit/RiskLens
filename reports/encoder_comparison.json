@@ -1,0 +1,23 @@
+[
+    {
+        "encoder": "onehot",
+        "roc_auc": 0.7477,
+        "pr_auc": 0.2282,
+        "num_features": 244,
+        "fit_time_seconds": 32.99
+    },
+    {
+        "encoder": "target",
+        "roc_auc": 0.7466,
+        "pr_auc": 0.2267,
+        "num_features": 120,
+        "fit_time_seconds": 37.95
+    },
+    {
+        "encoder": "loo",
+        "roc_auc": 0.7464,
+        "pr_auc": 0.2267,
+        "num_features": 120,
+        "fit_time_seconds": 67.95
+    }
+]
