@@ -19,5 +19,12 @@
         "pr_auc": 0.2267,
         "num_features": 120,
         "fit_time_seconds": 67.95
+    },
+    {
+        "encoder": "embedding",
+        "roc_auc": 0.7479,
+        "pr_auc": 0.2293,
+        "num_features": 180,
+        "fit_time_seconds": 26.45
     }
 ]
