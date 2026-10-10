@@ -1,0 +1,15 @@
+pandas
+numpy
+scikit-learn>=1.3
+category_encoders
+lightgbm
+shap
+matplotlib
+seaborn
+joblib
+torch
+jupyter
+fastapi
+uvicorn
+pydantic
+pytest
