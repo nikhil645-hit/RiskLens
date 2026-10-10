@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Underwriting Risk Scorer | RiskLens</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c4c6ce",
+            "surface-container-low": "#f2f4f6",
+            "on-tertiary-fixed-variant": "#004395",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#001a42",
+            "primary": "#000615",
+            "primary-fixed-dim": "#b5c7ea",
+            "inverse-surface": "#2d3133",
+            "surface-bright": "#f7f9fb",
+            "secondary-fixed": "#71f8e4",
+            "tertiary": "#000517",
+            "on-secondary-container": "#006f64",
+            "on-primary-container": "#7587a7",
+            "surface": "#f7f9fb",
+            "on-primary-fixed-variant": "#364764",
+            "on-surface-variant": "#44474d",
+            "surface-dim": "#d8dadc",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#d8e2ff",
+            "secondary": "#006b5f",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#071c36",
+            "tertiary-fixed-dim": "#adc6ff",
+            "inverse-primary": "#b5c7ea",
+            "tertiary-container": "#001d48",
+            "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#005048",
+            "secondary-container": "#6df5e1",
+            "outline": "#75777e",
+            "on-surface": "#191c1e",
+            "surface-container-high": "#e6e8ea",
+            "secondary-fixed-dim": "#4fdbc8",
+            "surface-tint": "#4d5f7d",
+            "on-background": "#191c1e",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#00201c",
+            "surface-container": "#eceef0",
+            "primary-fixed": "#d6e3ff",
+            "inverse-on-surface": "#eff1f3",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "surface-variant": "#e0e3e5",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-container": "#3c83f7",
+            "background": "#f7f9fb",
+            "primary-container": "#0b1f3a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "0.75rem",
+            "gutter-sm": "1rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "stat-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-sm-medium": ["Inter"],
+            "stat-xl": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "label-caps": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-base": ["Inter"],
+            "table-header": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-bold": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-lg": ["Inter"]
+          },
+          "fontSize": {
+            "stat-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-sm-medium": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "stat-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-bold": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.025em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface dark:bg-primary dark:text-inverse-on-surface min-h-screen flex flex-col font-body-base text-body-base antialiased transition-colors duration-200">
+<!-- TOP APP BAR -->
+<header class="bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="w-full px-margin flex items-center justify-between h-16 max-w-7xl mx-auto">
+<!-- Logo & Brand Anchor -->
+<div class="flex items-center gap-space-lg">
+<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="#">
+<span class="material-symbols-outlined text-secondary text-2xl font-bold" data-icon="shield_lock" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+<span>RiskLens</span>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-space-md ml-space-md">
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Home</a>
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="#">Risk Scorer</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Threshold Lab</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Model Insights</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">About</a>
+</nav>
+</div>
+<!-- Trailing Controls & Preset Selector -->
+<div class="flex items-center gap-space-sm">
+<!-- Preset Quick Selector -->
+<div class="hidden sm:flex items-center gap-space-xs bg-surface-container-low dark:bg-primary border border-outline-variant dark:border-outline rounded-lg p-1">
+<span class="material-symbols-outlined text-outline ml-1 text-sm" data-icon="tune">tune</span>
+<select class="bg-transparent border-0 text-on-surface dark:text-surface-bright font-body-sm-medium text-body-sm-medium py-1 pl-1 pr-6 focus:ring-0 cursor-pointer" id="quickPresetSelect">
+<option class="text-primary" value="low">Sample 1: Low Risk</option>
+<option class="text-primary" value="medium">Sample 2: Medium Risk</option>
+<option class="text-primary" value="high">Sample 3: High Risk</option>
+</select>
+</div>
+<!-- Trailing Secondary Status Action -->
+<div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container dark:bg-tertiary-container border border-outline-variant dark:border-outline font-label-caps text-label-caps text-on-surface-variant dark:text-on-primary-container">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Model v2.4 Active</span>
+</div>
+<!-- Trailing Primary Action -->
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-container dark:bg-inverse-primary text-on-primary dark:text-primary rounded-lg font-body-sm-medium text-body-sm-medium hover:bg-opacity-90 transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="publish">publish</span>
+<span>Deploy Policy</span>
+</button>
+<!-- Trailing Icon Actions -->
+<button aria-label="Toggle dark mode" class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all" id="themeToggleBtn" type="button">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button aria-label="View notifications" class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all relative" type="button">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<!-- User profile image anchor -->
+<div class="w-8 h-8 rounded-full border border-outline-variant dark:border-outline overflow-hidden ml-1">
+<img alt="Senior Underwriter Avatar" class="w-full h-full object-cover" data-alt="A refined, professional portrait of a senior financial underwriter in modern executive business attire with clear lighting in an architectural corporate banking boardroom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCONdexEbBb8ejLjbdcUK0FD_QL7AqOJmUhEQmAkfO4UuO2EZl0EUy1hbWeL14oIrsIz6TFm-zk2UzkIRK6HSUJJLXL_KfVhDV-byUSq6E9iyW01cH5dJ_2hC3su-VDjLx7R5MflPxiox-9Ibn5aD7hdCoomvFY6klqtP4J7oA2baPT3dHibv4GMof0EGSfqnvn0cX3msue7McmJ-Ju8Gb14mJ9-RBmivjy2C7DhxlzQW0UyxBSftDikg"/>
+</div>
+</div>
+</div>
+</header>
+<!-- PAGE HERO / HEADER -->
+<section class="border-b border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-primary-container py-space-lg">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div>
+<div class="flex items-center gap-space-xs font-label-caps text-label-caps text-secondary font-bold uppercase mb-1">
+<span class="material-symbols-outlined text-base" data-icon="batch_prediction">batch_prediction</span>
+<span>Probabilistic Credit Decisioning</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-surface-bright tracking-tight">
+            Underwriting Risk Scorer
+          </h1>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-outline-variant mt-1 max-w-3xl">
+            Input loan applicant profile parameters to generate calibrated default probability and factor attribution.
+          </p>
+</div>
+<!-- Quick Calibration Status Tag -->
+<div class="flex items-center gap-space-sm bg-surface-container dark:bg-primary px-3 py-2 rounded-lg border border-outline-variant dark:border-outline text-on-surface-variant dark:text-outline-variant font-body-sm-medium text-body-sm-medium self-start md:self-auto">
+<span class="material-symbols-outlined text-secondary" data-icon="verified">verified</span>
+<div>
+<div class="text-xs text-outline">Calibration Baseline</div>
+<div class="font-bold text-on-surface dark:text-surface-bright">AUC-ROC 0.824 • Fair Lending Verified</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- MAIN DUAL-PANE CONTENT CONTAINER -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-margin py-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT COLUMN: LOAN APPLICATION INPUT FORM CARD -->
+<section class="lg:col-span-7 bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-md border-b border-outline-variant dark:border-outline mb-space-lg">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright">Applicant Profile Parameters</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Standardized institutional credit bureau &amp; demographic feature set</p>
+</div>
+<button class="inline-flex items-center gap-1 text-secondary dark:text-secondary-fixed font-body-sm-medium text-body-sm-medium hover:underline" id="loadSampleBtn" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+            Load Sample Profile
+          </button>
+</div>
+<form class="space-y-space-lg" id="riskAssessmentForm">
+<!-- SECTION 1: FINANCIAL EXPOSURE -->
+<div>
+<h3 class="font-table-header text-table-header uppercase text-outline mb-space-sm tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="account_balance">account_balance</span>
+              1. Financial Exposure &amp; Capital
+            </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Field 1: Annual Income -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="annualIncome">Annual Income ($)</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">$</span>
+<input class="w-full pl-8 pr-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="annualIncome" min="5000" step="1000" type="number" value="85000"/>
+</div>
+</div>
+<!-- Field 2: Loan Amount -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="loanAmount">Loan Amount Requested ($)</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">$</span>
+<input class="w-full pl-8 pr-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="loanAmount" min="1000" step="500" type="number" value="35000"/>
+</div>
+</div>
+<!-- Field 3: Loan Annuity ($/mo) + Calculated DTI badge -->
+<div class="sm:col-span-2 bg-surface-container-low dark:bg-primary p-3 rounded-lg border border-outline-variant dark:border-outline flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex-1">
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="loanAnnuity">Monthly Loan Annuity ($ / month)</label>
+<div class="relative max-w-xs">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">$</span>
+<input class="w-full pl-8 pr-3 py-1.5 bg-surface-container-lowest dark:bg-primary-container border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="loanAnnuity" min="50" step="10" type="number" value="980"/>
+</div>
+</div>
+<!-- Dynamic DTI Badge -->
+<div class="text-left sm:text-right">
+<span class="font-table-header text-table-header uppercase text-outline">Calculated Debt-to-Income (DTI)</span>
+<div class="flex items-center sm:justify-end gap-1.5 mt-0.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-secondary-container text-on-secondary-container" id="dtiBadge">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1"></span>
+                      13.8% (Healthy)
+                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 2: DEMOGRAPHICS & WORK TENURE -->
+<div>
+<h3 class="font-table-header text-table-header uppercase text-outline mb-space-sm tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="badge">badge</span>
+              2. Demographics &amp; Employment
+            </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Field 4: Age -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="ageYears">Age (years)</label>
+<input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="ageYears" max="75" min="18" type="number" value="38"/>
+</div>
+<!-- Field 5: Years employed -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="yearsEmployed">Years Employed</label>
+<input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="yearsEmployed" max="50" min="0" step="0.5" type="number" value="8.5"/>
+</div>
+<!-- Field 6: Education -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="educationSelect">Education Level</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="educationSelect">
+<option selected="" value="Higher education">Higher education</option>
+<option value="Secondary">Secondary</option>
+<option value="Incomplete higher">Incomplete higher</option>
+<option value="Lower secondary">Lower secondary</option>
+<option value="Academic degree">Academic degree</option>
+</select>
+</div>
+<!-- Field 7: Income type -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="incomeTypeSelect">Income Type</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="incomeTypeSelect">
+<option selected="" value="Commercial associate">Commercial associate</option>
+<option value="Working">Working</option>
+<option value="State servant">State servant</option>
+<option value="Pensioner">Pensioner</option>
+<option value="Student">Student</option>
+</select>
+</div>
+<!-- Field 8: Occupation -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="occupationSelect">Occupation</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="occupationSelect">
+<option selected="" value="High skill tech">High skill tech</option>
+<option value="Laborers">Laborers</option>
+<option value="Core staff">Core staff</option>
+<option value="Managers">Managers</option>
+<option value="Drivers">Drivers</option>
+<option value="Sales staff">Sales staff</option>
+<option value="Accountants">Accountants</option>
+</select>
+</div>
+<!-- Field 9: Organisation type -->
+<div>
+<label class="block font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant mb-1" for="orgTypeSelect">Organisation Type</label>
+<select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg font-body-base text-body-base text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" id="orgTypeSelect">
+<option selected="" value="Business Entity Type 3">Business Entity Type 3</option>
+<option value="Self-employed">Self-employed</option>
+<option value="Other">Other</option>
+<option value="Government">Government</option>
+<option value="Trade Type 7">Trade Type 7</option>
+<option value="Bank">Bank</option>
+</select>
+</div>
+</div>
+</div>
+<!-- SECTION 3: EXTERNAL CREDIT BUREAU SCORES (SLIDERS) -->
+<div>
+<h3 class="font-table-header text-table-header uppercase text-outline mb-space-sm tracking-wider flex items-center justify-between">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="speed">speed</span>
+                3. External Bureau Credit Scores (0.00 – 1.00)
+              </span>
+<span class="text-xs font-normal normal-case text-on-surface-variant dark:text-outline-variant">Higher is lower default risk</span>
+</h3>
+<div class="space-y-4 bg-surface-container-low dark:bg-primary p-4 rounded-lg border border-outline-variant dark:border-outline">
+<!-- Field 10: External Credit Score 1 -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm-medium text-body-sm-medium text-on-surface dark:text-surface-bright" for="extScore1">External Credit Score 1 (National Bureau Alpha)</label>
+<span class="font-bold text-secondary text-sm font-mono bg-surface-container-lowest dark:bg-primary-container px-2 py-0.5 rounded border border-outline-variant dark:border-outline" id="extScore1Val">0.68</span>
+</div>
+<input class="w-full h-2 bg-surface-variant dark:bg-primary-container rounded-lg appearance-none cursor-pointer accent-secondary" id="extScore1" max="1.00" min="0.00" step="0.01" type="range" value="0.68"/>
+</div>
+<!-- Field 11: External Credit Score 2 -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm-medium text-body-sm-medium text-on-surface dark:text-surface-bright" for="extScore2">External Credit Score 2 (Institutional Synthetics Beta)</label>
+<span class="font-bold text-secondary text-sm font-mono bg-surface-container-lowest dark:bg-primary-container px-2 py-0.5 rounded border border-outline-variant dark:border-outline" id="extScore2Val">0.74</span>
+</div>
+<input class="w-full h-2 bg-surface-variant dark:bg-primary-container rounded-lg appearance-none cursor-pointer accent-secondary" id="extScore2" max="1.00" min="0.00" step="0.01" type="range" value="0.74"/>
+</div>
+<!-- Field 12: External Credit Score 3 -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm-medium text-body-sm-medium text-on-surface dark:text-surface-bright" for="extScore3">External Credit Score 3 (Consortium Payment Trend Gamma)</label>
+<span class="font-bold text-secondary text-sm font-mono bg-surface-container-lowest dark:bg-primary-container px-2 py-0.5 rounded border border-outline-variant dark:border-outline" id="extScore3Val">0.62</span>
+</div>
+<input class="w-full h-2 bg-surface-variant dark:bg-primary-container rounded-lg appearance-none cursor-pointer accent-secondary" id="extScore3" max="1.00" min="0.00" step="0.01" type="range" value="0.62"/>
+</div>
+</div>
+</div>
+<!-- FORM ACTION BUTTONS -->
+<div class="pt-2 flex flex-col sm:flex-row items-center gap-space-sm">
+<button class="w-full sm:flex-1 py-3 px-6 bg-secondary text-on-secondary rounded-lg font-body-bold text-body-bold hover:bg-opacity-90 transition-all shadow-sm active:scale-[0.99] flex items-center justify-center gap-2" id="calculateRiskBtn" type="button">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span>Calculate Risk Score</span>
+</button>
+<button class="w-full sm:w-auto py-3 px-4 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright rounded-lg font-body-sm-medium text-body-sm-medium hover:bg-surface-container-low transition-colors" id="resetFieldsBtn" type="button">
+              Reset Fields
+            </button>
+</div>
+</form>
+</section>
+<!-- RIGHT COLUMN: ASSESSMENT RESULTS & STATE SWITCHER -->
+<section class="lg:col-span-5 space-y-space-md">
+<!-- State Preview Toggle Bar -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-1 rounded-xl border border-outline-variant dark:border-outline flex items-center justify-between text-xs">
+<span class="px-2 font-table-header text-table-header uppercase text-outline">State View:</span>
+<div class="flex gap-1">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container dark:bg-primary font-bold text-secondary dark:text-secondary-fixed transition-colors" id="tabActiveBtn" type="button">Active Result</button>
+<button class="px-2.5 py-1 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary transition-colors" id="tabLoadingBtn" type="button">Loading</button>
+<button class="px-2.5 py-1 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary transition-colors" id="tabEmptyBtn" type="button">Empty</button>
+</div>
+</div>
+<!-- STATE 1: ACTIVE ASSESSMENT RESULT CARD (VISIBLE BY DEFAULT) -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline p-space-lg shadow-sm space-y-space-md" id="stateActive">
+<div class="flex items-center justify-between border-b border-outline-variant dark:border-outline pb-space-sm">
+<div>
+<span class="font-label-caps text-label-caps text-outline uppercase">ML Inference Assessment</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright">Loan Default Probability</h3>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-medium bg-surface-container-low dark:bg-primary border border-outline-variant dark:border-outline text-on-surface-variant dark:text-outline-variant">
+              99.2% Conf.
+            </span>
+</div>
+<!-- GAUGE VISUALIZATION (SEMICIRCLE SVG) -->
+<div class="flex flex-col items-center justify-center pt-2">
+<div class="relative w-64 h-36 flex items-end justify-center">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 200 115">
+<defs>
+<!-- Gradient for gauge arcs -->
+<lineargradient id="gaugeGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#10B981"></stop>
+<stop offset="25%" stop-color="#10B981"></stop>
+<stop offset="35%" stop-color="#F59E0B"></stop>
+<stop offset="60%" stop-color="#F59E0B"></stop>
+<stop offset="75%" stop-color="#EF4444"></stop>
+<stop offset="100%" stop-color="#EF4444"></stop>
+</lineargradient>
+</defs>
+<!-- Background track arc -->
+<path class="dark:stroke-primary" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e2e8f0" stroke-linecap="round" stroke-width="16"></path>
+<!-- Colored Value Arc -->
+<path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-linecap="round" stroke-width="16"></path>
+<!-- Needle Indicator (Rotates dynamically around 100,100) -->
+<!-- 0% = -90deg, 100% = +90deg. 14.8% default = -90 + (0.148 * 180) = -63.36deg -->
+<g class="transition-transform duration-700 ease-out" id="needleGroup" transform="rotate(-63.36, 100, 100)">
+<line class="dark:stroke-surface-bright" stroke="#0b1f3a" stroke-linecap="round" stroke-width="3" x1="100" x2="100" y1="100" y2="30"></line>
+<circle class="dark:fill-surface-bright" cx="100" cy="100" fill="#0b1f3a" r="7"></circle>
+<circle cx="100" cy="100" fill="#ffffff" r="3"></circle>
+</g>
+</svg>
+<!-- Probability percentage overlay -->
+<div class="absolute bottom-0 flex flex-col items-center">
+<span class="font-stat-xl text-stat-xl font-bold text-primary dark:text-surface-bright tracking-tight leading-none" id="probValueText">14.8%</span>
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider text-[10px] mt-0.5">Calibrated Default P(y=1)</span>
+</div>
+</div>
+<!-- Gauge Scale Legend -->
+<div class="w-full flex justify-between text-[11px] font-mono text-outline px-6 mt-1">
+<span>0% (Prime)</span>
+<span>25% (Cutoff)</span>
+<span>100% (High)</span>
+</div>
+</div>
+<!-- PROMINENT DECISION BADGE -->
+<div class="bg-[#D1FAE5] dark:bg-opacity-20 border border-[#10B981] p-3.5 rounded-xl flex items-center justify-between" id="decisionBadgeCard">
+<div class="flex items-center gap-2.5">
+<span class="w-3 h-3 rounded-full bg-[#10B981] animate-pulse"></span>
+<div>
+<span class="font-body-bold text-body-bold text-[#065F46] dark:text-[#71f8e4] tracking-wide uppercase" id="decisionBadgeTitle">
+                  APPROVE — LOW RISK
+                </span>
+<p class="text-xs text-[#065F46] dark:text-outline-variant" id="decisionBadgeSubtext">
+                  Default probability is well below the 25.0% institutional cutoff.
+                </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-[#065F46] dark:text-[#71f8e4]" data-icon="check_circle">check_circle</span>
+</div>
+<!-- KEY METRICS BAR -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low dark:bg-primary p-3 rounded-xl border border-outline-variant dark:border-outline text-center">
+<div>
+<span class="font-table-header text-table-header uppercase text-outline text-[11px]">Synthetic Score</span>
+<div class="font-stat-lg text-stat-lg font-bold text-primary dark:text-surface-bright mt-0.5" id="syntheticScoreText">742 <span class="text-xs font-normal text-outline">/ 850</span></div>
+</div>
+<div class="border-x border-outline-variant dark:border-outline px-1">
+<span class="font-table-header text-table-header uppercase text-outline text-[11px]">Expected Loss</span>
+<div class="font-stat-lg text-stat-lg font-bold text-primary dark:text-surface-bright mt-0.5" id="expectedLossText">$1,240</div>
+</div>
+<div>
+<span class="font-table-header text-table-header uppercase text-outline text-[11px]">Rec. Max Loan</span>
+<div class="font-stat-lg text-stat-lg font-bold text-secondary dark:text-secondary-fixed mt-0.5" id="recMaxLoanText">$42,000</div>
+</div>
+</div>
+<!-- TOP 3 RISK FACTORS (SHAPLEY ATTRIBUTION) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<h4 class="font-label-caps text-label-caps text-outline uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="waterfall_chart">waterfall_chart</span>
+                Top 3 Explanatory Risk Factors (SHAP)
+              </h4>
+<span class="text-[11px] text-outline">Odds Ratio Impact</span>
+</div>
+<div class="space-y-2">
+<!-- Factor 1 (Decreased Risk) -->
+<div class="flex items-center justify-between p-2.5 rounded-lg border border-[#A7F3D0] bg-[#ECFDF5] dark:bg-primary dark:border-outline" id="factor1Card">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded-full bg-[#10B981] text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_downward">arrow_downward</span>
+</span>
+<div>
+<div class="font-body-sm-medium text-body-sm-medium text-primary dark:text-surface-bright font-semibold" id="factor1Title">High External Bureau Score 2 (0.74)</div>
+<div class="text-[11px] text-on-surface-variant dark:text-outline-variant">Consortium debt repayment history exceeds 90th percentile</div>
+</div>
+</div>
+<span class="font-mono text-xs font-bold text-[#065F46] dark:text-[#71f8e4] bg-white dark:bg-primary-container px-2 py-0.5 rounded border border-[#A7F3D0] dark:border-outline" id="factor1Impact">
+                  -4.8%
+                </span>
+</div>
+<!-- Factor 2 (Decreased Risk) -->
+<div class="flex items-center justify-between p-2.5 rounded-lg border border-[#A7F3D0] bg-[#ECFDF5] dark:bg-primary dark:border-outline" id="factor2Card">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded-full bg-[#10B981] text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_downward">arrow_downward</span>
+</span>
+<div>
+<div class="font-body-sm-medium text-body-sm-medium text-primary dark:text-surface-bright font-semibold" id="factor2Title">Long Employment Tenure (8.5 yrs)</div>
+<div class="text-[11px] text-on-surface-variant dark:text-outline-variant">Stable employment with established corporate employer</div>
+</div>
+</div>
+<span class="font-mono text-xs font-bold text-[#065F46] dark:text-[#71f8e4] bg-white dark:bg-primary-container px-2 py-0.5 rounded border border-[#A7F3D0] dark:border-outline" id="factor2Impact">
+                  -2.6%
+                </span>
+</div>
+<!-- Factor 3 (Increased Risk) -->
+<div class="flex items-center justify-between p-2.5 rounded-lg border border-[#FECDD3] bg-[#FFF1F2] dark:bg-primary dark:border-outline" id="factor3Card">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded-full bg-[#EF4444] text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_upward">arrow_upward</span>
+</span>
+<div>
+<div class="font-body-sm-medium text-body-sm-medium text-primary dark:text-surface-bright font-semibold" id="factor3Title">Annuity-to-Income Exposure (13.8%)</div>
+<div class="text-[11px] text-on-surface-variant dark:text-outline-variant">Requested monthly commitment increases adverse cashflow strain</div>
+</div>
+</div>
+<span class="font-mono text-xs font-bold text-[#991B1B] dark:text-[#ffdad6] bg-white dark:bg-primary-container px-2 py-0.5 rounded border border-[#FECDD3] dark:border-outline" id="factor3Impact">
+                  +1.9%
+                </span>
+</div>
+</div>
+</div>
+<!-- Audit & Export Action Bar -->
+<div class="pt-2 flex items-center justify-between text-xs text-outline border-t border-outline-variant dark:border-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+              Deterministic Hash: <span class="font-mono text-on-surface dark:text-surface-bright font-semibold">0x8aF4...291B</span>
+</span>
+<button class="text-secondary dark:text-secondary-fixed hover:underline flex items-center gap-1 font-semibold" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+              Export PDF Dossier
+            </button>
+</div>
+</div>
+<!-- STATE 2: LOADING STATE (SIMULATED PROGRESS INDICATORS) -->
+<div class="hidden bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline p-space-lg shadow-sm space-y-6 text-center py-16" id="stateLoading">
+<div class="relative w-16 h-16 mx-auto">
+<div class="w-16 h-16 rounded-full border-4 border-surface-container border-t-secondary animate-spin"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="memory">memory</span>
+</div>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright">Evaluating Feature Vectors...</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-1">Calibrating ensemble weights through XGBoost and LightGBM pipelines</p>
+</div>
+<!-- Skeleton Bars for data feed -->
+<div class="w-full max-w-xs mx-auto space-y-2.5 pt-2">
+<div class="flex justify-between text-xs font-mono text-outline">
+<span>Computing Tree SHAP values</span>
+<span>78%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-secondary h-full rounded-full transition-all duration-300 w-3/4"></div>
+</div>
+<div class="flex items-center justify-center gap-2 text-xs text-outline pt-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span>Checking Fair Housing Act / ECOA Disparate Impact</span>
+</div>
+</div>
+</div>
+<!-- STATE 3: EMPTY STATE (INITIAL PROMPT) -->
+<div class="hidden bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline p-space-lg shadow-sm text-center py-16 space-y-4" id="stateEmpty">
+<div class="w-16 h-16 rounded-full bg-surface-container dark:bg-primary mx-auto flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-3xl" data-icon="assignment_late">assignment_late</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright">No Active Calculation</h4>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-outline-variant max-w-sm mx-auto mt-1">
+              Select an institutional applicant preset from the top menu or modify the form parameters on the left to begin risk inference.
+            </p>
+</div>
+<button class="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-on-secondary rounded-lg font-body-bold text-body-bold hover:bg-opacity-90 transition-all" onclick="loadSampleProfile('low')" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+            Initialize Sample 1
+          </button>
+</div>
+<!-- Compliance & Regulatory Banner Card -->
+<div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-primary border border-outline-variant dark:border-outline text-xs text-on-surface-variant dark:text-outline-variant flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="policy">policy</span>
+<div>
+<span class="font-semibold text-primary dark:text-surface-bright">Regulatory Model Compliance:</span>
+            Inference engine complies with SR 11-7 Model Risk Management guidelines. Protected demographic classes are sanitized from feature attribution layers.
+          </div>
+</div>
+</section>
+</div>
+</main>
+<!-- INSTITUTIONAL FOOTER -->
+<footer class="bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width bottom border-t border-outline-variant dark:border-outline mt-auto">
+<div class="w-full px-margin py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left max-w-7xl mx-auto">
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center justify-center md:justify-start gap-1">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="shield">shield</span>
+<span>RiskLens ML</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-1 max-w-xl">
+          © 2025 RiskLens Analytics Ltd. High-Assurance Probabilistic Credit Underwriting. All rights reserved. For institutional risk evaluation and educational simulation only.
+        </p>
+</div>
+<!-- Links & GitHub anchor -->
+<div class="flex flex-wrap items-center justify-center gap-space-md font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Model Card v2.4</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Fair Lending Governance</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">API Reference</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Audit Log</a>
+<a class="flex items-center gap-1 hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-base" data-icon="code">code</span>
+<span>GitHub</span>
+</a>
+</div>
+</div>
+</footer>
+<!-- INTERACTIVE LOGIC SCRIPT -->
+<script>
+    // PRESET DATA DEFINITIONS
+    const PRESETS = {
+      low: {
+        income: 85000,
+        loan: 35000,
+        annuity: 980,
+        age: 38,
+        tenure: 8.5,
+        education: "Higher education",
+        incomeType: "Commercial associate",
+        occupation: "High skill tech",
+        orgType: "Business Entity Type 3",
+        ext1: 0.68,
+        ext2: 0.74,
+        ext3: 0.62,
+        prob: 14.8,
+        score: 742,
+        loss: "$1,240",
+        maxLoan: "$42,000",
+        decision: {
+          title: "APPROVE — LOW RISK",
+          sub: "Default probability below 25.0% policy cutoff.",
+          type: "approve"
+        },
+        factors: [
+          { title: "High External Score 2 (0.74)", sub: "Consortium repayment reliability exceeds 90th percentile", impact: "-4.8%", up: false },
+          { title: "Long Employment Tenure (8.5 yrs)", sub: "Stable employment tenure with corporate sponsor", impact: "-2.6%", up: false },
+          { title: "Annuity-to-Income Exposure (13.8%)", sub: "Requested commitment creates slight baseline cashflow delta", impact: "+1.9%", up: true }
+        ]
+      },
+      medium: {
+        income: 54000,
+        loan: 45000,
+        annuity: 1450,
+        age: 29,
+        tenure: 3.2,
+        education: "Secondary",
+        incomeType: "Working",
+        occupation: "Sales staff",
+        orgType: "Self-employed",
+        ext1: 0.44,
+        ext2: 0.51,
+        ext3: 0.38,
+        prob: 32.4,
+        score: 618,
+        loss: "$4,850",
+        maxLoan: "$28,000",
+        decision: {
+          title: "REFERRAL — SECONDARY REVIEW",
+          sub: "Default probability (32.4%) falls in discretionary committee band.",
+          type: "review"
+        },
+        factors: [
+          { title: "Elevated Annuity-to-Income (32.2%)", sub: "Monthly debt load surpasses recommended prime comfort ceiling", impact: "+5.4%", up: true },
+          { title: "Moderate External Score 3 (0.38)", sub: "Recent revolving balance utilization flags volatility", impact: "+3.8%", up: true },
+          { title: "Consistent Primary Employment (3.2 yrs)", sub: "Uninterrupted verifiable income mitigates short tenure", impact: "-1.5%", up: false }
+        ]
+      },
+      high: {
+        income: 32000,
+        loan: 60000,
+        annuity: 1980,
+        age: 24,
+        tenure: 0.8,
+        education: "Lower secondary",
+        incomeType: "Working",
+        occupation: "Laborers",
+        orgType: "Trade Type 7",
+        ext1: 0.22,
+        ext2: 0.28,
+        ext3: 0.19,
+        prob: 58.7,
+        score: 485,
+        loss: "$11,200",
+        maxLoan: "$12,500",
+        decision: {
+          title: "REJECT — HIGH DEFAULT RISK",
+          sub: "Calibrated probability exceeds the 45.0% institutional loss threshold.",
+          type: "reject"
+        },
+        factors: [
+          { title: "Extreme Debt-to-Income Burden (74.2%)", sub: "Required annuity consumes disproportionate portion of gross wage", impact: "+12.1%", up: true },
+          { title: "Subprime External Scores (Avg 0.23)", sub: "Multiple historical delinquencies reported across bureaus", impact: "+9.4%", up: true },
+          { title: "Short Employment Duration (0.8 yrs)", sub: "Recent onboarding presents high volatility risk", impact: "+4.2%", up: true }
+        ]
+      }
+    };
+
+    // DOM ELEMENTS
+    const annualIncomeInput = document.getElementById('annualIncome');
+    const loanAmountInput = document.getElementById('loanAmount');
+    const loanAnnuityInput = document.getElementById('loanAnnuity');
+    const ageYearsInput = document.getElementById('ageYears');
+    const yearsEmployedInput = document.getElementById('yearsEmployed');
+    const educationSelect = document.getElementById('educationSelect');
+    const incomeTypeSelect = document.getElementById('incomeTypeSelect');
+    const occupationSelect = document.getElementById('occupationSelect');
+    const orgTypeSelect = document.getElementById('orgTypeSelect');
+    const ext1Input = document.getElementById('extScore1');
+    const ext2Input = document.getElementById('extScore2');
+    const ext3Input = document.getElementById('extScore3');
+    const ext1Val = document.getElementById('extScore1Val');
+    const ext2Val = document.getElementById('extScore2Val');
+    const ext3Val = document.getElementById('extScore3Val');
+    const dtiBadge = document.getElementById('dtiBadge');
+    const quickPresetSelect = document.getElementById('quickPresetSelect');
+    const needleGroup = document.getElementById('needleGroup');
+    const probValueText = document.getElementById('probValueText');
+    const decisionBadgeCard = document.getElementById('decisionBadgeCard');
+    const decisionBadgeTitle = document.getElementById('decisionBadgeTitle');
+    const decisionBadgeSubtext = document.getElementById('decisionBadgeSubtext');
+    const syntheticScoreText = document.getElementById('syntheticScoreText');
+    const expectedLossText = document.getElementById('expectedLossText');
+    const recMaxLoanText = document.getElementById('recMaxLoanText');
+
+    // Factors
+    const factor1Title = document.getElementById('factor1Title');
+    const factor1Impact = document.getElementById('factor1Impact');
+    const factor2Title = document.getElementById('factor2Title');
+    const factor2Impact = document.getElementById('factor2Impact');
+    const factor3Title = document.getElementById('factor3Title');
+    const factor3Impact = document.getElementById('factor3Impact');
+
+    // State views
+    const stateActive = document.getElementById('stateActive');
+    const stateLoading = document.getElementById('stateLoading');
+    const stateEmpty = document.getElementById('stateEmpty');
+    const tabActiveBtn = document.getElementById('tabActiveBtn');
+    const tabLoadingBtn = document.getElementById('tabLoadingBtn');
+    const tabEmptyBtn = document.getElementById('tabEmptyBtn');
+
+    // UPDATE SLIDER LABELS & REALTIME CALCULATIONS
+    function updateSliderLabels() {
+      ext1Val.textContent = parseFloat(ext1Input.value).toFixed(2);
+      ext2Val.textContent = parseFloat(ext2Input.value).toFixed(2);
+      ext3Val.textContent = parseFloat(ext3Input.value).toFixed(2);
+      updateDti();
+    }
+
+    function updateDti() {
+      const income = parseFloat(annualIncomeInput.value) || 1;
+      const annuity = parseFloat(loanAnnuityInput.value) || 0;
+      const annualAnnuity = annuity * 12;
+      const dtiRatio = (annualAnnuity / income) * 100;
+      const dtiFormatted = dtiRatio.toFixed(1);
+
+      let text = `${dtiFormatted}% (Healthy)`;
+      let badgeClass = "bg-[#D1FAE5] text-[#065F46]";
+      let dotColor = "bg-[#10B981]";
+
+      if (dtiRatio > 40) {
+        text = `${dtiFormatted}% (High Risk)`;
+        badgeClass = "bg-[#FEE2E2] text-[#991B1B]";
+        dotColor = "bg-[#EF4444]";
+      } else if (dtiRatio > 25) {
+        text = `${dtiFormatted}% (Moderate)`;
+        badgeClass = "bg-[#FEF3C7] text-[#92400E]";
+        dotColor = "bg-[#F59E0B]";
+      }
+
+      dtiBadge.className = `inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${badgeClass}`;
+      dtiBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${dotColor} mr-1"></span>${text}`;
+    }
+
+    [annualIncomeInput, loanAmountInput, loanAnnuityInput].forEach(inp => {
+      inp.addEventListener('input', updateDti);
+    });
+
+    [ext1Input, ext2Input, ext3Input].forEach(slider => {
+      slider.addEventListener('input', () => {
+        updateSliderLabels();
+        recalcFromCurrentInputs();
+      });
+    });
+
+    // APPLY PRESET TO UI
+    function loadSampleProfile(presetKey) {
+      const data = PRESETS[presetKey];
+      if (!data) return;
+
+      annualIncomeInput.value = data.income;
+      loanAmountInput.value = data.loan;
+      loanAnnuityInput.value = data.annuity;
+      ageYearsInput.value = data.age;
+      yearsEmployedInput.value = data.tenure;
+      educationSelect.value = data.education;
+      incomeTypeSelect.value = data.incomeType;
+      occupationSelect.value = data.occupation;
+      orgTypeSelect.value = data.orgType;
+      ext1Input.value = data.ext1;
+      ext2Input.value = data.ext2;
+      ext3Input.value = data.ext3;
+
+      updateSliderLabels();
+      renderResults(data);
+      switchState('active');
+    }
+
+    // RENDER ASSESSMENT RESULTS
+    function renderResults(data) {
+      // 1. Gauge Needle angle: -90 (0%) to +90 (100%)
+      const prob = Math.min(Math.max(data.prob, 0), 100);
+      const angle = -90 + (prob * 1.8);
+      needleGroup.setAttribute('transform', `rotate(${angle.toFixed(2)}, 100, 100)`);
+      probValueText.textContent = `${prob.toFixed(1)}%`;
+
+      // 2. Decision Card
+      if (data.decision.type === 'approve') {
+        decisionBadgeCard.className = "bg-[#D1FAE5] dark:bg-opacity-20 border border-[#10B981] p-3.5 rounded-xl flex items-center justify-between";
+        decisionBadgeTitle.className = "font-body-bold text-body-bold text-[#065F46] dark:text-[#71f8e4] tracking-wide uppercase";
+        decisionBadgeSubtext.className = "text-xs text-[#065F46] dark:text-outline-variant";
+      } else if (data.decision.type === 'review') {
+        decisionBadgeCard.className = "bg-[#FEF3C7] dark:bg-opacity-20 border border-[#F59E0B] p-3.5 rounded-xl flex items-center justify-between";
+        decisionBadgeTitle.className = "font-body-bold text-body-bold text-[#92400E] dark:text-[#f8d071] tracking-wide uppercase";
+        decisionBadgeSubtext.className = "text-xs text-[#92400E] dark:text-outline-variant";
+      } else {
+        decisionBadgeCard.className = "bg-[#FEE2E2] dark:bg-opacity-20 border border-[#EF4444] p-3.5 rounded-xl flex items-center justify-between";
+        decisionBadgeTitle.className = "font-body-bold text-body-bold text-[#991B1B] dark:text-[#ffdad6] tracking-wide uppercase";
+        decisionBadgeSubtext.className = "text-xs text-[#991B1B] dark:text-outline-variant";
+      }
+      decisionBadgeTitle.textContent = data.decision.title;
+      decisionBadgeSubtext.textContent = data.decision.sub;
+
+      // 3. Metrics
+      syntheticScoreText.innerHTML = `${data.score} <span class="text-xs font-normal text-outline">/ 850</span>`;
+      expectedLossText.textContent = data.loss;
+      recMaxLoanText.textContent = data.maxLoan;
+
+      // 4. Factors
+      if (data.factors && data.factors.length >= 3) {
+        factor1Title.textContent = data.factors[0].title;
+        factor1Impact.textContent = data.factors[0].impact;
+        factor2Title.textContent = data.factors[1].title;
+        factor2Impact.textContent = data.factors[1].impact;
+        factor3Title.textContent = data.factors[2].title;
+        factor3Impact.textContent = data.factors[2].impact;
+      }
+    }
+
+    // HEURISTIC CALCULATION FOR LIVE SLIDERS / BUTTON
+    function recalcFromCurrentInputs() {
+      const extAvg = (parseFloat(ext1Input.value) + parseFloat(ext2Input.value) + parseFloat(ext3Input.value)) / 3;
+      const income = parseFloat(annualIncomeInput.value) || 50000;
+      const annuity = parseFloat(loanAnnuityInput.value) || 1000;
+      const dti = (annuity * 12) / income;
+
+      let baseProb = (1.0 - extAvg) * 55 + (dti * 25);
+      baseProb = Math.min(Math.max(baseProb, 3.2), 92.5);
+
+      let decisionType = "approve";
+      let title = "APPROVE — LOW RISK";
+      let sub = "Default probability below 25.0% policy cutoff.";
+      let score = Math.round(850 - (baseProb * 4.5));
+
+      if (baseProb > 45) {
+        decisionType = "reject";
+        title = "REJECT — HIGH DEFAULT RISK";
+        sub = "Default probability exceeds the 45.0% institutional cutoff.";
+      } else if (baseProb > 25) {
+        decisionType = "review";
+        title = "REFERRAL — SECONDARY REVIEW";
+        sub = "Default probability falls in discretionary risk committee band.";
+      }
+
+      const calculatedData = {
+        prob: baseProb,
+        score: score,
+        loss: `$${Math.round(baseProb * 115).toLocaleString()}`,
+        maxLoan: `$${Math.round((income * 0.45) / 1000) * 1000}`,
+        decision: {
+          title: title,
+          sub: sub,
+          type: decisionType
+        },
+        factors: [
+          {
+            title: `External Bureau Aggregate (${extAvg.toFixed(2)})`,
+            sub: "Synthesized credit bureau consensus metric",
+            impact: extAvg > 0.5 ? `-${((extAvg - 0.5) * 8).toFixed(1)}%` : `+${((0.5 - extAvg) * 9).toFixed(1)}%`,
+            up: extAvg <= 0.5
+          },
+          {
+            title: `Years Employed (${yearsEmployedInput.value} yrs)`,
+            sub: "Tenure index stability indicator",
+            impact: parseFloat(yearsEmployedInput.value) > 4 ? "-2.4%" : "+2.1%",
+            up: parseFloat(yearsEmployedInput.value) <= 4
+          },
+          {
+            title: `Annuity Ratio (${(dti * 100).toFixed(1)}%)`,
+            sub: "Calculated monthly burden relative to reported gross earnings",
+            impact: dti > 0.3 ? `+${(dti * 7).toFixed(1)}%` : "-1.8%",
+            up: dti > 0.3
+          }
+        ]
+      };
+
+      renderResults(calculatedData);
+    }
+
+    // STATE SWITCHER
+    function switchState(state) {
+      stateActive.classList.add('hidden');
+      stateLoading.classList.add('hidden');
+      stateEmpty.classList.add('hidden');
+
+      tabActiveBtn.className = "px-2.5 py-1 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary transition-colors";
+      tabLoadingBtn.className = "px-2.5 py-1 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary transition-colors";
+      tabEmptyBtn.className = "px-2.5 py-1 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary transition-colors";
+
+      if (state === 'active') {
+        stateActive.classList.remove('hidden');
+        tabActiveBtn.className = "px-2.5 py-1 rounded-lg bg-surface-container dark:bg-primary font-bold text-secondary dark:text-secondary-fixed transition-colors";
+      } else if (state === 'loading') {
+        stateLoading.classList.remove('hidden');
+        tabLoadingBtn.className = "px-2.5 py-1 rounded-lg bg-surface-container dark:bg-primary font-bold text-secondary dark:text-secondary-fixed transition-colors";
+      } else if (state === 'empty') {
+        stateEmpty.classList.remove('hidden');
+        tabEmptyBtn.className = "px-2.5 py-1 rounded-lg bg-surface-container dark:bg-primary font-bold text-secondary dark:text-secondary-fixed transition-colors";
+      }
+    }
+
+    tabActiveBtn.addEventListener('click', () => switchState('active'));
+    tabLoadingBtn.addEventListener('click', () => switchState('loading'));
+    tabEmptyBtn.addEventListener('click', () => switchState('empty'));
+
+    // EVENT LISTENERS FOR CONTROLS
+    quickPresetSelect.addEventListener('change', (e) => {
+      loadSampleProfile(e.target.value);
+    });
+
+    document.getElementById('loadSampleBtn').addEventListener('click', () => {
+      loadSampleProfile('low');
+      quickPresetSelect.value = 'low';
+    });
+
+    document.getElementById('resetFieldsBtn').addEventListener('click', () => {
+      document.getElementById('riskAssessmentForm').reset();
+      updateSliderLabels();
+      switchState('empty');
+    });
+
+    document.getElementById('calculateRiskBtn').addEventListener('click', () => {
+      switchState('loading');
+      setTimeout(() => {
+        recalcFromCurrentInputs();
+        switchState('active');
+      }, 700);
+    });
+
+    // DARK MODE TOGGLE LOGIC
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      themeToggleBtn.innerHTML = `<span class="material-symbols-outlined">${isDark ? 'light_mode' : 'dark_mode'}</span>`;
+    });
+
+    // INITIAL SETUP
+    updateSliderLabels();
+  </script>
+</body></html>

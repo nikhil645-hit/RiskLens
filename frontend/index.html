@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RiskLens | Enterprise Credit Default Scoring</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Google Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim as required -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c4c6ce",
+            "surface-container-low": "#f2f4f6",
+            "on-tertiary-fixed-variant": "#004395",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#001a42",
+            "primary": "#000615",
+            "primary-fixed-dim": "#b5c7ea",
+            "inverse-surface": "#2d3133",
+            "surface-bright": "#f7f9fb",
+            "secondary-fixed": "#71f8e4",
+            "tertiary": "#000517",
+            "on-secondary-container": "#006f64",
+            "on-primary-container": "#7587a7",
+            "surface": "#f7f9fb",
+            "on-primary-fixed-variant": "#364764",
+            "on-surface-variant": "#44474d",
+            "surface-dim": "#d8dadc",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#d8e2ff",
+            "secondary": "#006b5f",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#071c36",
+            "tertiary-fixed-dim": "#adc6ff",
+            "inverse-primary": "#b5c7ea",
+            "tertiary-container": "#001d48",
+            "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#005048",
+            "secondary-container": "#6df5e1",
+            "outline": "#75777e",
+            "on-surface": "#191c1e",
+            "surface-container-high": "#e6e8ea",
+            "secondary-fixed-dim": "#4fdbc8",
+            "surface-tint": "#4d5f7d",
+            "on-background": "#191c1e",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#00201c",
+            "surface-container": "#eceef0",
+            "primary-fixed": "#d6e3ff",
+            "inverse-on-surface": "#eff1f3",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "surface-variant": "#e0e3e5",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-container": "#3c83f7",
+            "background": "#f7f9fb",
+            "primary-container": "#0b1f3a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "0.75rem",
+            "gutter-sm": "1rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "stat-lg": [
+              "Inter"
+            ],
+            "headline-lg-mobile": [
+              "Inter"
+            ],
+            "headline-md": [
+              "Inter"
+            ],
+            "body-sm-medium": [
+              "Inter"
+            ],
+            "stat-xl": [
+              "Inter"
+            ],
+            "display-lg-mobile": [
+              "Inter"
+            ],
+            "label-caps": [
+              "Inter"
+            ],
+            "headline-sm": [
+              "Inter"
+            ],
+            "body-lg": [
+              "Inter"
+            ],
+            "body-base": [
+              "Inter"
+            ],
+            "table-header": [
+              "Inter"
+            ],
+            "body-sm": [
+              "Inter"
+            ],
+            "body-bold": [
+              "Inter"
+            ],
+            "headline-lg": [
+              "Inter"
+            ],
+            "display-lg": [
+              "Inter"
+            ]
+          },
+          "fontSize": {
+            "stat-lg": [
+              "28px",
+              {
+                "lineHeight": "36px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ],
+            "headline-lg-mobile": [
+              "26px",
+              {
+                "lineHeight": "34px",
+                "letterSpacing": "-0.015em",
+                "fontWeight": "700"
+              }
+            ],
+            "headline-md": [
+              "24px",
+              {
+                "lineHeight": "32px",
+                "letterSpacing": "-0.015em",
+                "fontWeight": "700"
+              }
+            ],
+            "body-sm-medium": [
+              "14px",
+              {
+                "lineHeight": "20px",
+                "fontWeight": "500"
+              }
+            ],
+            "stat-xl": [
+              "36px",
+              {
+                "lineHeight": "44px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ],
+            "display-lg-mobile": [
+              "32px",
+              {
+                "lineHeight": "40px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "800"
+              }
+            ],
+            "label-caps": [
+              "12px",
+              {
+                "lineHeight": "16px",
+                "letterSpacing": "0.06em",
+                "fontWeight": "700"
+              }
+            ],
+            "headline-sm": [
+              "20px",
+              {
+                "lineHeight": "28px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "600"
+              }
+            ],
+            "body-lg": [
+              "18px",
+              {
+                "lineHeight": "28px",
+                "fontWeight": "400"
+              }
+            ],
+            "body-base": [
+              "16px",
+              {
+                "lineHeight": "24px",
+                "fontWeight": "400"
+              }
+            ],
+            "table-header": [
+              "12px",
+              {
+                "lineHeight": "16px",
+                "letterSpacing": "0.05em",
+                "fontWeight": "600"
+              }
+            ],
+            "body-sm": [
+              "14px",
+              {
+                "lineHeight": "20px",
+                "fontWeight": "400"
+              }
+            ],
+            "body-bold": [
+              "16px",
+              {
+                "lineHeight": "24px",
+                "fontWeight": "600"
+              }
+            ],
+            "headline-lg": [
+              "32px",
+              {
+                "lineHeight": "40px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ],
+            "display-lg": [
+              "48px",
+              {
+                "lineHeight": "56px",
+                "letterSpacing": "-0.025em",
+                "fontWeight": "800"
+              }
+            ]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background dark:bg-primary text-on-surface dark:text-inverse-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container min-h-screen flex flex-col font-body-base text-body-base">
+<!-- TopNavBar (JSON Anchor Executed Exactly) -->
+<header class="bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none border-b border-outline-variant dark:border-outline">
+<div class="w-full px-margin flex items-center justify-between h-16 max-w-[1440px] mx-auto">
+<!-- Brand & Title with Teal Accent -->
+<div class="flex items-center gap-space-lg">
+<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="#">
+<span class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary-container dark:bg-surface-container text-secondary-fixed border border-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield">shield</span>
+</span>
+<span>RiskLens</span>
+<span class="inline-block w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<!-- Desktop Navigation Links (Home is active) -->
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#risk-scorer">Risk Scorer</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#threshold-lab">Threshold Lab</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#model-insights">Model Insights</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#about">About</a>
+</nav>
+</div>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-space-md">
+<!-- Model v2.4 Badge -->
+<div class="hidden xl:flex items-center gap-space-xs px-2.5 py-1 rounded-full bg-surface-container dark:bg-tertiary-container text-on-surface-variant dark:text-inverse-primary text-[12px] font-body-sm-medium">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span>Model v2.4 Active</span>
+</div>
+<!-- GitHub Repository Badge -->
+<a class="p-2 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:bg-surface-container dark:hover:bg-primary transition-colors flex items-center justify-center" href="https://github.com/risklens-ml" rel="noopener noreferrer" target="_blank" title="View GitHub Source">
+<svg aria-hidden="true" class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path>
+</svg>
+</a>
+<!-- Dark Mode Toggle Button -->
+<button aria-label="Toggle Dark Mode" class="p-2 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:bg-surface-container dark:hover:bg-primary transition-colors flex items-center justify-center" id="theme-toggle" type="button">
+<span class="material-symbols-outlined dark:hidden" data-icon="dark_mode">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:inline-block text-secondary-fixed" data-icon="light_mode">light_mode</span>
+</button>
+<!-- Primary CTA: Try Scorer -->
+<a class="bg-primary-container dark:bg-secondary text-on-primary dark:text-on-secondary px-4 py-2 rounded-lg font-body-bold text-body-bold hover:bg-opacity-90 transition-all shadow-sm flex items-center gap-space-xs" href="#risk-scorer">
+<span>Try Scorer</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Hero Canvas -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-margin py-space-xl">
+<!-- Hero Section: Asymmetric Dual-Pane Layout -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center pt-space-md pb-space-xl">
+<!-- Left Column: Copy & Value Proposition (7 cols) -->
+<div class="lg:col-span-7 flex flex-col items-start gap-space-md">
+<!-- Trust Badge Tag -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container dark:bg-tertiary-container border border-outline-variant dark:border-outline text-on-surface-variant dark:text-inverse-primary">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<span class="font-label-caps text-label-caps tracking-wider">Probabilistic Underwriting Engine • Model v2.4 in Production</span>
+</div>
+<!-- Headline -->
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary dark:text-surface-bright tracking-tight leading-tight">
+          Know the risk <br class="hidden sm:block"/>before you lend.
+        </h1>
+<!-- Subtitle -->
+<p class="font-body-lg text-body-lg text-on-surface-variant dark:text-inverse-primary max-w-2xl leading-relaxed">
+          Empowering credit underwriters and quantitative risk teams with real-time default probability scoring, explainable Shapley-attribution factors, and optimal financial threshold tuning.
+        </p>
+<!-- CTA Buttons -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-sm w-full sm:w-auto">
+<a class="w-full sm:w-auto bg-primary-container dark:bg-secondary text-on-primary dark:text-on-secondary px-6 py-3.5 rounded-lg font-body-bold text-body-bold hover:bg-opacity-95 dark:hover:bg-opacity-90 transition-all flex items-center justify-center gap-2 shadow-md" href="#risk-scorer">
+<span>Try the scorer</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto bg-surface-container-lowest dark:bg-primary-container border border-outline-variant dark:border-outline text-on-surface dark:text-inverse-primary px-6 py-3.5 rounded-lg font-body-bold text-body-bold hover:bg-surface-container dark:hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-sm" href="#methodology">
+<span>Explore Methodology</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+<!-- Institutional Trust Micro-badges -->
+<div class="pt-space-md flex flex-wrap items-center gap-6 text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm border-t border-outline-variant/40 dark:border-outline/40 w-full mt-space-sm">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="verified_user">verified_user</span>
+            FCRA &amp; ECOA Compliant
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="speed">speed</span>
+            &lt;40ms Inference Time
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="analytics">analytics</span>
+            Monotonic Calibration
+          </span>
+</div>
+</div>
+<!-- Right Column: Interactive Preview Graphic / Live Loan Risk Preview Card (5 cols) -->
+<div class="lg:col-span-5 relative mt-space-lg lg:mt-0">
+<!-- Ambient decorative blur layer -->
+<div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-secondary/20 to-primary-container/20 dark:from-secondary-fixed/10 dark:to-tertiary-container/40 blur-xl opacity-75"></div>
+<!-- Surface Card: Marcus Vance Simulation -->
+<div class="relative bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline shadow-xl overflow-hidden p-space-lg">
+<!-- Card Header & Status -->
+<div class="flex items-start justify-between border-b border-surface-container dark:border-outline/30 pb-space-md">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-body-bold text-body-bold text-primary dark:text-surface-bright">Marcus Vance</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-label-caps bg-surface-container dark:bg-tertiary-container text-on-surface-variant dark:text-inverse-primary">APP-89421</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-0.5">$45,000 Requested • Unsecured Term</p>
+</div>
+<!-- Semantic Risk Badge: Approve / Low Risk -->
+<div class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 bg-[#D1FAE5] dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
+<span class="font-label-caps text-[11px] font-bold text-[#065F46] dark:text-emerald-300">LOW RISK / APPROVED</span>
+</div>
+</div>
+<!-- Probability Score Dial / Metric Center -->
+<div class="my-space-md p-space-md rounded-lg bg-surface-container-low dark:bg-primary/50 border border-surface-container dark:border-outline/20 flex items-center justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant uppercase">Calibrated Default Probability</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-stat-xl text-stat-xl text-primary dark:text-surface-bright tracking-tight">12.4%</span>
+<span class="font-body-sm text-body-sm text-secondary dark:text-secondary-fixed">Cutoff is 24.0%</span>
+</div>
+</div>
+<!-- Visual Circular Mini-Gauge Meter -->
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-variant dark:text-outline/40" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-secondary dark:text-secondary-fixed" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="12.4, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute font-table-header text-table-header text-primary dark:text-surface-bright">P<sub>def</sub></span>
+</div>
+</div>
+<!-- Predictive Feature Factor Decomposition (SHAP style preview) -->
+<div class="space-y-space-sm pt-1">
+<div class="flex justify-between items-center text-[12px] font-label-caps text-on-surface-variant dark:text-outline-variant">
+<span>KEY PREDICTIVE FACTORS</span>
+<span>ATTRIBUTION</span>
+</div>
+<!-- Factor 1: Mitigating (Emerald) -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm-medium text-body-sm-medium">
+<span class="text-on-surface dark:text-inverse-primary">Debt-to-Income: 18.2%</span>
+<span class="text-[#065F46] dark:text-emerald-400 font-bold">-0.142 (Protective)</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container dark:bg-primary rounded-full overflow-hidden flex">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 72%;"></div>
+</div>
+</div>
+<!-- Factor 2: Mitigating (Emerald) -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm-medium text-body-sm-medium">
+<span class="text-on-surface dark:text-inverse-primary">Bureau External Rating: Tier 1</span>
+<span class="text-[#065F46] dark:text-emerald-400 font-bold">-0.098 (Protective)</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container dark:bg-primary rounded-full overflow-hidden flex">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+<!-- Factor 3: Elevating (Adverse) -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm-medium text-body-sm-medium">
+<span class="text-on-surface dark:text-inverse-primary">Tenure at Employer: 11 Mos</span>
+<span class="text-[#ba1a1a] dark:text-error-container font-bold">+0.041 (Elevated)</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container dark:bg-primary rounded-full overflow-hidden flex">
+<div class="h-full bg-[#EF4444] rounded-full" style="width: 28%;"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Footer Micro Action inside Card -->
+<div class="mt-space-md pt-space-sm border-t border-surface-container dark:border-outline/20 flex items-center justify-between text-body-sm text-body-sm">
+<span class="text-on-surface-variant dark:text-outline-variant text-[12px]">Audited 12s ago by Ensemble GBDT</span>
+<button class="text-secondary dark:text-secondary-fixed font-body-bold hover:underline flex items-center gap-1 text-[13px]" type="button">
+              Full Dossier
+              <span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 3 Stat Metric Cards Section -->
+<section class="py-space-lg">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Metric Card 1 -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-space-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant uppercase">Model Discriminatory Power</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#D1FAE5] dark:bg-emerald-950/80 text-[#065F46] dark:text-emerald-300">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_up">trending_up</span>
+              +3.2% vs baseline
+            </span>
+</div>
+<div class="font-stat-xl text-stat-xl text-primary dark:text-surface-bright tracking-tight">0.784 ROC-AUC</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary mt-space-xs">
+            Cross-validated on out-of-time test holdouts with balanced recall calibrations.
+          </p>
+</div>
+<!-- Metric Card 2 -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-space-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant uppercase">Training Sample Volume</span>
+<span class="p-1 rounded bg-surface-container dark:bg-tertiary-container text-secondary">
+<span class="material-symbols-outlined text-[16px]" data-icon="database">database</span>
+</span>
+</div>
+<div class="font-stat-xl text-stat-xl text-primary dark:text-surface-bright tracking-tight">307,511 Records</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary mt-space-xs">
+            Trained on standardized Home Credit institution records with zero survivorship bias.
+          </p>
+</div>
+<!-- Metric Card 3 -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-space-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant uppercase">Algorithmic Signals</span>
+<span class="p-1 rounded bg-surface-container dark:bg-tertiary-container text-secondary">
+<span class="material-symbols-outlined text-[16px]" data-icon="hub">hub</span>
+</span>
+</div>
+<div class="font-stat-xl text-stat-xl text-primary dark:text-surface-bright tracking-tight">122 Engineered Features</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary mt-space-xs">
+            Covering debt-to-income, bureau records, inquiry velocity, and behavioral repayment histories.
+          </p>
+</div>
+</div>
+</section>
+<!-- 3-Step 'How It Works' Section -->
+<section class="py-space-xl border-t border-outline-variant/50 dark:border-outline/40">
+<div class="text-center max-w-3xl mx-auto mb-space-xl">
+<span class="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed tracking-widest uppercase">System Methodology</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary dark:text-surface-bright mt-2">
+          Transparent ML Credit Evaluation in Three Clear Steps
+        </h2>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-inverse-primary mt-space-xs">
+          RiskLens rejects black-box scoring by uniting strict parametric underwriting standards with state-of-the-art tree-based feature extraction.
+        </p>
+</div>
+<!-- Steps Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter relative">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl p-space-lg border border-outline-variant dark:border-outline relative flex flex-col justify-between shadow-sm">
+<div>
+<div class="w-12 h-12 rounded-lg bg-surface-container dark:bg-tertiary-container text-secondary dark:text-secondary-fixed flex items-center justify-center mb-space-md border border-outline-variant/30">
+<span class="material-symbols-outlined text-[24px]" data-icon="edit_note">edit_note</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-caps text-label-caps text-secondary font-bold">01</span>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Enter details</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary mt-space-xs leading-relaxed">
+              Ingest applicant financials, income streams, loan amount, employer stability duration, and external multi-bureau rating scorecards.
+            </p>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-surface-container dark:border-outline/20 text-[12px] font-body-sm-medium text-on-surface-variant dark:text-outline-variant">
+            Input Sanitization &amp; Normalization
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl p-space-lg border border-outline-variant dark:border-outline relative flex flex-col justify-between shadow-sm">
+<div>
+<div class="w-12 h-12 rounded-lg bg-surface-container dark:bg-tertiary-container text-secondary dark:text-secondary-fixed flex items-center justify-center mb-space-md border border-outline-variant/30">
+<span class="material-symbols-outlined text-[24px]" data-icon="calculate">calculate</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-caps text-label-caps text-secondary font-bold">02</span>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Get probability</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary mt-space-xs leading-relaxed">
+              Real-time inference calculates true calibrated probability of default through monotonic gradient boosting decision trees and logistic baselines.
+            </p>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-surface-container dark:border-outline/20 text-[12px] font-body-sm-medium text-on-surface-variant dark:text-outline-variant">
+            Isotonic Probability Calibration
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl p-space-lg border border-outline-variant dark:border-outline relative flex flex-col justify-between shadow-sm">
+<div>
+<div class="w-12 h-12 rounded-lg bg-surface-container dark:bg-tertiary-container text-secondary dark:text-secondary-fixed flex items-center justify-center mb-space-md border border-outline-variant/30">
+<span class="material-symbols-outlined text-[24px]" data-icon="fact_check">fact_check</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-caps text-label-caps text-secondary font-bold">03</span>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">See reasons</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary mt-space-xs leading-relaxed">
+              Inspect exact odds-ratio breakdowns and Shapley attributions detailing specific micro-factors elevating or suppressing applicant credit risk.
+            </p>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-surface-container dark:border-outline/20 text-[12px] font-body-sm-medium text-on-surface-variant dark:text-outline-variant">
+            Adverse Action Reason Codes Generated
+          </div>
+</div>
+</div>
+</section>
+<!-- Feature Highlights / Enterprise Benefits Bento Grid -->
+<section class="py-space-xl border-t border-outline-variant/50 dark:border-outline/40">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
+<div>
+<span class="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed uppercase tracking-wider">Enterprise Architecture</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary dark:text-surface-bright mt-1">
+            Engineered for Credit Committees &amp; Regulated Lenders
+          </h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary max-w-md">
+          Standardized compliance pipelines designed specifically to satisfy Dodd-Frank, SR 11-7 model risk management guidance, and Fair Lending oversight.
+        </p>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Bento Item 1: Cost-Sensitive Cutoff Tuning (7 cols) -->
+<div class="md:col-span-7 bg-surface-container-lowest dark:bg-primary-container rounded-xl p-space-lg border border-outline-variant dark:border-outline shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="p-2 rounded-lg bg-surface-container dark:bg-tertiary-container text-secondary">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">THRESHOLD OPTIMIZER</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary dark:text-surface-bright">Cost-Sensitive Cutoff Tuning</h3>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-inverse-primary mt-space-xs max-w-xl">
+              Traditional models assume symmetric error costs. RiskLens allows chief risk officers to specify custom asymmetrical ratios (e.g., False Negative default loss $12,000 vs False Positive foregone interest profit $1,400) to compute mathematically optimal approval thresholds.
+            </p>
+</div>
+<!-- Interactive Threshold Slider Simulation Mockup -->
+<div class="mt-space-lg p-space-md rounded-lg bg-surface-container-low dark:bg-primary/60 border border-surface-container dark:border-outline/20">
+<div class="flex justify-between items-center mb-2">
+<span class="font-body-sm-medium text-body-sm-medium text-primary dark:text-surface-bright">Simulated Operating Threshold</span>
+<span class="font-table-header text-table-header px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container">Cutoff: 0.240</span>
+</div>
+<input class="w-full accent-secondary cursor-pointer h-2 bg-surface-container rounded-lg" disabled="" max="60" min="5" type="range" value="24"/>
+<div class="flex justify-between items-center text-[11px] font-body-sm text-on-surface-variant dark:text-outline-variant mt-2">
+<span>Conservative (High Recall)</span>
+<span>Balanced Economic Profit</span>
+<span>Aggressive (Volume Growth)</span>
+</div>
+</div>
+</div>
+<!-- Bento Item 2: Explainable AI & Fair Lending (5 cols) -->
+<div class="md:col-span-5 bg-surface-container-lowest dark:bg-primary-container rounded-xl p-space-lg border border-outline-variant dark:border-outline shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="p-2 rounded-lg bg-surface-container dark:bg-tertiary-container text-secondary">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">GOVERNANCE READY</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary dark:text-surface-bright">Explainable AI &amp; Fair Lending</h3>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-inverse-primary mt-space-xs">
+              Every adverse decision outputs automated consumer-facing reason codes. Our model framework prohibits disparate impact through strict feature orthogonalization and proxy-variable masking.
+            </p>
+</div>
+<div class="mt-space-lg space-y-2">
+<div class="p-2.5 rounded-lg bg-surface-container-low dark:bg-primary/60 flex items-center justify-between text-body-sm">
+<span class="text-on-surface dark:text-inverse-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="check_circle">check_circle</span>
+                Model Card SR 11-7 Automated Generation
+              </span>
+<span class="text-[11px] font-bold text-secondary">READY</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low dark:bg-primary/60 flex items-center justify-between text-body-sm">
+<span class="text-on-surface dark:text-inverse-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="check_circle">check_circle</span>
+                Disparate Impact Ratio &gt; 0.94
+              </span>
+<span class="text-[11px] font-bold text-secondary">PASS</span>
+</div>
+</div>
+</div>
+<!-- Bento Item 3: Instant Pre-Screening Latency (12 cols) -->
+<div class="md:col-span-12 bg-surface-container-lowest dark:bg-primary-container rounded-xl p-space-lg border border-outline-variant dark:border-outline shadow-sm flex flex-col lg:flex-row items-center justify-between gap-space-lg">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-space-xs">
+<span class="material-symbols-outlined text-secondary" data-icon="bolt">bolt</span>
+<span class="font-label-caps text-label-caps text-secondary uppercase">HIGH THROUGHPUT SERVING</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary dark:text-surface-bright">Instant Pre-Screening Latency (&lt;40ms)</h3>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-inverse-primary mt-1 max-w-3xl">
+              Optimized C-bindings and quantized inference runtime allow loan origination systems (LOS) to call our probability API synchronously at checkout or within merchant POS credit platforms without dropping consumer conversion rates.
+            </p>
+</div>
+<div class="flex items-center gap-space-lg flex-shrink-0">
+<div class="text-center px-4 py-2 border-r border-outline-variant dark:border-outline/30">
+<div class="font-stat-lg text-stat-lg text-primary dark:text-surface-bright">38ms</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">P99 Latency</div>
+</div>
+<div class="text-center px-4 py-2">
+<div class="font-stat-lg text-stat-lg text-primary dark:text-surface-bright">99.99%</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">SLA Uptime</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Educational Callout / Model Disclaimer Banner -->
+<section class="my-space-xl p-space-lg rounded-xl bg-surface-container dark:bg-tertiary-container/50 border border-outline-variant dark:border-outline flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-secondary text-[32px]" data-icon="info">info</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Academic &amp; Institutional Validation Project</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-inverse-primary">
+            Educational project. Not for real lending decisions. Designed to demonstrate probabilistic calibration, financial cost functions, and machine learning explainability.
+          </p>
+</div>
+</div>
+<a class="flex-shrink-0 px-4 py-2 bg-primary-container dark:bg-surface-container text-on-primary dark:text-on-surface rounded-lg font-body-bold text-body-bold hover:bg-opacity-90 transition-all flex items-center gap-2" href="https://github.com/risklens-ml" rel="noopener noreferrer" target="_blank">
+<span>View Model Card on GitHub</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_outward">arrow_outward</span>
+</a>
+</section>
+</main>
+<!-- Footer (JSON Shared Component Executed Exactly) -->
+<footer class="bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width bottom border-t border-outline-variant dark:border-outline">
+<div class="w-full px-margin py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left max-w-[1440px] mx-auto">
+<!-- Brand & Copyright -->
+<div class="flex flex-col items-center md:items-start gap-1">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-2">
+<span>RiskLens</span>
+<span class="text-xs px-2 py-0.5 rounded bg-surface-container dark:bg-primary text-secondary">v2.4 Production</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant max-w-xl">
+          © 2025 RiskLens Analytics Ltd. High-Assurance Probabilistic Credit Underwriting. All rights reserved. For institutional risk evaluation and educational simulation only.
+        </p>
+</div>
+<!-- Links & Repository Anchor -->
+<div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2 font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors flex items-center gap-1 font-body-bold" href="https://github.com/risklens-ml" rel="noopener noreferrer" target="_blank">
+<span>github.com/risklens-ml</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="open_in_new">open_in_new</span>
+</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#model-card">Model Card v2.4</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#fair-lending">Fair Lending Governance</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#api-reference">API Reference</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#audit-log">Audit Log</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#system-status">System Status</a>
+</div>
+</div>
+</footer>
+<!-- Light/Dark Mode JavaScript Toggle Engine -->
+<script>
+    (function initTheme() {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const rootHtml = document.documentElement;
+
+      // Determine initial theme: check localStorage or system preference
+      const savedTheme = localStorage.getItem('risklens-theme');
+      if (savedTheme === 'dark') {
+        rootHtml.classList.add('dark');
+      } else if (savedTheme === 'light') {
+        rootHtml.classList.remove('dark');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        rootHtml.classList.add('dark');
+      }
+
+      // Toggle click handler
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const isDark = rootHtml.classList.toggle('dark');
+          localStorage.setItem('risklens-theme', isDark ? 'dark' : 'light');
+        });
+      }
+    })();
+  </script>
+</body></html>
