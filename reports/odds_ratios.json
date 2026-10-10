@@ -1,0 +1,106 @@
+{
+    "raising_risk": [
+        {
+            "feature": "AMT_CREDIT",
+            "coefficient": 0.8902296062473803,
+            "odds_ratio": 2.43568883646474
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Realtor",
+            "coefficient": 0.8716089871529741,
+            "odds_ratio": 2.390754453745375
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Legal Services",
+            "coefficient": 0.7933217672028494,
+            "odds_ratio": 2.2107277660002573
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Transport: type 3",
+            "coefficient": 0.5355321851632455,
+            "odds_ratio": 1.7083571627112877
+        },
+        {
+            "feature": "BASEMENTAREA_MEDI",
+            "coefficient": 0.4650108526622724,
+            "odds_ratio": 1.5920314665731803
+        },
+        {
+            "feature": "NAME_INCOME_TYPE_infrequent_sklearn",
+            "coefficient": 0.3903490414538188,
+            "odds_ratio": 1.4774964113869087
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Advertising",
+            "coefficient": 0.376609716243023,
+            "odds_ratio": 1.4573354240206287
+        },
+        {
+            "feature": "YEARS_BUILD_AVG",
+            "coefficient": 0.3534039549921844,
+            "odds_ratio": 1.4239062212994908
+        },
+        {
+            "feature": "LIVINGAREA_AVG",
+            "coefficient": 0.3430117602619268,
+            "odds_ratio": 1.4091853342176373
+        },
+        {
+            "feature": "NAME_EDUCATION_TYPE_Lower secondary",
+            "coefficient": 0.3281163651022047,
+            "odds_ratio": 1.388350518440037
+        }
+    ],
+    "lowering_risk": [
+        {
+            "feature": "AMT_GOODS_PRICE",
+            "coefficient": -0.9413293408390527,
+            "odds_ratio": 0.39010890281963573
+        },
+        {
+            "feature": "NAME_EDUCATION_TYPE_Academic degree",
+            "coefficient": -0.669036206757491,
+            "odds_ratio": 0.5122019967947053
+        },
+        {
+            "feature": "NAME_INCOME_TYPE_Pensioner",
+            "coefficient": -0.619249476872157,
+            "odds_ratio": 0.5383483288825013
+        },
+        {
+            "feature": "EXT_SOURCE_3",
+            "coefficient": -0.4736856119770352,
+            "odds_ratio": 0.6227029921595821
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Military",
+            "coefficient": -0.46600156597442216,
+            "odds_ratio": 0.6275063013877537
+        },
+        {
+            "feature": "BASEMENTAREA_AVG",
+            "coefficient": -0.45527541645732233,
+            "odds_ratio": 0.634273254597111
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Trade: type 6",
+            "coefficient": -0.4484709159637765,
+            "odds_ratio": 0.6386038844480958
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_Trade: type 2",
+            "coefficient": -0.441545481661562,
+            "odds_ratio": 0.6430418433537638
+        },
+        {
+            "feature": "OCCUPATION_TYPE_IT staff",
+            "coefficient": -0.424146083819175,
+            "odds_ratio": 0.6543282881513506
+        },
+        {
+            "feature": "ORGANIZATION_TYPE_infrequent_sklearn",
+            "coefficient": -0.3979714426818075,
+            "odds_ratio": 0.6716812088021312
+        }
+    ]
+}
