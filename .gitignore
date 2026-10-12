@@ -14,3 +14,5 @@ workflow.*.json
 !workflow.json
 
 .vercel
+.agents/
+design/extracted/

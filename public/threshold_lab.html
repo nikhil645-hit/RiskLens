@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RiskLens | Decision Threshold &amp; Cost Optimization Lab</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c4c6ce",
+            "surface-container-low": "#f2f4f6",
+            "on-tertiary-fixed-variant": "#004395",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#001a42",
+            "primary": "#000615",
+            "primary-fixed-dim": "#b5c7ea",
+            "inverse-surface": "#2d3133",
+            "surface-bright": "#f7f9fb",
+            "secondary-fixed": "#71f8e4",
+            "tertiary": "#000517",
+            "on-secondary-container": "#006f64",
+            "on-primary-container": "#7587a7",
+            "surface": "#f7f9fb",
+            "on-primary-fixed-variant": "#364764",
+            "on-surface-variant": "#44474d",
+            "surface-dim": "#d8dadc",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#d8e2ff",
+            "secondary": "#006b5f",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#071c36",
+            "tertiary-fixed-dim": "#adc6ff",
+            "inverse-primary": "#b5c7ea",
+            "tertiary-container": "#001d48",
+            "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#005048",
+            "secondary-container": "#6df5e1",
+            "outline": "#75777e",
+            "on-surface": "#191c1e",
+            "surface-container-high": "#e6e8ea",
+            "secondary-fixed-dim": "#4fdbc8",
+            "surface-tint": "#4d5f7d",
+            "on-background": "#191c1e",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#00201c",
+            "surface-container": "#eceef0",
+            "primary-fixed": "#d6e3ff",
+            "inverse-on-surface": "#eff1f3",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "surface-variant": "#e0e3e5",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-container": "#3c83f7",
+            "background": "#f7f9fb",
+            "primary-container": "#0b1f3a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "0.75rem",
+            "gutter-sm": "1rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "stat-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-sm-medium": ["Inter"],
+            "stat-xl": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "label-caps": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-base": ["Inter"],
+            "table-header": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-bold": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-lg": ["Inter"]
+          },
+          "fontSize": {
+            "stat-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-sm-medium": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "stat-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-bold": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.025em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Tabular figures for quantitative fintech accuracy */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="bg-background dark:bg-primary text-on-surface dark:text-inverse-on-surface min-h-screen flex flex-col font-body-base text-body-base antialiased transition-colors duration-200">
+<!-- ============================================================== -->
+<!-- TOP NAVIGATION BAR (Exact Shared Component Alignment)         -->
+<!-- ============================================================== -->
+<header class="bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none border-b border-outline-variant dark:border-outline">
+<div class="w-full px-margin flex items-center justify-between h-16">
+<!-- Brand & Product Title -->
+<div class="flex items-center gap-space-lg">
+<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="index.html">
+<span class="material-symbols-outlined text-secondary text-28" data-icon="shield_with_heart" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span>RiskLens</span>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-6 ml-4">
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="index.html">Home</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="risk_scorer.html">Risk Scorer</a>
+<!-- Active Tab: Threshold Lab -->
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="threshold_lab.html">Threshold Lab</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="model_insights.html">Model Insights</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="about.html">About</a>
+</nav>
+</div>
+<!-- Trailing Controls & Institutional Status -->
+<div class="flex items-center gap-space-md">
+<!-- Model Version Badge -->
+<div class="hidden lg:flex items-center gap-space-xs bg-surface-container-low dark:bg-surface-container-highest px-3 py-1.5 rounded-full border border-outline-variant dark:border-outline">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-inverse-on-surface">Model Active</span>
+</div>
+<!-- Apply Policy Button -->
+<button class="bg-primary dark:bg-secondary text-on-primary dark:text-primary font-body-bold text-body-sm px-4 py-2 rounded-lg hover:bg-primary-container dark:hover:bg-secondary-fixed active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm" id="applyPolicyBtn">
+<span class="material-symbols-outlined text-[18px]" data-icon="rocket_launch">rocket_launch</span>
+<span>Apply Policy</span>
+</button>
+<!-- Utility Icon Actions -->
+<div class="flex items-center gap-1 border-l border-outline-variant dark:border-outline pl-2">
+<button aria-label="Toggle Dark Mode" class="p-2 text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright hover:bg-surface-container dark:hover:bg-primary rounded-lg transition-colors" id="themeToggleBtn">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button aria-label="Notifications" class="p-2 text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright hover:bg-surface-container dark:hover:bg-primary rounded-lg transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full ring-2 ring-surface-container-lowest dark:ring-primary-container"></span>
+</button>
+</div>
+<!-- Senior Underwriter Profile -->
+<div class="hidden sm:flex items-center gap-2 pl-1">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A distinguished senior risk underwriter wearing refined business attire in a sleek architectural glass office with subdued ambient lighting, soft corporate background reflecting institutional confidence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZxVLH9-18Q1qAyNTteOzL_v17UP6067WjHG8lDOUc0TqejeFUOS_3QH8i5eLGJsEEknNcGT2u5ABkVtlqSzvmlEB82vvfrxfS1kGyPsDw_NxZTzMo39ZflFs7S8evUgaI2wGTPfYRhs4TSP3AUiXM5sbfz5_TtHCsY3Xe1yiNMHYDEqBM2TLRPfdaR59JPlAPmKu9PF_Vt1hCBfBeP9vjVEeuh7L4UjVswhuzj8UIXagF9HJq2-zRNw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- ============================================================== -->
+<!-- MAIN CONTENT CANVAS                                           -->
+<!-- ============================================================== -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-margin py-8 space-y-8">
+<!-- PAGE HEADER -->
+<section class="space-y-2">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed bg-secondary-container/20 dark:bg-secondary/20 px-2.5 py-0.5 rounded-full border border-secondary/30">QUANTITATIVE RISK ENGINE</span>
+<span class="text-outline text-xs">|</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">LOSS MATRIX SIMULATOR</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-surface-bright tracking-tight mt-1">
+            Decision Threshold &amp; Cost Optimization Lab
+          </h1>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-outline-variant max-w-4xl mt-1">
+            Calibrate classification cutoffs based on institutional asymmetric loss matrices: Cost of False Positive vs False Negative.
+          </p>
+</div>
+<!-- Quick Metrics Pill Banner -->
+<div class="flex items-center gap-3 bg-surface-container-lowest dark:bg-primary-container p-2 rounded-xl border border-outline-variant/60 shadow-sm">
+<div class="px-3 py-1 text-right border-r border-outline-variant/40">
+<div class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">PORTFOLIO BASE N</div>
+<div class="font-headline-sm text-headline-sm text-primary dark:text-inverse-primary tabular-nums">307,511</div>
+</div>
+<div class="px-3 py-1 text-right">
+<div class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">AUC-ROC SCORE</div>
+<div class="font-headline-sm text-headline-sm text-secondary dark:text-secondary-fixed tabular-nums">0.894</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================== -->
+<!-- INTERACTIVE CALIBRATION CONTROLS CARD                         -->
+<!-- ============================================================== -->
+<section class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/80 dark:border-outline p-space-lg shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-surface-container-high dark:border-outline/40">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="tune">tune</span>
+            Asymmetric Loss Ratio &amp; Classification Boundary
+          </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-0.5">
+            Adjust underwriting stringency to minimize enterprise expected dollar loss.
+          </p>
+</div>
+<!-- Quick Presets Filter Pills -->
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant mr-1">PRESET MATRICES:</span>
+<button class="preset-btn px-3 py-1.5 rounded-lg border text-body-sm-medium font-body-sm-medium transition-all bg-secondary-container text-on-secondary-container dark:bg-secondary dark:text-on-secondary border-secondary" data-ratio="5" data-threshold="0.228">
+            Retail Banking (5:1)
+          </button>
+<button class="preset-btn px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant dark:text-outline-variant dark:border-outline hover:border-secondary hover:text-secondary text-body-sm-medium font-body-sm-medium transition-all" data-ratio="2" data-threshold="0.380">
+            Aggressive Growth (2:1)
+          </button>
+<button class="preset-btn px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant dark:text-outline-variant dark:border-outline hover:border-secondary hover:text-secondary text-body-sm-medium font-body-sm-medium transition-all" data-ratio="10" data-threshold="0.165">
+            Conservative Institutional (10:1)
+          </button>
+<button class="preset-btn px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant dark:text-outline-variant dark:border-outline hover:border-secondary hover:text-secondary text-body-sm-medium font-body-sm-medium transition-all" data-ratio="15" data-threshold="0.112">
+            High-Risk Subprime (15:1)
+          </button>
+</div>
+</div>
+<!-- Sliders Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
+<!-- Slider 1: Cost Ratio -->
+<div class="space-y-3">
+<div class="flex justify-between items-baseline">
+<label class="font-body-sm-medium text-body-sm-medium text-primary dark:text-surface-bright flex items-center gap-1.5" for="costRatioSlider">
+<span>Cost of approving a defaulter vs rejecting a good customer</span>
+<span class="material-symbols-outlined text-outline text-base cursor-help" data-icon="help_outline" title="Cost of False Negative relative to False Positive. Defaulters typically cost 5x to 15x more in uncollected principal than lost interest from rejecting a safe applicant.">help_outline</span>
+</label>
+<span class="font-body-bold text-body-bold text-secondary dark:text-secondary-fixed bg-surface-container-low dark:bg-tertiary-container px-2.5 py-0.5 rounded border border-outline-variant/40 tabular-nums" id="costRatioDisplay">5 : 1</span>
+</div>
+<div class="relative pt-1">
+<input class="w-full h-2 bg-surface-container-high rounded-full appearance-none cursor-pointer accent-secondary focus:outline-none" id="costRatioSlider" max="20" min="1" step="1" type="range" value="5"/>
+<div class="flex justify-between font-label-caps text-label-caps text-outline mt-2">
+<span>1:1 (Symmetric)</span>
+<span>5:1</span>
+<span>10:1</span>
+<span>15:1</span>
+<span>20:1 (Ultra Severe)</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+            Each unrecovered default (FN) costs <span class="font-body-bold text-body-bold text-error" id="costMultiplierText">5x</span> the friction of a wrongly declined creditworthy borrower (FP).
+          </p>
+</div>
+<!-- Slider 2: Probability Cutoff Threshold -->
+<div class="space-y-3">
+<div class="flex justify-between items-baseline">
+<label class="font-body-sm-medium text-body-sm-medium text-primary dark:text-surface-bright flex items-center gap-1.5" for="thresholdSlider">
+<span>Probability Cutoff Threshold (τ)</span>
+<span class="material-symbols-outlined text-outline text-base cursor-help" data-icon="tune" title="Loans with predicted default risk exceeding this cutoff threshold are rejected.">tune</span>
+</label>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed bg-secondary/10 px-2 py-0.5 rounded">Optimal: 0.228</span>
+<span class="font-body-bold text-body-bold text-primary dark:text-inverse-primary bg-surface-container-low dark:bg-tertiary-container px-2.5 py-0.5 rounded border border-outline-variant/40 tabular-nums" id="thresholdDisplay">0.230</span>
+</div>
+</div>
+<div class="relative pt-1">
+<input class="w-full h-2 bg-surface-container-high rounded-full appearance-none cursor-pointer accent-secondary focus:outline-none" id="thresholdSlider" max="0.70" min="0.05" step="0.005" type="range" value="0.228"/>
+<div class="flex justify-between font-label-caps text-label-caps text-outline mt-2">
+<span>0.05 (Overly Strict)</span>
+<span class="text-secondary font-bold">Optimal ~0.23</span>
+<span>0.50 (Default)</span>
+<span>0.70 (Aggressive)</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+            Applicants with default probability &gt; <span class="font-body-bold text-body-bold tabular-nums" id="thresholdDetailText">0.228</span> are declined immediately or flagged for manual committee review.
+          </p>
+</div>
+</div>
+</section>
+<!-- ============================================================== -->
+<!-- VISUALIZATION SECTION: DUAL-PANE BENTO GRID                   -->
+<!-- ============================================================== -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+<!-- MAIN CHART CARD: Financial Loss vs Cutoff (Columns 1-7) -->
+<section class="xl:col-span-7 bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/80 dark:border-outline p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="stacked_line_chart">stacked_line_chart</span>
+                Total Financial Loss vs. Decision Cutoff Threshold
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+                Minimum total expected portfolio loss curve optimized over asymmetric credit cost.
+              </p>
+</div>
+<!-- Legend Pills -->
+<div class="flex items-center gap-4 text-xs font-medium">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-1 bg-error rounded-full inline-block"></span>
+<span class="text-on-surface-variant dark:text-outline-variant">Expected Loss ($K)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-1 bg-secondary rounded-full inline-block"></span>
+<span class="text-on-surface-variant dark:text-outline-variant">Approval Rate (%)</span>
+</div>
+</div>
+</div>
+<!-- Dynamic SVG Chart Canvas -->
+<div class="relative w-full h-80 bg-surface-container-low/40 dark:bg-primary/40 rounded-lg p-2 border border-outline-variant/30 flex items-center justify-center">
+<svg class="w-full h-full overflow-visible select-none" id="lossCurveSvg" viewbox="0 0 600 280">
+<!-- Grid Lines -->
+<g stroke="currentColor" stroke-dasharray="3 3" stroke-opacity="0.08">
+<line x1="50" x2="570" y1="30" y2="30"></line>
+<line x1="50" x2="570" y1="80" y2="80"></line>
+<line x1="50" x2="570" y1="130" y2="130"></line>
+<line x1="50" x2="570" y1="180" y2="180"></line>
+<line x1="50" x2="570" y1="230" y2="230"></line>
+</g>
+<!-- Axes Labels -->
+<text class="fill-outline text-[10px] font-mono" x="15" y="35">$2.5M</text>
+<text class="fill-outline text-[10px] font-mono" x="15" y="85">$2.0M</text>
+<text class="fill-outline text-[10px] font-mono" x="15" y="135">$1.5M</text>
+<text class="fill-outline text-[10px] font-mono" x="15" y="185">$1.0M</text>
+<text class="fill-outline text-[10px] font-mono" x="15" y="235">$0.5M</text>
+<!-- X-Axis Labels -->
+<text class="fill-outline text-[10px] font-mono" x="50" y="255">0.05</text>
+<text class="fill-outline text-[10px] font-mono" x="180" y="255">0.20</text>
+<text class="fill-outline text-[10px] font-mono" x="310" y="255">0.35</text>
+<text class="fill-outline text-[10px] font-mono" x="440" y="255">0.50</text>
+<text class="fill-outline text-[10px] font-mono" x="560" y="255">0.70</text>
+<text class="fill-on-surface-variant font-label-caps text-[10px] text-center" text-anchor="middle" x="310" y="272">CUTOFF THRESHOLD (τ)</text>
+<!-- Approval Rate Curve (Smooth downward slope) -->
+<path d="M 50,225 C 150,210 280,160 570,55" fill="none" id="svgApprovalCurve" opacity="0.8" stroke="#006b5f" stroke-dasharray="4 2" stroke-width="2.5"></path>
+<!-- Expected Financial Loss U-Curve -->
+<path d="M 50,55 C 130,220 220,220 570,45" fill="none" id="svgLossCurve" stroke="#ba1a1a" stroke-width="3.5"></path>
+<!-- Optimal Cutoff Vertical Guideline -->
+<g id="svgOptimalMarker" transform="translate(192, 0)">
+<line stroke="#006b5f" stroke-dasharray="4 3" stroke-width="1.8" x1="0" x2="0" y1="20" y2="240"></line>
+<!-- Guideline Badge -->
+<rect class="shadow-sm" fill="#006b5f" height="20" rx="4" width="130" x="-65" y="8"></rect>
+<text class="text-[10px] font-bold tracking-wide" fill="#ffffff" text-anchor="middle" x="0" y="22">OPTIMAL: τ = 0.228</text>
+<!-- Minimum Cost Pin -->
+<circle cx="0" cy="188" fill="#ba1a1a" r="6" stroke="#ffffff" stroke-width="2"></circle>
+</g>
+<!-- Current Dynamic Cursor Guideline -->
+<g id="svgDynamicMarker" transform="translate(192, 0)">
+<line opacity="0.6" stroke="#071c36" stroke-width="1.5" x1="0" x2="0" y1="25" y2="240"></line>
+<circle cx="0" cy="188" fill="#000615" id="svgCursorDot" r="4.5" stroke="#6df5e1" stroke-width="2"></circle>
+</g>
+</svg>
+<!-- Floating Data Tooltip -->
+<div class="absolute top-4 right-4 bg-surface-container-lowest/95 dark:bg-primary-container/95 backdrop-blur p-2.5 rounded-lg border border-outline-variant shadow-md text-xs space-y-1" id="chartTooltip">
+<div class="font-body-bold text-body-sm text-primary dark:text-surface-bright flex items-center justify-between gap-4">
+<span>At Cutoff: <span class="tabular-nums text-secondary" id="tooltipThreshold">0.228</span></span>
+<span class="font-label-caps text-[10px] text-on-secondary-container bg-secondary-container/40 px-1.5 rounded">MIN COST</span>
+</div>
+<div class="flex justify-between gap-6 text-on-surface-variant dark:text-outline-variant">
+<span>Est. Portfolio Loss:</span>
+<span class="font-bold text-error tabular-nums" id="tooltipLoss">$1,424,800</span>
+</div>
+<div class="flex justify-between gap-6 text-on-surface-variant dark:text-outline-variant">
+<span>Approval Volume:</span>
+<span class="font-bold text-secondary tabular-nums" id="tooltipApproval">82.4% (253.4k)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Underwriting Insights Pill Bar -->
+<div class="mt-4 pt-3 border-t border-surface-container-high dark:border-outline/30 grid grid-cols-1 sm:grid-cols-3 gap-3">
+<div class="p-2.5 rounded-lg bg-surface-container-low dark:bg-primary/50">
+<span class="font-label-caps text-[11px] text-on-surface-variant dark:text-outline-variant">GLOBAL MINIMUM LOSS</span>
+<div class="font-stat-lg text-stat-lg text-primary dark:text-inverse-primary mt-0.5 tabular-nums" id="statMinLoss">$1.42M</div>
+<span class="text-xs text-secondary font-medium">-18.3% vs standard 0.50 cutoff</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low dark:bg-primary/50">
+<span class="font-label-caps text-[11px] text-on-surface-variant dark:text-outline-variant">ACCEPTANCE YIELD</span>
+<div class="font-stat-lg text-stat-lg text-secondary dark:text-secondary-fixed mt-0.5 tabular-nums" id="statAcceptYield">82.4%</div>
+<span class="text-xs text-on-surface-variant dark:text-outline-variant">253,380 approved files</span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low dark:bg-primary/50">
+<span class="font-label-caps text-[11px] text-on-surface-variant dark:text-outline-variant">RISK SENSITIVITY</span>
+<div class="font-stat-lg text-stat-lg text-primary dark:text-surface-bright mt-0.5 tabular-nums">0.024 / τ</div>
+<span class="text-xs text-on-surface-variant dark:text-outline-variant">Low variance resilience zone</span>
+</div>
+</div>
+</section>
+<!-- RIGHT SIDE: CONFUSION MATRIX & PORTFOLIO IMPACT (Columns 8-12) -->
+<section class="xl:col-span-5 bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/80 dark:border-outline p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="grid_view">grid_view</span>
+                Dynamic Confusion Matrix
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+                Classification outcomes based on current cutoff <span class="font-bold text-secondary tabular-nums" id="matrixCutoffEcho">τ = 0.228</span>
+</p>
+</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors" data-icon="sync" title="Reload live matrix from batch backtest">sync</span>
+</div>
+<!-- 2x2 CONFUSION MATRIX GRID -->
+<div class="bg-surface-container-low/60 dark:bg-primary/40 p-3 rounded-xl border border-outline-variant/40">
+<!-- Axis Column Labels -->
+<div class="grid grid-cols-12 text-center pb-2">
+<div class="col-span-3"></div>
+<div class="col-span-4 font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">PRED: DEFAULT (&gt;τ)</div>
+<div class="col-span-5 font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant">PRED: NON-DEFAULT (≤τ)</div>
+</div>
+<!-- Row 1: Actual Defaulters -->
+<div class="grid grid-cols-12 gap-2 mb-2 items-stretch">
+<div class="col-span-3 flex flex-col justify-center text-right pr-2">
+<span class="font-label-caps text-[11px] text-error font-bold leading-tight">ACTUAL<br/>DEFAULT</span>
+</div>
+<!-- True Positives (Green) -->
+<div class="col-span-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700/60 rounded-lg p-2.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-emerald-800 dark:text-emerald-300 font-bold">TRUE POSITIVE</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<div class="font-stat-lg text-stat-lg text-emerald-900 dark:text-emerald-200 tabular-nums my-1" id="valTP">19,412</div>
+<span class="text-[11px] text-emerald-700 dark:text-emerald-400">Defaults Caught (Declined)</span>
+</div>
+<!-- False Negatives (Defaulter approved - Red) -->
+<div class="col-span-5 bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-700/60 rounded-lg p-2.5 flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-red-800 dark:text-red-300 font-bold">FALSE NEGATIVE (SEVERE)</span>
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+</div>
+<div class="font-stat-lg text-stat-lg text-red-900 dark:text-red-200 tabular-nums my-1" id="valFN">5,410</div>
+<span class="text-[11px] text-red-700 dark:text-red-400">Defaulters Approved (Loss)</span>
+</div>
+</div>
+<!-- Row 2: Actual Good Borrowers -->
+<div class="grid grid-cols-12 gap-2 items-stretch">
+<div class="col-span-3 flex flex-col justify-center text-right pr-2">
+<span class="font-label-caps text-[11px] text-secondary font-bold leading-tight">ACTUAL<br/>GOOD</span>
+</div>
+<!-- False Positives (Good rejected - Amber) -->
+<div class="col-span-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 rounded-lg p-2.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-amber-800 dark:text-amber-300 font-bold">FALSE POSITIVE</span>
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+</div>
+<div class="font-stat-lg text-stat-lg text-amber-900 dark:text-amber-200 tabular-nums my-1" id="valFP">14,800</div>
+<span class="text-[11px] text-amber-700 dark:text-amber-400">Good Rejected (Lost Yield)</span>
+</div>
+<!-- True Negatives (Good approved - Blue) -->
+<div class="col-span-5 bg-sky-50 dark:bg-sky-950/40 border border-sky-300 dark:border-sky-700/60 rounded-lg p-2.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-sky-800 dark:text-sky-300 font-bold">TRUE NEGATIVE</span>
+<span class="w-2 h-2 rounded-full bg-sky-500"></span>
+</div>
+<div class="font-stat-lg text-stat-lg text-sky-900 dark:text-sky-200 tabular-nums my-1" id="valTN">267,889</div>
+<span class="text-[11px] text-sky-700 dark:text-sky-400">Good Approved (Retained)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- LIVE FINANCIAL IMPACT SUMMARY -->
+<div class="mt-6 pt-4 border-t border-surface-container-high dark:border-outline/40 space-y-3">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="account_balance">account_balance</span>
+            PROJECTED FINANCIAL METRICS SUMMARY
+          </h4>
+<div class="grid grid-cols-3 gap-2">
+<!-- Metric 1 -->
+<div class="p-3 bg-surface-container-low dark:bg-primary/70 rounded-lg border border-outline-variant/40">
+<span class="font-label-caps text-[10px] text-outline block">APPROVAL RATE</span>
+<span class="font-headline-sm text-headline-sm text-primary dark:text-inverse-primary font-bold tabular-nums" id="summaryApprovalRate">82.4%</span>
+<span class="text-[11px] text-secondary font-medium block mt-0.5">High Volume</span>
+</div>
+<!-- Metric 2 -->
+<div class="p-3 bg-surface-container-low dark:bg-primary/70 rounded-lg border border-outline-variant/40">
+<span class="font-label-caps text-[10px] text-outline block">PORTFOLIO BAD RATE</span>
+<span class="font-headline-sm text-headline-sm text-error font-bold tabular-nums" id="summaryBadRate">1.98%</span>
+<span class="text-[11px] text-on-surface-variant dark:text-outline-variant block mt-0.5">&lt; 2.50% Target</span>
+</div>
+<!-- Metric 3 -->
+<div class="p-3 bg-surface-container-low dark:bg-primary/70 rounded-lg border border-outline-variant/40">
+<span class="font-label-caps text-[10px] text-outline block">NET PROFIT / 10K LOANS</span>
+<span class="font-headline-sm text-headline-sm text-emerald-600 dark:text-emerald-400 font-bold tabular-nums" id="summaryNetProfit">$4.85M</span>
+<span class="text-[11px] text-secondary font-medium block mt-0.5">Optimal Spread</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- ============================================================== -->
+<!-- EXPLANATORY GUIDANCE DRAWER / REGULATORY GOVERNANCE PANEL     -->
+<!-- ============================================================== -->
+<section class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/80 dark:border-outline p-space-lg shadow-sm">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high dark:bg-primary flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-24" data-icon="menu_book">menu_book</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">
+              Institutional Trade-Off Mechanics &amp; Regulatory Governance
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+              Mathematical modeling formulation and compliance considerations under IFRS 9 / Basel III frameworks.
+            </p>
+</div>
+</div>
+<button class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-surface-bright p-1.5 rounded-lg transition-colors" id="toggleGuidanceBtn">
+<span class="material-symbols-outlined text-20" data-icon="expand_less" id="guidanceToggleIcon">expand_less</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 pt-6 border-t border-surface-container-high dark:border-outline/40" id="guidanceContent">
+<!-- Formula & Economics Block -->
+<div class="space-y-3">
+<h4 class="font-body-bold text-body-bold text-primary dark:text-inverse-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="functions">functions</span>
+            The Expected Loss Trade-Off Equation
+          </h4>
+<div class="p-3 bg-surface-container-low dark:bg-primary rounded-lg font-mono text-sm border border-outline-variant/40 text-primary dark:text-inverse-primary">
+            Expected Loss(τ) = (C<sub>FP</sub> × FP(τ)) + (C<sub>FN</sub> × FN(τ))
+          </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+            Traditional machine learning classifies binary outcomes at a naive threshold of τ = 0.50. However, in credit underwriting, the cost of an unrecovered charge-off (<span class="font-semibold text-error">C<sub>FN</sub></span>) is substantially higher than the opportunity cost of denying credit to a prime borrower (<span class="font-semibold text-amber-700 dark:text-amber-400">C<sub>FP</sub></span>).
+          </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+            By finding the argument τ<sup>*</sup> that minimizes this loss function, underwriters identify the mathematical boundary that preserves risk balance without needlessly starving origination revenue.
+          </p>
+</div>
+<!-- Basel & Capital Reserves Block -->
+<div class="space-y-3">
+<h4 class="font-body-bold text-body-bold text-primary dark:text-inverse-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="gavel">gavel</span>
+            Capital Reserves Impact (Basel III &amp; IFRS 9 Stage Transition)
+          </h4>
+<ul class="space-y-2 text-body-sm font-body-sm text-on-surface-variant dark:text-outline-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="check_circle">check_circle</span>
+<span><strong>ECL (Expected Credit Loss):</strong> Shifts in the classification cutoff directly determine portfolio provisioning allowances required under IFRS 9 Stage 1 vs Stage 2 migration.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="check_circle">check_circle</span>
+<span><strong>Capital Adequacy Ratio (CAR):</strong> Minimizing False Negatives curtails non-accrual loans and shields institutional Common Equity Tier 1 (CET1) ratios against credit shock.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="check_circle">check_circle</span>
+<span><strong>Fair Lending Disparity Review:</strong> Cutoff adjustments must undergo periodic disparate impact checks across demographic cohorts to preserve compliance with Fair Lending regulations.</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+<!-- ============================================================== -->
+<!-- INSTITUTIONAL FOOTER (Exact Shared Component Alignment)       -->
+<!-- ============================================================== -->
+<footer class="bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-inverse-primary docked full-width bottom border-t border-outline-variant dark:border-outline mt-12">
+<div class="w-full px-margin py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left">
+<!-- Institutional Copyright & Disclaimers -->
+<div class="space-y-1">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center justify-center md:justify-start gap-2">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="verified_user">verified_user</span>
+<span>RiskLens Analytics Ltd</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant max-w-2xl">
+          © 2025 RiskLens Analytics Ltd. High-Assurance Probabilistic Credit Underwriting. All rights reserved. For institutional risk evaluation and educational simulation only.
+        </p>
+</div>
+<!-- Regulatory Governance Links & GitHub Source Reference -->
+<div class="flex flex-wrap items-center justify-center gap-4 text-body-sm font-body-sm">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="#">Model Card</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="#">Fair Lending Governance</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="#">API Reference</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="#">Audit Log</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="#">System Status</a>
+<!-- GitHub Link -->
+<a class="inline-flex items-center gap-1.5 text-secondary dark:text-secondary-fixed hover:underline font-body-bold" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-base" data-icon="code">code</span>
+<span>GitHub</span>
+</a>
+</div>
+</div>
+</footer>
+<!-- ============================================================== -->
+<!-- LIGHTWEIGHT INTERACTIVITY SCRIPT                             -->
+<!-- ============================================================== -->
+<script>
+    // Theme toggle logic
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const htmlEl = document.documentElement;
+    
+    // Check local or system preference
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      htmlEl.classList.add('dark');
+    } else {
+      htmlEl.classList.remove('dark');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        htmlEl.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+
+    // Guidance drawer accordion toggle
+    const toggleGuidanceBtn = document.getElementById('toggleGuidanceBtn');
+    const guidanceContent = document.getElementById('guidanceContent');
+    const guidanceToggleIcon = document.getElementById('guidanceToggleIcon');
+
+    toggleGuidanceBtn.addEventListener('click', () => {
+      const isHidden = guidanceContent.classList.contains('hidden');
+      if (isHidden) {
+        guidanceContent.classList.remove('hidden');
+        guidanceToggleIcon.textContent = 'expand_less';
+      } else {
+        guidanceContent.classList.add('hidden');
+        guidanceToggleIcon.textContent = 'expand_more';
+      }
+    });
+
+    // Elements for dynamic updates
+    const costRatioSlider = document.getElementById('costRatioSlider');
+    const thresholdSlider = document.getElementById('thresholdSlider');
+    const costRatioDisplay = document.getElementById('costRatioDisplay');
+    const costMultiplierText = document.getElementById('costMultiplierText');
+    const thresholdDisplay = document.getElementById('thresholdDisplay');
+    const thresholdDetailText = document.getElementById('thresholdDetailText');
+    const matrixCutoffEcho = document.getElementById('matrixCutoffEcho');
+    const presetButtons = document.querySelectorAll('.preset-btn');
+
+    // Matrix counts
+    const elTP = document.getElementById('valTP');
+    const elFN = document.getElementById('valFN');
+    const elFP = document.getElementById('valFP');
+    const elTN = document.getElementById('valTN');
+
+    // Summary metrics
+    const summaryApprovalRate = document.getElementById('summaryApprovalRate');
+    const summaryBadRate = document.getElementById('summaryBadRate');
+    const summaryNetProfit = document.getElementById('summaryNetProfit');
+    const statAcceptYield = document.getElementById('statAcceptYield');
+    const statMinLoss = document.getElementById('statMinLoss');
+
+    // SVG Marker elements
+    const svgDynamicMarker = document.getElementById('svgDynamicMarker');
+    const svgCursorDot = document.getElementById('svgCursorDot');
+    const tooltipThreshold = document.getElementById('tooltipThreshold');
+    const tooltipLoss = document.getElementById('tooltipLoss');
+    const tooltipApproval = document.getElementById('tooltipApproval');
+
+    // Simulation calculation engine
+    const TOTAL_POPULATION = 307511;
+    const TOTAL_ACTUAL_DEFAULTERS = 24822; // ~8.07% true base rate
+    const TOTAL_ACTUAL_GOOD = TOTAL_POPULATION - TOTAL_ACTUAL_DEFAULTERS; // 282,689
+
+    function updateSimulation() {
+      const ratio = parseFloat(costRatioSlider.value);
+      const threshold = parseFloat(thresholdSlider.value);
+
+      // Text updates
+      costRatioDisplay.textContent = `${ratio} : 1`;
+      costMultiplierText.textContent = `${ratio}x`;
+      thresholdDisplay.textContent = threshold.toFixed(3);
+      thresholdDetailText.textContent = threshold.toFixed(3);
+      matrixCutoffEcho.textContent = `τ = ${threshold.toFixed(3)}`;
+
+      // Calculate confusion matrix values based on empirical credit score distribution
+      // Sigmoid sensitivity modeled around cutoff
+      const tNorm = (threshold - 0.05) / (0.70 - 0.05); // 0 to 1
+      
+      // True positives decline as threshold goes higher (less strict)
+      const recallDefault = Math.max(0.15, Math.min(0.98, 0.94 - (tNorm * 0.58)));
+      const tp = Math.round(TOTAL_ACTUAL_DEFAULTERS * recallDefault);
+      const fn = TOTAL_ACTUAL_DEFAULTERS - tp;
+
+      // False positives decline as threshold goes higher (fewer good rejected)
+      const fpRate = Math.max(0.01, Math.min(0.35, 0.18 * Math.exp(-3.2 * tNorm)));
+      const fp = Math.round(TOTAL_ACTUAL_GOOD * fpRate);
+      const tn = TOTAL_ACTUAL_GOOD - fp;
+
+      // Display matrix
+      elTP.textContent = tp.toLocaleString();
+      elFN.textContent = fn.toLocaleString();
+      elFP.textContent = fp.toLocaleString();
+      elTN.textContent = tn.toLocaleString();
+
+      // Rates
+      const approvedCount = tn + fn;
+      const approvalPct = (approvedCount / TOTAL_POPULATION) * 100;
+      const badRatePct = approvedCount > 0 ? (fn / approvedCount) * 100 : 0;
+      
+      // Financial Loss calculation
+      // Unit cost of FP = $1,500 (opportunity interest)
+      // Unit cost of FN = $1,500 * ratio (principal default loss)
+      const unitCostFP = 1500;
+      const unitCostFN = unitCostFP * ratio;
+      const totalExpectedLossDollars = (fp * unitCostFP) + (fn * unitCostFN);
+      const netProfitPer10k = Math.max(1.2, 5.8 - (badRatePct * 0.45) - (totalExpectedLossDollars / 4000000));
+
+      summaryApprovalRate.textContent = `${approvalPct.toFixed(1)}%`;
+      statAcceptYield.textContent = `${approvalPct.toFixed(1)}%`;
+      summaryBadRate.textContent = `${badRatePct.toFixed(2)}%`;
+      summaryNetProfit.textContent = `$${netProfitPer10k.toFixed(2)}M`;
+
+      // SVG dynamic marker position
+      // X range on chart: 50px to 570px (width 520)
+      const svgX = 50 + (tNorm * 520);
+      svgDynamicMarker.setAttribute('transform', `translate(${svgX}, 0)`);
+
+      // Loss U-shape curve approximation for Y position
+      const uShape = Math.pow(tNorm - 0.35, 2) * 500;
+      const svgY = Math.min(230, Math.max(45, 185 - (uShape * 0.4)));
+      svgCursorDot.setAttribute('cy', svgY);
+
+      // Tooltip updates
+      tooltipThreshold.textContent = threshold.toFixed(3);
+      tooltipLoss.textContent = `$${(totalExpectedLossDollars / 1000).toLocaleString(undefined, {maximumFractionDigits: 0})}K`;
+      tooltipApproval.textContent = `${approvalPct.toFixed(1)}% (${(approvedCount/1000).toFixed(1)}k)`;
+      statMinLoss.textContent = `$${(totalExpectedLossDollars / 1000000).toFixed(2)}M`;
+    }
+
+    // Connect sliders
+    costRatioSlider.addEventListener('input', updateSimulation);
+    thresholdSlider.addEventListener('input', updateSimulation);
+
+    // Preset button handlers
+    presetButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // Reset styles
+        presetButtons.forEach(b => {
+          b.className = "preset-btn px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant dark:text-outline-variant dark:border-outline hover:border-secondary hover:text-secondary text-body-sm-medium font-body-sm-medium transition-all";
+        });
+
+        // Set active style
+        btn.className = "preset-btn px-3 py-1.5 rounded-lg border text-body-sm-medium font-body-sm-medium transition-all bg-secondary-container text-on-secondary-container dark:bg-secondary dark:text-on-secondary border-secondary";
+
+        const newRatio = btn.getAttribute('data-ratio');
+        const newThreshold = btn.getAttribute('data-threshold');
+        
+        costRatioSlider.value = newRatio;
+        thresholdSlider.value = newThreshold;
+        updateSimulation();
+      });
+    });
+
+    // Apply Policy Action Toast Simulation
+    const deployBtn = document.getElementById('applyPolicyBtn');
+    deployBtn.addEventListener('click', () => {
+      const origText = deployBtn.innerHTML;
+      deployBtn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin" data-icon="sync">sync</span><span>Calibrating...</span>`;
+      setTimeout(() => {
+        deployBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span><span>Deployed!</span>`;
+        deployBtn.classList.add('bg-secondary', 'text-on-secondary');
+        setTimeout(() => {
+          deployBtn.innerHTML = origText;
+          deployBtn.classList.remove('bg-secondary', 'text-on-secondary');
+        }, 2000);
+      }, 600);
+    });
+
+    // Initial run
+    updateSimulation();
+  </script>
+</body></html>

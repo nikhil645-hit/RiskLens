@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Model Insights | RiskLens Enterprise Underwriting ML</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline-variant": "#c4c6ce",
+            "surface-container-low": "#f2f4f6",
+            "on-tertiary-fixed-variant": "#004395",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#001a42",
+            "primary": "#000615",
+            "primary-fixed-dim": "#b5c7ea",
+            "inverse-surface": "#2d3133",
+            "surface-bright": "#f7f9fb",
+            "secondary-fixed": "#71f8e4",
+            "tertiary": "#000517",
+            "on-secondary-container": "#006f64",
+            "on-primary-container": "#7587a7",
+            "surface": "#f7f9fb",
+            "on-primary-fixed-variant": "#364764",
+            "on-surface-variant": "#44474d",
+            "surface-dim": "#d8dadc",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#d8e2ff",
+            "secondary": "#006b5f",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#071c36",
+            "tertiary-fixed-dim": "#adc6ff",
+            "inverse-primary": "#b5c7ea",
+            "tertiary-container": "#001d48",
+            "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#005048",
+            "secondary-container": "#6df5e1",
+            "outline": "#75777e",
+            "on-surface": "#191c1e",
+            "surface-container-high": "#e6e8ea",
+            "secondary-fixed-dim": "#4fdbc8",
+            "surface-tint": "#4d5f7d",
+            "on-background": "#191c1e",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#00201c",
+            "surface-container": "#eceef0",
+            "primary-fixed": "#d6e3ff",
+            "inverse-on-surface": "#eff1f3",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "surface-variant": "#e0e3e5",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-container": "#3c83f7",
+            "background": "#f7f9fb",
+            "primary-container": "#0b1f3a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "0.75rem",
+            "gutter-sm": "1rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "stat-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-sm-medium": ["Inter"],
+            "stat-xl": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "label-caps": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-base": ["Inter"],
+            "table-header": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-bold": ["Inter"],
+            "headline-lg": ["Inter"],
+            "display-lg": ["Inter"]
+          },
+          "fontSize": {
+            "stat-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-sm-medium": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "stat-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-bold": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.025em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body-base antialiased transition-colors duration-200">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container-lowest dark:bg-primary-container docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none border-b border-outline-variant dark:border-outline">
+<div class="w-full px-margin flex items-center justify-between h-16">
+<!-- Brand & Title -->
+<div class="flex items-center gap-space-lg">
+<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="index.html">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed text-2xl" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span>RiskLens</span>
+</a>
+<!-- Web Navigation Links -->
+<nav class="hidden md:flex items-center gap-6 ml-4">
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="index.html">Home</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="risk_scorer.html">Risk Scorer</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="threshold_lab.html">Threshold Lab</a>
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="model_insights.html">Model Insights</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="about.html">About</a>
+</nav>
+</div>
+<!-- Trailing Action Controls -->
+<div class="flex items-center gap-space-md">
+<!-- Secondary Badge Status -->
+<span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-caps font-label-caps bg-surface-container dark:bg-primary text-secondary dark:text-secondary-fixed border border-outline-variant dark:border-outline">
+<span class="h-2 w-2 rounded-full bg-secondary-fixed"></span>
+          Model Active
+        </span>
+<!-- Dark Mode Toggle Button -->
+<button class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all" id="theme-toggle" title="Toggle color theme">
+<span class="material-symbols-outlined block dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block text-secondary-fixed">light_mode</span>
+</button>
+<!-- Notifications -->
+<button class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all" title="System alerts">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<!-- Primary CTA -->
+<a href="risk_scorer.html" class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary px-4 py-2 rounded-lg font-body-bold text-body-sm shadow-sm active:scale-[0.98] transition-transform inline-block">
+          Risk Scorer
+        </a>
+</div>
+</div>
+</header>
+<!-- Main Canvas Layout -->
+<main class="max-w-[1440px] mx-auto px-margin py-8 space-y-8">
+<!-- Page Header & Metadata -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-outline-variant dark:border-outline">
+<div>
+<div class="flex items-center gap-2 mb-1.5">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high dark:bg-primary-container text-on-primary-fixed-variant dark:text-inverse-primary font-label-caps text-label-caps tracking-wider uppercase">Institutional ML Validation</span>
+<span class="text-outline text-body-sm">|</span>
+<span class="text-body-sm text-on-surface-variant dark:text-outline-variant">Audit Run #4912-BF</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-surface-bright tracking-tight">Model Insights &amp; Performance Benchmark</h1>
+<p class="font-body-base text-body-base text-on-surface-variant dark:text-outline-variant mt-1 max-w-3xl">
+          Rigorous diagnostic evaluation of categorical encoding, discriminatory power curves, and feature coefficients.
+        </p>
+</div>
+<!-- Live Benchmarking Metric Pills -->
+<div class="flex items-center gap-3">
+<div class="bg-surface-container-lowest dark:bg-primary-container p-3 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 dark:bg-secondary/20 flex items-center justify-center text-secondary dark:text-secondary-fixed">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant uppercase">Benchmark AUC</div>
+<div class="font-stat-lg text-stat-lg text-primary dark:text-surface-bright leading-none mt-0.5">0.7842</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-primary-container p-3 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container dark:bg-primary flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">rule</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant uppercase">OOF Stability</div>
+<div class="font-stat-lg text-stat-lg text-secondary dark:text-secondary-fixed leading-none mt-0.5">99.4%</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive 4-Tab Navigation Bar -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-1.5 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex flex-wrap sm:flex-nowrap gap-1">
+<button class="tab-btn flex-1 py-3 px-4 rounded-lg font-body-bold text-body-sm flex items-center justify-center gap-2 transition-all bg-secondary dark:bg-secondary text-on-secondary shadow-sm" data-tab="tab-encoders" onclick="switchTab('tab-encoders', this)">
+<span class="material-symbols-outlined text-base">code</span>
+<span>Categorical Encoders</span>
+</button>
+<button class="tab-btn flex-1 py-3 px-4 rounded-lg font-body-bold text-body-sm flex items-center justify-center gap-2 transition-all text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-primary" data-tab="tab-curves" onclick="switchTab('tab-curves', this)">
+<span class="material-symbols-outlined text-base">stacked_line_chart</span>
+<span>ROC &amp; PR Curves</span>
+</button>
+<button class="tab-btn flex-1 py-3 px-4 rounded-lg font-body-bold text-body-sm flex items-center justify-center gap-2 transition-all text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-primary" data-tab="tab-odds" onclick="switchTab('tab-odds', this)">
+<span class="material-symbols-outlined text-base">tune</span>
+<span>Feature Odds Ratios</span>
+</button>
+<button class="tab-btn flex-1 py-3 px-4 rounded-lg font-body-bold text-body-sm flex items-center justify-center gap-2 transition-all text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-primary" data-tab="tab-models" onclick="switchTab('tab-models', this)">
+<span class="material-symbols-outlined text-base">compare_arrows</span>
+<span>Logistic Regression vs LightGBM</span>
+</button>
+</div>
+<!-- TAB 1 CONTENT: Categorical Encoders -->
+<section class="tab-content block space-y-6" id="tab-encoders">
+<!-- Table Card Container -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline shadow-sm overflow-hidden">
+<div class="p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant dark:border-outline">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Categorical Encoding Benchmarking Suite</h2>
+<span class="bg-secondary-container text-on-secondary-container px-2.5 py-0.5 rounded-full text-label-caps font-label-caps uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                5-Fold Stratified CV
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-1">
+              Performance metrics across 54 sparse high-cardinality demographic, occupational, and organizational categorical features.
+            </p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body-sm-medium text-body-sm-medium text-on-surface-variant dark:text-outline-variant">Smoothing Prior:</span>
+<span class="px-2.5 py-1 rounded bg-surface-container dark:bg-primary text-primary dark:text-surface-bright font-mono text-xs font-semibold">m = 10.0</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low dark:bg-primary/50 text-on-surface-variant dark:text-outline-variant border-b-2 border-outline-variant dark:border-outline">
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">Encoder Technique</th>
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">Feature Dimensionality</th>
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">Out-of-Fold ROC-AUC</th>
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">PR-AUC</th>
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">Training Time</th>
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">Overfitting Risk Index</th>
+<th class="py-3.5 px-4 font-table-header text-table-header uppercase">Best Use Case</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40 dark:divide-outline/40 font-body-sm">
+<!-- Champion: Target Encoding -->
+<tr class="bg-secondary/5 dark:bg-secondary/10 border-l-4 border-l-secondary transition-colors">
+<td class="py-4 px-4 font-body-bold text-primary dark:text-surface-bright">
+<div class="flex items-center gap-2">
+<span class="text-base text-secondary dark:text-secondary-fixed font-bold">Target Encoding (Smoothed)</span>
+<span class="bg-secondary text-on-secondary px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> Champion
+                    </span>
+</div>
+<span class="text-xs text-on-surface-variant dark:text-outline-variant">Empirical Bayes regularization</span>
+</td>
+<td class="py-4 px-4 font-mono font-medium">54 features <span class="text-xs text-outline">(1:1)</span></td>
+<td class="py-4 px-4 font-bold text-secondary dark:text-secondary-fixed text-base font-mono">0.7842</td>
+<td class="py-4 px-4 font-bold font-mono">0.3921</td>
+<td class="py-4 px-4 font-mono">1.42s</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary w-1/5 rounded-full"></div>
+</div>
+<span class="text-xs font-semibold text-secondary dark:text-secondary-fixed">Low (0.18)</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant dark:text-outline-variant">High-cardinality occupations, zip, sector classifications</td>
+</tr>
+<!-- Leave-One-Out -->
+<tr class="hover:bg-surface-container-low dark:hover:bg-primary/30 transition-colors">
+<td class="py-4 px-4 font-body-bold text-primary dark:text-surface-bright">
+<div>Leave-One-Out Encoding</div>
+<span class="text-xs text-on-surface-variant dark:text-outline-variant">Strict deterministic partition exclusion</span>
+</td>
+<td class="py-4 px-4 font-mono">54 features</td>
+<td class="py-4 px-4 font-semibold font-mono text-primary dark:text-surface-bright">0.7718</td>
+<td class="py-4 px-4 font-mono">0.3784</td>
+<td class="py-4 px-4 font-mono">3.18s</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-amber-500 w-3/5 rounded-full"></div>
+</div>
+<span class="text-xs font-semibold text-amber-600 dark:text-amber-400">Moderate (0.54)</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant dark:text-outline-variant">Small sample sub-cohorts without high frequency levels</td>
+</tr>
+<!-- Entity Embedding -->
+<tr class="hover:bg-surface-container-low dark:hover:bg-primary/30 transition-colors">
+<td class="py-4 px-4 font-body-bold text-primary dark:text-surface-bright">
+<div>Entity Embedding (Neural)</div>
+<span class="text-xs text-on-surface-variant dark:text-outline-variant">Dense 16D latent manifold projection</span>
+</td>
+<td class="py-4 px-4 font-mono">864 features <span class="text-xs text-outline">(16x)</span></td>
+<td class="py-4 px-4 font-semibold font-mono text-primary dark:text-surface-bright">0.7794</td>
+<td class="py-4 px-4 font-mono">0.3860</td>
+<td class="py-4 px-4 font-mono">42.80s</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-amber-500 w-2/5 rounded-full"></div>
+</div>
+<span class="text-xs font-semibold text-amber-600 dark:text-amber-400">Low-Mod (0.32)</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant dark:text-outline-variant">Deep hybrid networks with cross-feature interaction</td>
+</tr>
+<!-- One-Hot -->
+<tr class="hover:bg-surface-container-low dark:hover:bg-primary/30 transition-colors">
+<td class="py-4 px-4 font-body-bold text-primary dark:text-surface-bright">
+<div>One-Hot Encoding (OHE)</div>
+<span class="text-xs text-on-surface-variant dark:text-outline-variant">Binary indicator matrix projection</span>
+</td>
+<td class="py-4 px-4 font-mono">1,482 features <span class="text-xs text-error font-medium">(27.4x)</span></td>
+<td class="py-4 px-4 font-semibold font-mono text-error">0.7410</td>
+<td class="py-4 px-4 font-mono">0.3125</td>
+<td class="py-4 px-4 font-mono">8.95s</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-error w-4/5 rounded-full"></div>
+</div>
+<span class="text-xs font-semibold text-error">High (0.86)</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant dark:text-outline-variant">Low-cardinality flags (e.g., gender, marital status)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Narrative Analysis Cards (Bento 2-Column) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-7 bg-surface-container-lowest dark:bg-primary-container p-6 rounded-xl border border-outline-variant dark:border-outline shadow-sm space-y-4">
+<div class="flex items-center gap-3">
+<div class="p-2.5 rounded-lg bg-secondary/10 text-secondary dark:text-secondary-fixed">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Methodological Evaluation &amp; Curse of Dimensionality</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Mathematical rationale for underwriting policy standard</p>
+</div>
+</div>
+<p class="font-body-base text-body-base text-on-surface leading-relaxed dark:text-inverse-on-surface">
+            High-cardinality features such as <span class="font-semibold text-primary dark:text-surface-bright">OCCUPATION_TYPE</span> (18 levels) and <span class="font-semibold text-primary dark:text-surface-bright">ORGANIZATION_TYPE</span> (58 levels) induce severe data sparsity when transformed through binary One-Hot Encoding. This expands feature space dimensionality from 54 to over 1,480 columns, causing tree split dilution and catastrophic memory overhead.
+          </p>
+<div class="p-4 rounded-lg bg-surface-container-low dark:bg-primary/40 border border-outline-variant/60 dark:border-outline/40 text-body-sm space-y-2">
+<div class="font-bold text-primary dark:text-surface-bright flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+              Smoothed Bayes Formulation:
+            </div>
+<code class="block font-mono text-xs bg-surface-container-lowest dark:bg-tertiary-container p-2 rounded text-secondary dark:text-secondary-fixed">
+              S_i = λ(n_i) * ȳ_i + (1 - λ(n_i)) * ȳ_global  |  λ(n_i) = n_i / (n_i + m)
+            </code>
+<p class="text-on-surface-variant dark:text-outline-variant text-xs">
+              With smoothing prior parameter <strong class="text-on-surface dark:text-surface-bright">m = 10</strong>, categories with negligible support are pulled gracefully toward the portfolio macro default prevalence (8.07%), eradicating target leakage and variance spikes.
+            </p>
+</div>
+</div>
+<!-- Metric Callout Cards -->
+<div class="lg:col-span-5 grid grid-cols-1 gap-4">
+<div class="bg-surface-container-lowest dark:bg-primary-container p-5 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant dark:text-outline-variant">AUC Differential</span>
+<div class="font-stat-lg text-stat-lg text-secondary dark:text-secondary-fixed mt-1">+0.0432</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-1">Discriminatory gain of Target Encoding vs One-Hot Encoding baseline.</p>
+</div>
+<span class="p-2 rounded bg-secondary/10 text-secondary dark:text-secondary-fixed material-symbols-outlined">trending_up</span>
+</div>
+<div class="bg-surface-container-lowest dark:bg-primary-container p-5 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant dark:text-outline-variant">Dimensionality Compression</span>
+<div class="font-stat-lg text-stat-lg text-primary dark:text-surface-bright mt-1">96.3%</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-1">Reduction in sparse matrix width, speeding up downstream hyperparameter sweeps by 6.3x.</p>
+</div>
+<span class="p-2 rounded bg-surface-container dark:bg-primary text-primary dark:text-surface-bright material-symbols-outlined">compress</span>
+</div>
+</div>
+</div>
+</section>
+<!-- TAB 2 CONTENT: ROC & PR Curves -->
+<section class="tab-content hidden space-y-6" id="tab-curves">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- CARD A: ROC Curve -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-6 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant dark:border-outline mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Receiver Operating Characteristic (ROC)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Sensitivity vs 1 - Specificity across decision thresholds</p>
+</div>
+<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-secondary/10 text-secondary dark:text-secondary-fixed font-mono">
+                AUC = 0.784
+              </span>
+</div>
+<!-- SVG ROC Plot -->
+<div class="relative w-full aspect-[4/3] bg-surface-container-low dark:bg-primary/40 rounded-lg p-4 border border-outline-variant/60 dark:border-outline/40">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 400 300">
+<!-- Grid lines -->
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="20" y2="20"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="80" y2="80"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="140" y2="140"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="200" y2="200"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="40" x2="380" y1="260" y2="260"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="40" x2="40" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="125" x2="125" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="210" x2="210" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="295" x2="295" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="380" x2="380" y1="20" y2="260"></line>
+<!-- Axis Labels -->
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="265">0.0</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="205">0.25</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="145">0.50</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="85">0.75</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="25">1.0</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="40" y="278">0.0</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="125" y="278">0.25</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="210" y="278">0.50</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="295" y="278">0.75</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="380" y="278">1.0</text>
+<!-- Random Guess Diagonal (AUC = 0.50) -->
+<line stroke="#94A3B8" stroke-dasharray="5 4" stroke-width="2" x1="40" x2="380" y1="260" y2="20"></line>
+<!-- Baseline Logistic Regression (AUC = 0.650) -->
+<path d="M 40 260 Q 120 180 200 130 T 380 20" fill="none" stroke="#F59E0B" stroke-dasharray="4 2" stroke-width="2.5"></path>
+<!-- Champion Model (AUC = 0.784) -->
+<path class="dark:stroke-[#71F8E4]" d="M 40 260 C 60 120, 110 50, 200 40 C 260 35, 320 25, 380 20" fill="none" stroke="#006B5F" stroke-width="3.5"></path>
+<!-- Shaded AUC Area -->
+<path d="M 40 260 C 60 120, 110 50, 200 40 C 260 35, 320 25, 380 20 L 380 260 Z" fill="url(#roc-gradient)" opacity="0.12"></path>
+<defs>
+<lineargradient id="roc-gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#006B5F"></stop>
+<stop offset="100%" stop-color="#006B5F" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Calibrated Cutoff Point Marker -->
+<circle class="dark:fill-[#71F8E4] animate-pulse" cx="95" cy="78" fill="#006B5F" r="6"></circle>
+<circle cx="95" cy="78" fill="none" opacity="0.5" r="10" stroke="#006B5F" stroke-width="1.5"></circle>
+</svg>
+</div>
+<div class="mt-2 text-center text-xs text-on-surface-variant font-mono">False Positive Rate (FPR) →</div>
+</div>
+<!-- Curve Legend -->
+<div class="mt-4 pt-4 border-t border-outline-variant/60 dark:border-outline/40 flex flex-wrap items-center justify-between gap-3 text-xs">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 bg-secondary dark:bg-secondary-fixed rounded"></span>
+<span class="font-semibold text-primary dark:text-surface-bright">Champion Model (AUC 0.784)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 bg-amber-500 rounded border-dashed"></span>
+<span class="text-on-surface-variant dark:text-outline-variant">Baseline v1.0 (AUC 0.650)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 bg-slate-400 rounded"></span>
+<span class="text-outline">Random Chance (0.500)</span>
+</div>
+</div>
+</div>
+<!-- CARD B: PR Curve -->
+<div class="bg-surface-container-lowest dark:bg-primary-container p-6 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant dark:border-outline mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Precision-Recall (PR) Curve</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">Discriminative performance under 8.07% severe class imbalance</p>
+</div>
+<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-secondary/10 text-secondary dark:text-secondary-fixed font-mono">
+                PR-AUC = 0.392
+              </span>
+</div>
+<!-- SVG PR Plot -->
+<div class="relative w-full aspect-[4/3] bg-surface-container-low dark:bg-primary/40 rounded-lg p-4 border border-outline-variant/60 dark:border-outline/40">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 400 300">
+<!-- Grid lines -->
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="20" y2="20"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="80" y2="80"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="140" y2="140"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="40" x2="380" y1="200" y2="200"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="40" x2="380" y1="260" y2="260"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="40" x2="40" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="125" x2="125" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="210" x2="210" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="295" x2="295" y1="20" y2="260"></line>
+<line class="text-outline-variant/30" stroke="currentColor" stroke-dasharray="3 3" x1="380" x2="380" y1="20" y2="260"></line>
+<!-- Axis Labels -->
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="265">0.0</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="205">0.25</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="145">0.50</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="85">0.75</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="end" x="35" y="25">1.0</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="40" y="278">0.0</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="125" y="278">0.25</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="210" y="278">0.50</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="295" y="278">0.75</text>
+<text class="text-[10px] fill-current text-outline font-mono" text-anchor="middle" x="380" y="278">1.0</text>
+<!-- Natural Prevalence Baseline (y = 0.0807 -> 240px) -->
+<line stroke="#EF4444" stroke-dasharray="4 4" stroke-width="2" x1="40" x2="380" y1="240" y2="240"></line>
+<text class="text-[10px] fill-[#EF4444] font-semibold" text-anchor="end" x="375" y="235">Prevalence Baseline (0.080)</text>
+<!-- Champion Precision-Recall Curve -->
+<path class="dark:stroke-[#71F8E4]" d="M 40 40 C 70 45, 120 70, 180 130 C 240 180, 310 220, 380 240" fill="none" stroke="#006B5F" stroke-width="3.5"></path>
+<!-- Baseline Logistic Regression PR Curve -->
+<path d="M 40 100 C 90 120, 170 190, 260 225 C 320 235, 360 238, 380 240" fill="none" stroke="#F59E0B" stroke-dasharray="4 2" stroke-width="2.5"></path>
+<!-- Optimal Calibration Workpoint -->
+<circle class="dark:fill-[#71F8E4]" cx="160" cy="115" fill="#006B5F" r="6"></circle>
+<text class="text-[11px] font-bold fill-primary dark:fill-surface-bright" x="172" y="112">P=0.54, R=0.42</text>
+</svg>
+</div>
+<div class="mt-2 text-center text-xs text-on-surface-variant font-mono">Recall (Sensitivity / Default Detection Rate) →</div>
+</div>
+<!-- Curve Legend -->
+<div class="mt-4 pt-4 border-t border-outline-variant/60 dark:border-outline/40 flex flex-wrap items-center justify-between gap-3 text-xs">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 bg-secondary dark:bg-secondary-fixed rounded"></span>
+<span class="font-semibold text-primary dark:text-surface-bright">Champion Model (PR-AUC 0.392)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 bg-amber-500 rounded border-dashed"></span>
+<span class="text-on-surface-variant dark:text-outline-variant">Baseline (PR-AUC 0.221)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 bg-red-500 rounded border-dashed"></span>
+<span class="text-outline">Macro Default Rate (0.081)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- TAB 3 CONTENT: Feature Odds Ratios -->
+<section class="tab-content hidden space-y-6" id="tab-odds">
+<div class="bg-surface-container-lowest dark:bg-primary-container p-6 rounded-xl border border-outline-variant dark:border-outline shadow-sm space-y-6">
+<!-- Controls & Legend Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-outline-variant dark:border-outline">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Standardized Feature Odds Ratios (Logistic Regression)</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+              Marginal impact on odds of applicant default per 1-SD feature deviation.
+            </p>
+</div>
+<!-- View Toggle Switch -->
+<div class="flex items-center gap-2 bg-surface-container dark:bg-primary p-1 rounded-lg border border-outline-variant/50">
+<button class="px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-surface-bright shadow-sm transition-all" id="toggle-odds" onclick="toggleOddsMode('odds')">
+              Exponentiated Odds Ratios [exp(β)]
+            </button>
+<button class="px-3 py-1.5 rounded-md text-xs font-semibold text-on-surface-variant dark:text-outline-variant transition-all hover:text-on-surface" id="toggle-coef" onclick="toggleOddsMode('coef')">
+              Standardized Coefficients (β)
+            </button>
+</div>
+</div>
+<!-- Central Divider Indicator -->
+<div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-outline px-4">
+<span class="text-secondary dark:text-secondary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">shield</span> Protective Factors (Mitigates Risk, OR &lt; 1.0)
+          </span>
+<span class="text-error flex items-center gap-1">
+            Risk Escalation Factors (Amplifies Risk, OR &gt; 1.0) <span class="material-symbols-outlined text-sm">warning</span>
+</span>
+</div>
+<!-- Horizontal Bar Plot Container -->
+<div class="space-y-4 pt-2" id="odds-chart-container">
+  <canvas id="oddsChart" style="max-height: 450px;"></canvas>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low dark:bg-primary/40 border border-outline-variant/60 flex items-center justify-between text-xs text-on-surface-variant dark:text-outline-variant">
+<div><span class="font-bold text-primary dark:text-surface-bright">Model Reference:</span> L2-penalized Logistic Regression (C=0.10) trained over standard normalized continuous predictors.</div>
+<span class="font-mono">p-value &lt; 0.001 across all displayed top coefficients</span>
+</div>
+</div>
+</section>
+<!-- TAB 4 CONTENT: Logistic Regression vs LightGBM -->
+<section class="tab-content hidden space-y-6" id="tab-models">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Comparative Model Cards -->
+<div class="lg:col-span-8 space-y-6">
+<div class="bg-surface-container-lowest dark:bg-primary-container p-6 rounded-xl border border-outline-variant dark:border-outline shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright mb-1">Architecture Comparison: Linear vs Gradient Boosted Trees</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mb-6">Trade-off evaluation matrix between regulatory explainability and non-linear predictive capacity.</p>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-body-sm">
+<thead>
+<tr class="bg-surface-container-low dark:bg-primary/50 text-on-surface-variant dark:text-outline-variant border-b border-outline-variant">
+<th class="py-3 px-4 font-table-header uppercase">Evaluation Dimension</th>
+<th class="py-3 px-4 font-table-header uppercase text-primary dark:text-surface-bright">L2 Logistic Regression</th>
+<th class="py-3 px-4 font-table-header uppercase text-secondary dark:text-secondary-fixed">LightGBM Classifier</th>
+<th class="py-3 px-4 font-table-header uppercase">Delta / Governance Verdict</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40 dark:divide-outline/40">
+<tr>
+<td class="py-3.5 px-4 font-semibold text-primary dark:text-surface-bright">Out-of-Fold ROC-AUC</td>
+<td class="py-3.5 px-4 font-mono">0.7684</td>
+<td class="py-3.5 px-4 font-mono font-bold text-secondary dark:text-secondary-fixed">0.7842</td>
+<td class="py-3.5 px-4 text-xs font-semibold text-emerald-600 dark:text-emerald-400">+1.58% GBDT non-linear edge</td>
+</tr>
+<tr>
+<td class="py-3.5 px-4 font-semibold text-primary dark:text-surface-bright">Inference Latency (p99)</td>
+<td class="py-3.5 px-4 font-mono font-bold text-emerald-600 dark:text-emerald-400">4.1 ms</td>
+<td class="py-3.5 px-4 font-mono">27.8 ms</td>
+<td class="py-3.5 px-4 text-xs text-on-surface-variant">Both comfortably satisfy &lt; 50ms SLA</td>
+</tr>
+<tr>
+<td class="py-3.5 px-4 font-semibold text-primary dark:text-surface-bright">Inherent Interpretability</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                        Full Linear Additive
+                      </span>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                        SHAP Tree Explainer
+                      </span>
+</td>
+<td class="py-3.5 px-4 text-xs text-on-surface-variant">LogReg allows closed-form adverse action notices</td>
+</tr>
+<tr>
+<td class="py-3.5 px-4 font-semibold text-primary dark:text-surface-bright">Fair Lending Governance</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                        High Institutional
+                      </span>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
+                        Med-High (With Disparate Audit)
+                      </span>
+</td>
+<td class="py-3.5 px-4 text-xs text-on-surface-variant">LightGBM requires monotonicity constraints</td>
+</tr>
+<tr>
+<td class="py-3.5 px-4 font-semibold text-primary dark:text-surface-bright">Memory / Artifact Footprint</td>
+<td class="py-3.5 px-4 font-mono">1.2 MB</td>
+<td class="py-3.5 px-4 font-mono">18.4 MB</td>
+<td class="py-3.5 px-4 text-xs text-on-surface-variant">Microservice container allocation minimal for both</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Radar/Summary Card -->
+<div class="lg:col-span-4 bg-surface-container-lowest dark:bg-primary-container p-6 rounded-xl border border-outline-variant dark:border-outline shadow-sm flex flex-col justify-between">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright mb-2">Ensemble Recommendation</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mb-4">
+              Dual-tiered policy configuration recommended by Model Risk Management (MRM).
+            </p>
+<!-- SVG Radar / Hexagon Visualization -->
+<div class="relative w-full aspect-square bg-surface-container-low dark:bg-primary/40 rounded-lg p-2 flex items-center justify-center">
+<svg class="w-full h-full" viewbox="0 0 200 200">
+<!-- Hexagon Background Grids -->
+<polygon class="text-outline-variant/30" fill="none" points="100,20 170,60 170,140 100,180 30,140 30,60" stroke="currentColor" stroke-width="1"></polygon>
+<polygon class="text-outline-variant/30" fill="none" points="100,45 145,70 145,130 100,155 55,130 55,70" stroke="currentColor" stroke-width="1"></polygon>
+<polygon class="text-outline-variant/30" fill="none" points="100,70 120,85 120,115 100,130 80,115 80,85" stroke="currentColor" stroke-width="1"></polygon>
+<!-- Logistic Regression Polygon -->
+<polygon fill="#3B82F6" fill-opacity="0.2" points="100,50 135,80 120,120 100,175 60,110 50,65" stroke="#3B82F6" stroke-width="2"></polygon>
+<!-- LightGBM Polygon -->
+<polygon class="dark:stroke-[#71F8E4]" fill="#006B5F" fill-opacity="0.3" points="100,25 165,65 155,135 100,135 85,120 40,75" stroke="#006B5F" stroke-width="2"></polygon>
+<!-- Radial axes -->
+<line class="text-outline-variant/40" stroke="currentColor" x1="100" x2="100" y1="100" y2="20"></line>
+<line class="text-outline-variant/40" stroke="currentColor" x1="100" x2="170" y1="100" y2="60"></line>
+<line class="text-outline-variant/40" stroke="currentColor" x1="100" x2="170" y1="100" y2="140"></line>
+<line class="text-outline-variant/40" stroke="currentColor" x1="100" x2="100" y1="100" y2="180"></line>
+<line class="text-outline-variant/40" stroke="currentColor" x1="100" x2="30" y1="100" y2="140"></line>
+<line class="text-outline-variant/40" stroke="currentColor" x1="100" x2="30" y1="100" y2="60"></line>
+<!-- Labels -->
+<text class="text-[9px] font-bold fill-primary dark:fill-surface-bright uppercase" text-anchor="middle" x="100" y="14">Accuracy (AUC)</text>
+<text class="text-[9px] font-bold fill-primary dark:fill-surface-bright uppercase" x="175" y="58">Speed</text>
+<text class="text-[9px] font-bold fill-primary dark:fill-surface-bright uppercase" x="175" y="145">Non-linearity</text>
+<text class="text-[9px] font-bold fill-primary dark:fill-surface-bright uppercase" text-anchor="middle" x="100" y="195">Auditability</text>
+<text class="text-[9px] font-bold fill-primary dark:fill-surface-bright uppercase" text-anchor="end" x="25" y="145">Fairness</text>
+<text class="text-[9px] font-bold fill-primary dark:fill-surface-bright uppercase" text-anchor="end" x="25" y="58">Stability</text>
+</svg>
+</div>
+<div class="flex items-center justify-center gap-4 mt-4 text-xs font-semibold">
+<span class="flex items-center gap-1.5 text-secondary dark:text-secondary-fixed">
+<span class="w-3 h-3 rounded-full bg-secondary"></span> LightGBM
+              </span>
+<span class="flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
+<span class="w-3 h-3 rounded-full bg-blue-500"></span> Logistic Reg
+              </span>
+</div>
+</div>
+<!-- Bottom Deployment Alert -->
+<div class="mt-4 p-3 bg-secondary/10 border border-secondary/20 rounded-lg">
+<div class="font-bold text-xs text-secondary dark:text-secondary-fixed flex items-center gap-1 mb-1">
+<span class="material-symbols-outlined text-sm">balance</span> Production Policy:
+            </div>
+<p class="text-[11px] text-on-surface-variant dark:text-outline-variant leading-snug">
+              LightGBM serves as primary probability estimator for tier allocation, while paired LogReg acts as statutory counter-factual generator for FCRA Adverse Action notices.
+            </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Institutional Footer (Shared Component) -->
+<footer class="bg-surface-container-lowest dark:bg-primary-container docked full-width bottom border-t border-outline-variant dark:border-outline mt-16">
+<div class="max-w-[1440px] mx-auto px-margin py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left">
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright mb-1 flex items-center justify-center md:justify-start gap-1">
+<span class="material-symbols-outlined text-secondary text-lg">shield_with_heart</span>
+<span>RiskLens ML</span>
+</div>
+<p class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm max-w-2xl">
+          © 2025 RiskLens Analytics Ltd. High-Assurance Probabilistic Credit Underwriting. All rights reserved. For institutional risk evaluation and educational simulation only.
+        </p>
+</div>
+<!-- Footer Navigation and GitHub Link -->
+<div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Model Card</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Fair Lending Governance</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">API Reference</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Audit Log</a>
+<a class="text-secondary dark:text-secondary-fixed font-body-bold text-body-sm flex items-center gap-1 hover:underline" href="https://github.com" rel="noreferrer" target="_blank">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span>GitHub Repository</span>
+</a>
+</div>
+</div>
+</footer>
+<!-- Vanilla JavaScript for Tab Switching & Odds Ratio Toggles -->
+<script>
+    // Tab switching controller
+    function switchTab(tabId, btnElement) {
+      // Hide all contents
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+        content.classList.remove('block');
+      });
+
+      // Show selected tab content
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('block');
+      }
+
+      // Reset tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-secondary', 'text-on-secondary', 'shadow-sm');
+        btn.classList.add('text-on-surface-variant', 'dark:text-outline-variant');
+      });
+
+      // Highlight active button
+      btnElement.classList.add('bg-secondary', 'text-on-secondary', 'shadow-sm');
+      btnElement.classList.remove('text-on-surface-variant', 'dark:text-outline-variant');
+    }
+
+    // Fetch real data and draw Chart.js
+    async function loadChartData() {
+      try {
+        const apiBase = (window.location.protocol === 'file:' || window.location.port === '3000') ? 'http://127.0.0.1:8000' : '';
+        const res = await fetch(`${apiBase}/explain`);
+        const data = await res.json();
+        
+        const isCoef = oddsMode === 'coef';
+        const top_10 = data.top_10_risk;
+        const bottom_10 = data.top_10_safe;
+        
+        // Combine them
+        const combined = [...top_10, ...bottom_10].sort((a,b) => b.coefficient - a.coefficient);
+        const labels = combined.map(f => f.feature);
+        const values = combined.map(f => isCoef ? f.coefficient : f.odds_ratio);
+        
+        // Draw Chart
+        const ctx = document.getElementById('oddsChart').getContext('2d');
+        if (window.oddsChartInst) window.oddsChartInst.destroy();
+        
+        window.oddsChartInst = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: isCoef ? 'Standardized Coefficient (β)' : 'Odds Ratio [exp(β)]',
+                    data: values,
+                    backgroundColor: combined.map(f => f.coefficient > 0 ? '#ba1a1a' : '#006b5f')
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Odds Ratio vs Beta Coefficients toggle
+    let oddsMode = 'odds';
+    function toggleOddsMode(mode) {
+      oddsMode = mode;
+      const oddsBtn = document.getElementById('toggle-odds');
+      const coefBtn = document.getElementById('toggle-coef');
+
+      if (mode === 'odds') {
+        oddsBtn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-surface-bright shadow-sm transition-all';
+        coefBtn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold text-on-surface-variant dark:text-outline-variant transition-all hover:text-on-surface';
+      } else {
+        coefBtn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-surface-bright shadow-sm transition-all';
+        oddsBtn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold text-on-surface-variant dark:text-outline-variant transition-all hover:text-on-surface';
+      }
+      
+      loadChartData();
+    }
+
+    // Dark Mode Toggle Logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+    
+    // Initial fetch
+    loadChartData();
+  </script>
+</body></html>

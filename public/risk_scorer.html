@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RiskLens — Calibrated Credit Underwriting &amp; Risk Scorer</title>
+  <!-- Material Symbols & Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary': '#0B1F3A',
+            'primary-container': '#1A365D',
+            'secondary': '#006B5F',
+            'secondary-container': '#C2EFEB',
+            'secondary-fixed': '#71F8E4',
+            'tertiary-container': '#E2E8F0',
+            'surface': '#F8FAFC',
+            'surface-bright': '#FFFFFF',
+            'surface-container-lowest': '#FFFFFF',
+            'surface-container-low': '#F1F5F9',
+            'surface-container': '#E2E8F0',
+            'surface-container-high': '#CBD5E1',
+            'surface-container-highest': '#94A3B8',
+            'on-surface': '#0F172A',
+            'on-surface-variant': '#475569',
+            'outline': '#64748B',
+            'outline-variant': '#E2E8F0',
+            'error': '#BA1A1A',
+            'error-container': '#FFDAD6',
+            'on-error': '#FFFFFF',
+            'on-primary': '#FFFFFF',
+            'on-secondary': '#FFFFFF',
+            'on-secondary-container': '#00201C',
+            'inverse-surface': '#0F172A',
+            'inverse-on-surface': '#F8FAFC',
+            'inverse-primary': '#71F8E4',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          spacing: {
+            'margin': '1.5rem',
+            'space-xs': '0.25rem',
+            'space-sm': '0.5rem',
+            'space-md': '1rem',
+            'space-lg': '1.5rem',
+            'space-xl': '2rem',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-surface dark:bg-primary min-h-screen text-on-surface dark:text-surface-bright flex flex-col antialiased transition-colors duration-200">
+
+  <!-- TOP APP BAR -->
+  <header class="sticky top-0 z-50 bg-surface-container-lowest/90 dark:bg-primary/90 backdrop-blur-md border-b border-outline-variant dark:border-outline">
+    <div class="max-w-[1440px] mx-auto px-margin h-16 flex items-center justify-between gap-space-md">
+      
+      <!-- Brand & Page Switcher -->
+      <div class="flex items-center gap-space-lg">
+        <a class="flex items-center gap-2.5 text-primary dark:text-surface-bright font-bold text-lg tracking-tight hover:opacity-90 transition-opacity" href="index.html">
+          <div class="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-on-secondary shadow-sm">
+            <span class="material-symbols-outlined text-xl">analytics</span>
+          </div>
+          <span>RiskLens</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6">
+          <a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-bold py-2 text-sm" href="risk_scorer.html">Risk Scorer</a>
+          <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright py-2 text-sm transition-colors" href="threshold_lab.html">Threshold Lab</a>
+          <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright py-2 text-sm transition-colors" href="model_insights.html">Model Insights</a>
+          <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright py-2 text-sm transition-colors" href="about.html">About</a>
+        </nav>
+      </div>
+
+      <!-- Controls & Quick Presets -->
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden sm:flex items-center gap-1 bg-surface-container-low dark:bg-primary-container border border-outline-variant dark:border-outline rounded-lg p-1">
+          <span class="material-symbols-outlined text-outline ml-1 text-sm">tune</span>
+          <select class="bg-transparent border-0 text-on-surface dark:text-surface-bright font-medium text-xs py-1 pl-1 pr-6 focus:ring-0 cursor-pointer" id="quickPresetSelect">
+            <option class="text-primary" value="low">Preset: Low Risk</option>
+            <option class="text-primary" value="base" selected>Preset: Moderate Risk</option>
+            <option class="text-primary" value="high">Preset: Elevated Risk</option>
+          </select>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container dark:bg-tertiary-container border border-outline-variant dark:border-outline text-xs text-on-surface-variant dark:text-on-primary-container">
+          <span class="w-2 h-2 rounded-full bg-secondary"></span>
+          <span>Model Active</span>
+        </div>
+
+        <a href="model_insights.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary rounded-lg text-xs font-semibold hover:opacity-90 transition-all">
+          <span class="material-symbols-outlined text-sm">insights</span>
+          <span>Insights</span>
+        </a>
+
+        <button aria-label="Toggle dark mode" class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary-container hover:text-on-surface dark:hover:text-surface-bright transition-all" id="themeToggleBtn" type="button">
+          <span class="material-symbols-outlined">dark_mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-[1440px] w-full mx-auto px-margin py-space-lg">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+
+      <!-- LEFT COLUMN: APPLICANT FORM -->
+      <section class="lg:col-span-7 bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline p-space-lg shadow-sm">
+        
+        <div class="flex items-center justify-between pb-space-md border-b border-outline-variant dark:border-outline mb-space-lg">
+          <div>
+            <h2 class="text-xl font-bold text-primary dark:text-surface-bright">Loan Applicant Parameters</h2>
+            <p class="text-xs text-on-surface-variant dark:text-outline-variant mt-0.5">Enter applicant financial attributes and bureau scores for real-time scoring.</p>
+          </div>
+          <button class="text-xs font-semibold text-secondary dark:text-secondary-fixed hover:underline flex items-center gap-1" id="loadSampleBtn" type="button">
+            <span class="material-symbols-outlined text-sm">restart_alt</span>
+            Reset Baseline
+          </button>
+        </div>
+
+        <form class="space-y-6" id="riskAssessmentForm" onsubmit="event.preventDefault();">
+          
+          <!-- SECTION 1: FINANCIAL EXPOSURE -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-outline mb-3 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">account_balance</span>
+              Financial Exposure &amp; Capital
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Annual Income -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="annualIncome">Annual Income ($)</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline text-sm">$</span>
+                  <input class="w-full pl-7 pr-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-annual_income" id="annualIncome" min="0" step="1000" type="number" value="147000"/>
+                </div>
+              </div>
+
+              <!-- Loan Amount Requested -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="loanAmount">Loan Amount Requested ($)</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline text-sm">$</span>
+                  <input class="w-full pl-7 pr-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-loan_amount" id="loanAmount" min="0" step="500" type="number" value="500000"/>
+                </div>
+              </div>
+
+              <!-- Loan Annuity -->
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="loanAnnuity">Loan Annuity ($ / year)</label>
+                <div class="relative max-w-sm">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline text-sm">$</span>
+                  <input class="w-full pl-7 pr-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-annuity" id="loanAnnuity" min="0" step="100" type="number" value="25000"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: DEMOGRAPHICS & EMPLOYMENT -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-outline mb-3 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">badge</span>
+              Demographics &amp; Employment
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Age -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="ageYears">Age (years)</label>
+                <input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-age" id="ageYears" max="120" min="18" type="number" value="43"/>
+              </div>
+
+              <!-- Years Employed -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="yearsEmployed">Years Employed</label>
+                <input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-years_employed" id="yearsEmployed" max="70" min="0" step="0.5" type="number" value="6"/>
+              </div>
+
+              <!-- Education Level -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="educationSelect">Education Level</label>
+                <select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-education" id="educationSelect">
+                  <option selected value="Secondary / secondary special">Secondary / secondary special</option>
+                  <option value="Higher education">Higher education</option>
+                  <option value="Incomplete higher">Incomplete higher</option>
+                  <option value="Lower secondary">Lower secondary</option>
+                  <option value="Academic degree">Academic degree</option>
+                </select>
+              </div>
+
+              <!-- Income Type -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="incomeTypeSelect">Income Type</label>
+                <select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-income_type" id="incomeTypeSelect">
+                  <option selected value="Working">Working</option>
+                  <option value="Commercial associate">Commercial associate</option>
+                  <option value="State servant">State servant</option>
+                  <option value="Pensioner">Pensioner</option>
+                  <option value="Businessman">Businessman</option>
+                  <option value="Student">Student</option>
+                  <option value="Unemployed">Unemployed</option>
+                </select>
+              </div>
+
+              <!-- Occupation -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="occupationSelect">Occupation</label>
+                <select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-occupation" id="occupationSelect">
+                  <option selected value="Laborers">Laborers</option>
+                  <option value="High skill tech">High skill tech</option>
+                  <option value="Core staff">Core staff</option>
+                  <option value="Managers">Managers</option>
+                  <option value="Drivers">Drivers</option>
+                  <option value="Sales staff">Sales staff</option>
+                  <option value="Accountants">Accountants</option>
+                  <option value="IT staff">IT staff</option>
+                  <option value="Waiters/barmen staff">Waiters/barmen staff</option>
+                </select>
+              </div>
+
+              <!-- Organisation Type -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant dark:text-outline-variant mb-1" for="orgTypeSelect">Organisation Type</label>
+                <select class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline rounded-lg text-sm font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-organisation_type" id="orgTypeSelect">
+                  <option selected value="Business Entity Type 3">Business Entity Type 3</option>
+                  <option value="Self-employed">Self-employed</option>
+                  <option value="Government">Government</option>
+                  <option value="Medicine">Medicine</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Bank">Bank</option>
+                  <option value="Other">Other</option>
+                  <option value="XNA">XNA</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: EXTERNAL BUREAU CREDIT SCORES -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-outline mb-3 flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">speed</span>
+                External Bureau Credit Scores
+              </span>
+              <span class="text-[11px] font-normal normal-case text-on-surface-variant dark:text-outline-variant">Higher score implies lower default risk</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-surface-container-low dark:bg-primary p-4 rounded-lg border border-outline-variant dark:border-outline">
+              <!-- External Credit Score 1 -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface dark:text-surface-bright mb-1" for="extScore1">External Credit Score 1</label>
+                <input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary-container border border-outline-variant dark:border-outline rounded-lg text-sm font-mono font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-ext_source_1" id="extScore1" max="1" min="0" step="any" type="number" value="0.5"/>
+              </div>
+
+              <!-- External Credit Score 2 -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface dark:text-surface-bright mb-1" for="extScore2">External Credit Score 2</label>
+                <input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary-container border border-outline-variant dark:border-outline rounded-lg text-sm font-mono font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-ext_source_2" id="extScore2" max="1" min="0" step="any" type="number" value="0.5"/>
+              </div>
+
+              <!-- External Credit Score 3 -->
+              <div>
+                <label class="block text-xs font-semibold text-on-surface dark:text-surface-bright mb-1" for="extScore3">External Credit Score 3</label>
+                <input class="w-full px-3 py-2 bg-surface-container-lowest dark:bg-primary-container border border-outline-variant dark:border-outline rounded-lg text-sm font-mono font-medium text-on-surface dark:text-surface-bright focus:border-secondary focus:ring-1 focus:ring-secondary" data-testid="input-ext_source_3" id="extScore3" max="1" min="0" step="any" type="number" value="0.5"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBMIT ACTIONS -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <button class="w-full sm:flex-1 py-3 px-6 bg-secondary text-on-secondary rounded-lg font-bold text-sm hover:opacity-90 transition-all shadow-sm active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer" data-testid="submit" id="calculateRiskBtn" type="button">
+              <span class="material-symbols-outlined text-lg">insights</span>
+              <span>Calculate Risk Score</span>
+            </button>
+            <button class="w-full sm:w-auto py-3 px-4 bg-surface-container-lowest dark:bg-primary border border-outline-variant dark:border-outline text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright rounded-lg text-xs font-semibold hover:bg-surface-container-low transition-colors cursor-pointer" id="resetFieldsBtn" type="button">
+              Reset Fields
+            </button>
+          </div>
+
+          <!-- ERROR MESSAGE CONTAINER -->
+          <div class="hidden p-3 rounded-lg bg-red-100 dark:bg-red-950/40 border border-red-300 dark:border-red-800 text-red-800 dark:text-red-200 text-xs font-medium" data-testid="error-message" id="formErrorMessage"></div>
+
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: ASSESSMENT RESULTS PANEL -->
+      <section class="lg:col-span-5 space-y-4">
+        
+        <!-- ACTIVE ASSESSMENT RESULT CARD -->
+        <div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant dark:border-outline p-space-lg shadow-sm space-y-4" data-testid="result-panel" id="resultPanel">
+          
+          <div class="flex items-center justify-between border-b border-outline-variant dark:border-outline pb-3">
+            <div>
+              <span class="text-xs uppercase font-bold tracking-wider text-outline">Underwriting Assessment</span>
+              <h3 class="text-lg font-bold text-primary dark:text-surface-bright">Loan Default Probability</h3>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-medium bg-surface-container-low dark:bg-primary border border-outline-variant dark:border-outline text-on-surface-variant dark:text-outline-variant">
+              Live Scored
+            </span>
+          </div>
+
+          <!-- GAUGE VISUALIZATION (SEMICIRCLE SVG) -->
+          <div class="flex flex-col items-center justify-center pt-2">
+            <div class="relative w-64 h-36 flex items-end justify-center">
+              <svg class="w-full h-full overflow-visible" viewbox="0 0 200 115">
+                <defs>
+                  <lineargradient id="gaugeGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+                    <stop offset="0%" stop-color="#10B981"></stop>
+                    <stop offset="30%" stop-color="#10B981"></stop>
+                    <stop offset="45%" stop-color="#F59E0B"></stop>
+                    <stop offset="70%" stop-color="#EF4444"></stop>
+                    <stop offset="100%" stop-color="#EF4444"></stop>
+                  </lineargradient>
+                </defs>
+                <!-- Background track arc -->
+                <path class="dark:stroke-primary" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e2e8f0" stroke-linecap="round" stroke-width="16"></path>
+                <!-- Colored Value Arc -->
+                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-linecap="round" stroke-width="16"></path>
+                <!-- Needle Indicator (Rotates dynamically around 100,100) -->
+                <g class="transition-transform duration-700 ease-out" id="needleGroup" transform="rotate(-61.2, 100, 100)">
+                  <line class="dark:stroke-surface-bright" stroke="#0b1f3a" stroke-linecap="round" stroke-width="3" x1="100" x2="100" y1="100" y2="30"></line>
+                  <circle class="dark:fill-surface-bright" cx="100" cy="100" fill="#0b1f3a" r="7"></circle>
+                  <circle cx="100" cy="100" fill="#ffffff" r="3"></circle>
+                </g>
+              </svg>
+              <!-- Probability percentage overlay -->
+              <div class="absolute bottom-0 flex flex-col items-center">
+                <span class="text-3xl font-bold font-mono text-primary dark:text-surface-bright tracking-tight leading-none" data-testid="prob-value" id="probValueText">16.0%</span>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-outline mt-1">Calibrated Probability</span>
+              </div>
+            </div>
+            <!-- Gauge Scale Labels -->
+            <div class="w-full flex justify-between text-xs font-mono text-outline px-6 mt-1">
+              <span>Prime Risk</span>
+              <span>Elevated Risk</span>
+            </div>
+          </div>
+
+          <!-- DECISION CARD -->
+          <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-500 p-3.5 rounded-xl flex items-center justify-between" id="decisionCard">
+            <div class="flex items-center gap-2.5">
+              <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+              <div>
+                <span class="font-bold text-sm tracking-wide uppercase text-emerald-800 dark:text-emerald-300" data-testid="decision" id="decisionText">
+                  Approved
+                </span>
+                <p class="text-xs text-on-surface-variant dark:text-outline-variant mt-0.5" id="decisionSubtext">
+                  Evaluated against decision cutoff.
+                </p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400" id="decisionIcon">check_circle</span>
+          </div>
+
+          <!-- METRICS SUMMARY (NO INVENTED NUMBERS) -->
+          <div class="grid grid-cols-3 gap-2 bg-surface-container-low dark:bg-primary p-3 rounded-xl border border-outline-variant dark:border-outline text-center">
+            <div>
+              <span class="uppercase text-outline text-[10px] font-bold tracking-wider block">Decision Cutoff</span>
+              <div class="text-sm font-bold font-mono text-primary dark:text-surface-bright mt-0.5">
+                <span data-testid="threshold-value" id="thresholdValueText">16.0%</span>
+              </div>
+            </div>
+            <div class="border-x border-outline-variant dark:border-outline px-1">
+              <span class="uppercase text-outline text-[10px] font-bold tracking-wider block">Debt-to-Income</span>
+              <div class="text-sm font-bold font-mono text-primary dark:text-surface-bright mt-0.5" id="dtiMetricText">17.0%</div>
+            </div>
+            <div>
+              <span class="uppercase text-outline text-[10px] font-bold tracking-wider block">Calibration</span>
+              <div class="text-sm font-bold text-secondary dark:text-secondary-fixed mt-0.5">Calibrated</div>
+            </div>
+          </div>
+
+          <!-- TOP RISK FACTORS (EXPLANATORY SHAP) -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-xs uppercase font-bold tracking-wider text-outline flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">waterfall_chart</span>
+                Key Decision Factors
+              </h4>
+              <span class="text-[11px] text-outline font-medium">Odds Multiplier</span>
+            </div>
+            <div class="space-y-2" id="factorsContainer">
+              <!-- Dynamically populated from API response -->
+            </div>
+          </div>
+
+          <!-- RANGE WARNINGS CONTAINER -->
+          <div class="hidden p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-xs" id="rangeWarningsContainer"></div>
+
+          <!-- AUDIT FOOTER -->
+          <div class="pt-2 flex items-center justify-between text-xs text-outline border-t border-outline-variant dark:border-outline">
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">lock</span>
+              RiskLens Inference Engine
+            </span>
+            <a class="text-secondary dark:text-secondary-fixed hover:underline flex items-center gap-1 font-semibold" href="model_insights.html">
+              <span class="material-symbols-outlined text-sm">description</span>
+              Model Insights
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Compliance & Regulatory Banner Card -->
+        <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-primary border border-outline-variant dark:border-outline text-xs text-on-surface-variant dark:text-outline-variant flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-secondary text-base mt-0.5">policy</span>
+          <div>
+            <span class="font-semibold text-primary dark:text-surface-bright">Fair Lending Governance:</span>
+            Protected demographic classes are sanitized from feature attribution layers. Decisions are determined exclusively by the calibrated risk model.
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- SHARED FOOTER -->
+  <footer class="bg-surface-container-lowest dark:bg-primary-container border-t border-outline-variant dark:border-outline py-6 mt-12">
+    <div class="max-w-[1440px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant dark:text-outline-variant">
+      <div>
+        © 2025 RiskLens Analytics Ltd. Calibrated Credit Risk Evaluation. All rights reserved.
+      </div>
+      <div class="flex items-center gap-6">
+        <a class="hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="model_insights.html">Model Insights</a>
+        <a class="hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="threshold_lab.html">Threshold Lab</a>
+        <a class="hover:text-on-surface dark:hover:text-surface-bright transition-colors" href="about.html">About</a>
+        <a class="text-secondary dark:text-secondary-fixed font-semibold hover:underline" href="https://github.com" rel="noopener noreferrer" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CLIENT LOGIC & API INTERACTION -->
+  <script>
+    // PRESETS DEFINITIONS
+    const PRESETS = {
+      low: {
+        annual_income: 300000,
+        loan_amount: 300000,
+        annuity: 15000,
+        age: 50,
+        years_employed: 15,
+        education: "Higher education",
+        income_type: "State servant",
+        occupation: "Core staff",
+        organisation_type: "Government",
+        ext_source_1: 0.8,
+        ext_source_2: 0.8,
+        ext_source_3: 0.8
+      },
+      base: {
+        annual_income: 147000,
+        loan_amount: 500000,
+        annuity: 25000,
+        age: 43,
+        years_employed: 6,
+        education: "Secondary / secondary special",
+        income_type: "Working",
+        occupation: "Laborers",
+        organisation_type: "Business Entity Type 3",
+        ext_source_1: 0.5,
+        ext_source_2: 0.5,
+        ext_source_3: 0.5
+      },
+      high: {
+        annual_income: 40000,
+        loan_amount: 450000,
+        annuity: 30000,
+        age: 25,
+        years_employed: 0.5,
+        education: "Secondary / secondary special",
+        income_type: "Working",
+        occupation: "Laborers",
+        organisation_type: "Business Entity Type 3",
+        ext_source_1: 0.2,
+        ext_source_2: 0.2,
+        ext_source_3: 0.2
+      }
+    };
+
+    function applyPreset(key) {
+      const p = PRESETS[key] || PRESETS.base;
+      document.getElementById('annualIncome').value = p.annual_income;
+      document.getElementById('loanAmount').value = p.loan_amount;
+      document.getElementById('loanAnnuity').value = p.annuity;
+      document.getElementById('ageYears').value = p.age;
+      document.getElementById('yearsEmployed').value = p.years_employed;
+      document.getElementById('educationSelect').value = p.education;
+      document.getElementById('incomeTypeSelect').value = p.income_type;
+      document.getElementById('occupationSelect').value = p.occupation;
+      document.getElementById('orgTypeSelect').value = p.organisation_type;
+      document.getElementById('extScore1').value = p.ext_source_1;
+      document.getElementById('extScore2').value = p.ext_source_2;
+      document.getElementById('extScore3').value = p.ext_source_3;
+      calculateRisk();
+    }
+
+    function parseNum(id) {
+      const el = document.getElementById(id);
+      if (!el || el.value === '' || el.value === null || el.value === undefined) return null;
+      const v = parseFloat(el.value);
+      return Number.isFinite(v) ? v : null;
+    }
+
+    async function calculateRisk() {
+      const errEl = document.getElementById('formErrorMessage');
+      const probEl = document.getElementById('probValueText');
+      const thrEl = document.getElementById('thresholdValueText');
+      const decEl = document.getElementById('decisionText');
+      const decSubEl = document.getElementById('decisionSubtext');
+      const decIcon = document.getElementById('decisionIcon');
+      const dtiEl = document.getElementById('dtiMetricText');
+      const warningsEl = document.getElementById('rangeWarningsContainer');
+      const factorsContainer = document.getElementById('factorsContainer');
+      const needle = document.getElementById('needleGroup');
+      const decisionCard = document.getElementById('decisionCard');
+
+      errEl.classList.add('hidden');
+      errEl.textContent = '';
+
+      const income = parseNum('annualIncome');
+      const loan = parseNum('loanAmount');
+      const annuity = parseNum('loanAnnuity');
+      const age = parseNum('ageYears');
+      const years = parseNum('yearsEmployed');
+      const ext1 = parseNum('extScore1');
+      const ext2 = parseNum('extScore2');
+      const ext3 = parseNum('extScore3');
+      const edu = document.getElementById('educationSelect')?.value || null;
+      const incType = document.getElementById('incomeTypeSelect')?.value || null;
+      const occ = document.getElementById('occupationSelect')?.value || null;
+      const org = document.getElementById('orgTypeSelect')?.value || null;
+
+      const payload = {
+        annual_income: income,
+        loan_amount: loan,
+        annuity: annuity,
+        age: age,
+        years_employed: years,
+        education: edu,
+        income_type: incType,
+        occupation: occ,
+        organisation_type: org,
+        ext_source_1: ext1,
+        ext_source_2: ext2,
+        ext_source_3: ext3,
+        // Dataset column names for full test suite interoperability:
+        AMT_INCOME_TOTAL: income,
+        AMT_CREDIT: loan,
+        AMT_ANNUITY: annuity,
+        DAYS_BIRTH: age !== null ? -age * 365.0 : null,
+        DAYS_EMPLOYED: years !== null ? -years * 365.0 : null,
+        NAME_EDUCATION_TYPE: edu,
+        NAME_INCOME_TYPE: incType,
+        OCCUPATION_TYPE: occ,
+        ORGANIZATION_TYPE: org,
+        EXT_SOURCE_1: ext1,
+        EXT_SOURCE_2: ext2,
+        EXT_SOURCE_3: ext3,
+        AMT_GOODS_PRICE: loan
+      };
+
+      try {
+        const apiBase = (window.location.protocol === 'file:' || window.location.port === '3000') ? 'http://127.0.0.1:8000' : '';
+        const res = await fetch(`${apiBase}/predict`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          let errDetail = 'Validation error occurred (HTTP ' + res.status + ')';
+          try {
+            const errData = await res.json();
+            if (errData && errData.detail) {
+              errDetail = typeof errData.detail === 'string' ? errData.detail : JSON.stringify(errData.detail);
+            }
+          } catch (_) {}
+          errEl.textContent = errDetail;
+          errEl.classList.remove('hidden');
+          probEl.textContent = '--';
+          decEl.textContent = 'Validation Error';
+          decSubEl.textContent = 'Please verify inputs meet allowable ranges.';
+          decisionCard.className = 'bg-red-50 dark:bg-red-950/30 border border-red-500 p-3.5 rounded-xl flex items-center justify-between';
+          decEl.className = 'font-bold text-sm tracking-wide uppercase text-red-800 dark:text-red-300';
+          if (decIcon) decIcon.textContent = 'error';
+          return;
+        }
+
+        const data = await res.json();
+
+        // Extract probability and threshold
+        const prob = data.probability_of_default !== undefined ? data.probability_of_default : (data.probability || 0);
+        const thr = data.threshold_used !== undefined ? data.threshold_used : (data.threshold || 0.16);
+        const decision = data.status || data.decision || (prob >= thr ? 'Rejected' : 'Approved');
+
+        // Update probability and threshold values
+        probEl.textContent = (prob * 100).toFixed(2) + '%';
+        thrEl.textContent = (thr * 100).toFixed(2) + '%';
+        decEl.textContent = decision;
+
+        // Needle rotation: -90deg at 0% to +90deg at 100%
+        const clampedProb = Math.max(0, Math.min(1, prob));
+        const needleAngle = -90 + (clampedProb * 180);
+        if (needle) {
+          needle.setAttribute('transform', `rotate(${needleAngle.toFixed(2)}, 100, 100)`);
+        }
+
+        // Decision card styling
+        const isRejected = decision.toLowerCase().includes('reject');
+        if (isRejected) {
+          decisionCard.className = 'bg-red-50 dark:bg-red-950/30 border border-red-500 p-3.5 rounded-xl flex items-center justify-between';
+          decEl.className = 'font-bold text-sm tracking-wide uppercase text-red-800 dark:text-red-300';
+          decSubEl.textContent = 'Default probability exceeds decision threshold.';
+          if (decIcon) {
+            decIcon.textContent = 'cancel';
+            decIcon.className = 'material-symbols-outlined text-red-600 dark:text-red-400';
+          }
+        } else {
+          decisionCard.className = 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-500 p-3.5 rounded-xl flex items-center justify-between';
+          decEl.className = 'font-bold text-sm tracking-wide uppercase text-emerald-800 dark:text-emerald-300';
+          decSubEl.textContent = 'Default probability meets qualification threshold.';
+          if (decIcon) {
+            decIcon.textContent = 'check_circle';
+            decIcon.className = 'material-symbols-outlined text-emerald-600 dark:text-emerald-400';
+          }
+        }
+
+        // Debt-to-income
+        if (data.dti_ratio !== undefined && data.dti_ratio !== null) {
+          dtiEl.textContent = (data.dti_ratio * 100).toFixed(1) + '%';
+        } else if (income && annuity) {
+          dtiEl.textContent = ((annuity * 12 / income) * 100).toFixed(1) + '%';
+        } else {
+          dtiEl.textContent = '--';
+        }
+
+        // Render reasons
+        factorsContainer.innerHTML = '';
+        const reasons = data.top_3_reasons || data.reasons || [];
+        const featLabels = {
+          'annual_income': 'Annual Income',
+          'AMT_INCOME_TOTAL': 'Annual Income',
+          'loan_amount': 'Loan Amount',
+          'AMT_CREDIT': 'Loan Amount',
+          'annuity': 'Loan Annuity',
+          'AMT_ANNUITY': 'Loan Annuity',
+          'age': 'Applicant Age',
+          'DAYS_BIRTH': 'Applicant Age',
+          'years_employed': 'Employment Tenure',
+          'DAYS_EMPLOYED': 'Employment Tenure',
+          'ext_source_1': 'External Credit Score 1',
+          'EXT_SOURCE_1': 'External Credit Score 1',
+          'ext_source_2': 'External Credit Score 2',
+          'EXT_SOURCE_2': 'External Credit Score 2',
+          'ext_source_3': 'External Credit Score 3',
+          'EXT_SOURCE_3': 'External Credit Score 3',
+          'education': 'Education Level',
+          'NAME_EDUCATION_TYPE': 'Education Level',
+          'income_type': 'Income Category',
+          'NAME_INCOME_TYPE': 'Income Category',
+          'occupation': 'Occupation',
+          'OCCUPATION_TYPE': 'Occupation',
+          'organisation_type': 'Employer Industry',
+          'ORGANIZATION_TYPE': 'Employer Industry'
+        };
+
+        reasons.forEach(r => {
+          const mult = r.odds_multiplier !== undefined ? r.odds_multiplier : (r.multiplier || 1.0);
+          const featName = featLabels[r.feature] || r.feature || 'Risk Factor';
+          const isUp = r.direction === 'raises_risk' || mult > 1.0;
+
+          const card = document.createElement('div');
+          card.className = isUp
+            ? 'flex items-center justify-between p-2.5 rounded-lg border border-red-200 bg-red-50 dark:bg-primary dark:border-outline'
+            : 'flex items-center justify-between p-2.5 rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-primary dark:border-outline';
+
+          card.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="p-1 rounded-full ${isUp ? 'bg-red-500' : 'bg-emerald-500'} text-white flex items-center justify-center">
+                <span class="material-symbols-outlined text-sm">${isUp ? 'arrow_upward' : 'arrow_downward'}</span>
+              </span>
+              <div>
+                <div class="text-xs font-semibold text-primary dark:text-surface-bright">${featName}</div>
+                <div class="text-[10px] text-on-surface-variant dark:text-outline-variant">${isUp ? 'Elevates default risk' : 'Reduces default risk'}</div>
+              </div>
+            </div>
+            <span class="font-mono text-xs font-bold px-2 py-0.5 rounded border ${isUp ? 'text-red-800 dark:text-red-200 bg-white dark:bg-primary-container border-red-200 dark:border-outline' : 'text-emerald-800 dark:text-emerald-200 bg-white dark:bg-primary-container border-emerald-200 dark:border-outline'}">
+              ${mult}x
+            </span>
+          `;
+          factorsContainer.appendChild(card);
+        });
+
+        // Warnings display
+        if (warningsEl) {
+          if (data.warnings && data.warnings.length > 0) {
+            warningsEl.innerHTML = '<strong>Validation Warning:</strong> ' + data.warnings.join('; ');
+            warningsEl.classList.remove('hidden');
+          } else {
+            warningsEl.classList.add('hidden');
+          }
+        }
+
+      } catch (err) {
+        errEl.textContent = 'Connection failure: ' + (err.message || 'Unable to communicate with the underwriting server.');
+        errEl.classList.remove('hidden');
+        probEl.textContent = '--';
+        decEl.textContent = 'Error';
+        decSubEl.textContent = 'Backend service connection failed.';
+        decisionCard.className = 'bg-red-50 dark:bg-red-950/30 border border-red-500 p-3.5 rounded-xl flex items-center justify-between';
+        decEl.className = 'font-bold text-sm tracking-wide uppercase text-red-800 dark:text-red-300';
+        if (decIcon) decIcon.textContent = 'error';
+      }
+    }
+
+    // EVENT LISTENERS
+    document.getElementById('calculateRiskBtn').addEventListener('click', calculateRisk);
+
+    document.getElementById('quickPresetSelect').addEventListener('change', (e) => {
+      applyPreset(e.target.value);
+    });
+
+    document.getElementById('loadSampleBtn').addEventListener('click', () => {
+      applyPreset('base');
+      document.getElementById('quickPresetSelect').value = 'base';
+    });
+
+    document.getElementById('resetFieldsBtn').addEventListener('click', () => {
+      document.getElementById('riskAssessmentForm').reset();
+      calculateRisk();
+    });
+
+    // Dark Mode Toggle
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      themeToggleBtn.innerHTML = `<span class="material-symbols-outlined">${isDark ? 'light_mode' : 'dark_mode'}</span>`;
+    });
+
+    // Initial Scoring Calculation
+    window.addEventListener('DOMContentLoaded', () => {
+      calculateRisk();
+    });
+  </script>
+</body>
+</html>

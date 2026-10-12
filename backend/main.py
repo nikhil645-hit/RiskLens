@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import joblib
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 # Ensure project root is in sys.path
@@ -136,6 +137,7 @@ def startup_event():
 
 
 @app.get("/health")
+@app.get("/api/health")
 def health():
     return {
         "status": "ok",
@@ -145,6 +147,7 @@ def health():
 
 
 @app.get("/schema")
+@app.get("/api/schema")
 def schema():
     return {
         "fields": {
@@ -274,6 +277,7 @@ def schema():
 
 
 @app.get("/threshold")
+@app.get("/api/threshold")
 def get_threshold():
     threshold_path = ROOT_DIR / "reports" / "threshold.json"
     if threshold_path.exists():
@@ -290,6 +294,7 @@ def get_threshold():
 
 
 @app.get("/insights")
+@app.get("/api/insights")
 def get_insights():
     odds_path = ROOT_DIR / "reports" / "odds_ratios.json"
     if odds_path.exists():
@@ -301,6 +306,7 @@ def get_insights():
 
 
 @app.get("/explain")
+@app.get("/api/explain")
 def get_explain():
     res = get_insights()
     if isinstance(res, dict) and "raising_risk" in res:
@@ -516,6 +522,7 @@ def compute_reasons(df_row: pd.DataFrame, applicant_input: Dict[str, Any]) -> Li
 
 
 @app.post("/predict")
+@app.post("/api/predict")
 async def predict(applicant: Dict[str, Any]):
     # Validate payload
     errors, warnings = validate_payload(applicant)
@@ -604,13 +611,123 @@ async def predict(applicant: Dict[str, Any]):
     }
 
 
+PUBLIC_DIR = ROOT_DIR / "public"
 FRONTEND_DIR = ROOT_DIR / "frontend"
 
+
+def _find_file(filename: str) -> Optional[Path]:
+    for base in [PUBLIC_DIR, FRONTEND_DIR, ROOT_DIR]:
+        candidate = base / filename
+        if candidate.exists() and candidate.is_file():
+            return candidate
+    return None
+
+
+@app.get("/", include_in_schema=False)
+@app.get("/index.html", include_in_schema=False)
+@app.get("/frontend/index.html", include_in_schema=False)
+async def serve_index():
+    f = _find_file("index.html")
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail="index.html not found")
+
+
+@app.get("/risk_scorer.html", include_in_schema=False)
 @app.get("/risk-scorer", include_in_schema=False)
+@app.get("/frontend/risk_scorer.html", include_in_schema=False)
 async def serve_risk_scorer():
-    from fastapi.responses import FileResponse
-    scorer_file = FRONTEND_DIR / "risk_scorer.html"
-    if scorer_file.exists():
-        return FileResponse(scorer_file)
+    f = _find_file("risk_scorer.html")
+    if f:
+        return FileResponse(f)
     raise HTTPException(status_code=404, detail="risk_scorer.html not found")
+
+
+@app.get("/model_insights.html", include_in_schema=False)
+@app.get("/model-insights", include_in_schema=False)
+@app.get("/frontend/model_insights.html", include_in_schema=False)
+async def serve_model_insights():
+    f = _find_file("model_insights.html")
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail="model_insights.html not found")
+
+
+@app.get("/threshold_lab.html", include_in_schema=False)
+@app.get("/threshold-lab", include_in_schema=False)
+@app.get("/frontend/threshold_lab.html", include_in_schema=False)
+async def serve_threshold_lab():
+    f = _find_file("threshold_lab.html")
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail="threshold_lab.html not found")
+
+
+@app.get("/about.html", include_in_schema=False)
+@app.get("/about", include_in_schema=False)
+@app.get("/frontend/about.html", include_in_schema=False)
+async def serve_about():
+    f = _find_file("about.html")
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail="about.html not found")
+
+
+@app.get("/workflow.html", include_in_schema=False)
+@app.get("/workflow", include_in_schema=False)
+async def serve_workflow():
+    f = _find_file("workflow.html")
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail="workflow.html not found")
+
+
+@app.get("/workflow.png", include_in_schema=False)
+async def serve_workflow_png():
+    f = _find_file("workflow.png")
+    if f:
+        return FileResponse(f, media_type="image/png")
+    raise HTTPException(status_code=404, detail="workflow.png not found")
+
+
+@app.get("/workflow.svg", include_in_schema=False)
+async def serve_workflow_svg():
+    f = _find_file("workflow.svg")
+    if f:
+        return FileResponse(f, media_type="image/svg+xml")
+    raise HTTPException(status_code=404, detail="workflow.svg not found")
+
+
+@app.get("/workflow.json", include_in_schema=False)
+async def serve_workflow_json():
+    f = _find_file("workflow.json")
+    if f:
+        return FileResponse(f, media_type="application/json")
+    raise HTTPException(status_code=404, detail="workflow.json not found")
+
+
+@app.get("/sample_request.json", include_in_schema=False)
+@app.get("/frontend/sample_request.json", include_in_schema=False)
+async def serve_sample_request():
+    f = _find_file("sample_request.json")
+    if f:
+        return FileResponse(f, media_type="application/json")
+    raise HTTPException(status_code=404, detail="sample_request.json not found")
+
+
+@app.get("/frontend/{filename:path}", include_in_schema=False)
+async def serve_frontend_wildcard(filename: str):
+    f = _find_file(filename)
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail=f"{filename} not found")
+
+
+@app.get("/public/{filename:path}", include_in_schema=False)
+async def serve_public_wildcard(filename: str):
+    f = _find_file(filename)
+    if f:
+        return FileResponse(f)
+    raise HTTPException(status_code=404, detail=f"{filename} not found")
+
 
