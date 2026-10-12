@@ -1,0 +1,15 @@
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.pyc
+.git/
+.pytest_cache/
+.archify/
+application_train.csv
+application_test.csv
+*.docx
+*.log
+design/
+.agents/
