@@ -300,6 +300,15 @@ def get_insights():
     return {"error": "odds_ratios.json not found"}
 
 
+@app.get("/explain")
+def get_explain():
+    res = get_insights()
+    if isinstance(res, dict) and "raising_risk" in res:
+        res["top_10_risk"] = res.get("raising_risk", [])[:10]
+        res["top_10_safe"] = res.get("lowering_risk", [])[:10]
+    return res
+
+
 def validate_payload(applicant: Dict[str, Any]) -> tuple[List[str], List[str]]:
     """Strict validation for input ranges returning (errors, warnings)."""
     errors: List[str] = []

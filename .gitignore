@@ -1,5 +1,7 @@
 data/
-models/
+models/*
+!models/risk_model.joblib
+!models/sample_request.json
 .venv/
 node_modules/
 .env

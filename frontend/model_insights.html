@@ -766,7 +766,8 @@
     // Fetch real data and draw Chart.js
     async function loadChartData() {
       try {
-        const res = await fetch('http://127.0.0.1:8000/explain');
+        const apiBase = (window.location.protocol === 'file:' || window.location.port === '3000') ? 'http://127.0.0.1:8000' : '';
+        const res = await fetch(`${apiBase}/explain`);
         const data = await res.json();
         
         const isCoef = oddsMode === 'coef';
