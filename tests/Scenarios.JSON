@@ -1,0 +1,98 @@
+{
+  "_readme": "Friendly inputs are what the website form uses. diagnose.py converts them to dataset columns (AMT_CREDIT, DAYS_BIRTH ...) for the direct model call. expect: ok = must return 200 with a probability; reject = must return 4xx (never 500); ok_or_reject = either is fine but never 500; reject_or_warn = impossible input, 4xx is best, 200 only with a warning.",
+
+  "baseline": {
+    "annual_income": 147000,
+    "loan_amount": 500000,
+    "annuity": 25000,
+    "age": 43,
+    "years_employed": 6,
+    "education": "Secondary / secondary special",
+    "income_type": "Working",
+    "occupation": "Laborers",
+    "organisation_type": "Business Entity Type 3",
+    "ext_source_1": 0.5,
+    "ext_source_2": 0.5,
+    "ext_source_3": 0.5
+  },
+
+  "ui_label_map": {
+    "High skill tech staff": "High skill tech"
+  },
+
+  "scenarios": [
+    {"id": "BASE_TYPICAL", "group": "G1 realistic", "name": "Typical mid-range applicant", "inputs": {}, "expect": "ok", "ui": true},
+    {"id": "SCREENSHOT_CASE", "group": "G1 realistic", "name": "The exact case from your screenshot (loan far below training range)", "inputs": {"annual_income": 60000, "loan_amount": 5000, "annuity": 500, "age": 38, "years_employed": 8.5, "education": "Higher education", "income_type": "Commercial associate", "occupation": "High skill tech staff", "organisation_type": "Business Entity Type 3", "ext_source_1": 0.85, "ext_source_2": 0.85, "ext_source_3": 0.85}, "expect": "ok", "ui": true, "expect_range_warning": true},
+    {"id": "LOW_RISK_STRONG", "group": "G1 realistic", "name": "Clearly safe applicant", "inputs": {"annual_income": 300000, "loan_amount": 300000, "annuity": 15000, "age": 50, "years_employed": 15, "education": "Higher education", "income_type": "State servant", "occupation": "Core staff", "organisation_type": "Government", "ext_source_1": 0.8, "ext_source_2": 0.8, "ext_source_3": 0.8}, "expect": "ok", "ui": true, "expect_direction": "lower_than_HIGH_RISK_STRONG"},
+    {"id": "HIGH_RISK_STRONG", "group": "G1 realistic", "name": "Clearly risky applicant", "inputs": {"annual_income": 40000, "loan_amount": 450000, "annuity": 30000, "age": 25, "years_employed": 0.5, "education": "Secondary / secondary special", "income_type": "Working", "occupation": "Laborers", "organisation_type": "Business Entity Type 3", "ext_source_1": 0.2, "ext_source_2": 0.2, "ext_source_3": 0.2}, "expect": "ok", "ui": true},
+    {"id": "HIGH_RISK_EXTREME", "group": "G1 realistic", "name": "Very risky: tiny external scores", "inputs": {"ext_source_1": 0.05, "ext_source_2": 0.05, "ext_source_3": 0.05}, "expect": "ok"},
+
+    {"id": "EXT_ALL_ZERO", "group": "G2 boundaries", "name": "All external scores = 0", "inputs": {"ext_source_1": 0, "ext_source_2": 0, "ext_source_3": 0}, "expect": "ok", "ui": true},
+    {"id": "EXT_ALL_ONE", "group": "G2 boundaries", "name": "All external scores = 1", "inputs": {"ext_source_1": 1, "ext_source_2": 1, "ext_source_3": 1}, "expect": "ok", "ui": true},
+    {"id": "INCOME_LOW", "group": "G2 boundaries", "name": "Very low income", "inputs": {"annual_income": 25000}, "expect": "ok"},
+    {"id": "INCOME_HUGE", "group": "G2 boundaries", "name": "Extreme income (outlier)", "inputs": {"annual_income": 10000000}, "expect": "ok", "expect_range_warning": true},
+    {"id": "LOAN_TINY", "group": "G2 boundaries", "name": "Tiny loan (below training range)", "inputs": {"loan_amount": 5000, "annuity": 500}, "expect": "ok", "expect_range_warning": true},
+    {"id": "LOAN_HUGE", "group": "G2 boundaries", "name": "Huge loan (above training range)", "inputs": {"loan_amount": 6000000, "annuity": 300000}, "expect": "ok", "expect_range_warning": true},
+    {"id": "ANNUITY_GT_INCOME", "group": "G2 boundaries", "name": "Monthly annuity bigger than monthly income (DTI over 100%)", "inputs": {"annual_income": 60000, "annuity": 20000}, "expect": "ok", "ui": true},
+    {"id": "AGE_MIN", "group": "G2 boundaries", "name": "Youngest allowed applicant", "inputs": {"age": 21, "years_employed": 1}, "expect": "ok"},
+    {"id": "AGE_MAX", "group": "G2 boundaries", "name": "Oldest typical applicant", "inputs": {"age": 69}, "expect": "ok"},
+    {"id": "YEARS_ZERO", "group": "G2 boundaries", "name": "Zero years employed", "inputs": {"years_employed": 0}, "expect": "ok"},
+    {"id": "YEARS_IMPOSSIBLE", "group": "G2 boundaries", "name": "Employed longer than possible (age 25, 30 years)", "inputs": {"age": 25, "years_employed": 30}, "expect": "reject_or_warn"},
+
+    {"id": "MISSING_ALL", "group": "G3 missing", "name": "Empty body", "use_baseline": false, "inputs": {}, "expect": "ok_or_reject"},
+    {"id": "MISSING_ONLY_EXT", "group": "G3 missing", "name": "Only external scores given", "use_baseline": false, "inputs": {"ext_source_1": 0.5, "ext_source_2": 0.5, "ext_source_3": 0.5}, "expect": "ok_or_reject"},
+    {"id": "MISSING_CATEGORICALS", "group": "G3 missing", "name": "No dropdown values", "omit": ["education", "income_type", "occupation", "organisation_type"], "inputs": {}, "expect": "ok_or_reject"},
+    {"id": "MISSING_EXT", "group": "G3 missing", "name": "No external scores", "omit": ["ext_source_1", "ext_source_2", "ext_source_3"], "inputs": {}, "expect": "ok_or_reject"},
+    {"id": "MISSING_ONE_EXT", "group": "G3 missing", "name": "External score 1 missing", "omit": ["ext_source_1"], "inputs": {}, "expect": "ok_or_reject"},
+
+    {"id": "NEG_INCOME", "group": "G4 invalid", "name": "Negative income", "inputs": {"annual_income": -1000}, "expect": "reject", "ui_error": true},
+    {"id": "STRING_INCOME", "group": "G4 invalid", "name": "Text in a number field", "inputs": {"annual_income": "abc"}, "expect": "reject"},
+    {"id": "NULL_INCOME", "group": "G4 invalid", "name": "null income", "inputs": {"annual_income": null}, "expect": "ok_or_reject"},
+    {"id": "AGE_150", "group": "G4 invalid", "name": "Age 150", "inputs": {"age": 150}, "expect": "reject"},
+    {"id": "AGE_NEGATIVE", "group": "G4 invalid", "name": "Negative age", "inputs": {"age": -5}, "expect": "reject"},
+    {"id": "EXT_1_5", "group": "G4 invalid", "name": "External score 1.5 (valid range is 0 to 1)", "inputs": {"ext_source_1": 1.5}, "expect": "reject", "ui_error": true},
+    {"id": "EXT_NEGATIVE", "group": "G4 invalid", "name": "External score -0.2", "inputs": {"ext_source_2": -0.2}, "expect": "reject"},
+    {"id": "HUGE_NUMBER", "group": "G4 invalid", "name": "1e308 income", "inputs": {"annual_income": 1e308}, "expect": "ok_or_reject"},
+    {"id": "NAN_STRING", "group": "G4 invalid", "name": "The string NaN as income", "inputs": {"annual_income": "NaN"}, "expect": "ok_or_reject"},
+    {"id": "UNKNOWN_CATEGORY", "group": "G4 invalid", "name": "Category never seen in training", "inputs": {"occupation": "Astronaut"}, "expect": "ok_or_reject"},
+    {"id": "EMPTY_CATEGORY", "group": "G4 invalid", "name": "Empty string category", "inputs": {"education": ""}, "expect": "ok_or_reject"},
+    {"id": "WHITESPACE_CATEGORY", "group": "G4 invalid", "name": "Category with a leading space", "inputs": {"education": " Higher education"}, "expect": "ok_or_reject"},
+    {"id": "EXTRA_FIELD", "group": "G4 invalid", "name": "Unexpected extra field", "inputs": {"hack": 1}, "expect": "ok_or_reject"}
+  ],
+
+  "sweeps": {
+    "ext_source_1": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    "ext_source_2": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    "ext_source_3": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    "annual_income": [30000, 60000, 100000, 200000, 400000, 1000000],
+    "loan_amount": [100000, 250000, 500000, 1000000, 2000000],
+    "annuity": [5000, 15000, 25000, 50000, 100000],
+    "age": [21, 30, 40, 50, 60, 69],
+    "years_employed": [0, 1, 3, 8, 15, 30],
+    "education": ["Secondary / secondary special", "Higher education", "Incomplete higher", "Lower secondary", "Academic degree"],
+    "income_type": ["Working", "Commercial associate", "Pensioner", "State servant", "Businessman", "Student", "Unemployed"],
+    "occupation": ["Laborers", "Sales staff", "Core staff", "Managers", "Drivers", "High skill tech staff", "Accountants", "IT staff", "Waiters/barmen staff"],
+    "organisation_type": ["Business Entity Type 3", "Self-employed", "Government", "Medicine", "Construction", "Bank", "Other", "XNA"]
+  },
+
+  "monotone_non_increasing": ["ext_source_1", "ext_source_2", "ext_source_3"],
+
+  "ui_sequences": [
+    ["LOW_RISK_STRONG", "HIGH_RISK_STRONG", "LOW_RISK_STRONG"],
+    ["BASE_TYPICAL", "SCREENSHOT_CASE", "BASE_TYPICAL", "HIGH_RISK_STRONG"]
+  ],
+
+  "banned_strings": [
+    "99.2", "814", "72,000", "v2.4", "0x8a", "SR 11-7", "Deploy Policy", "Export PDF",
+    "Dossier", "Synthetic", "National Bureau Alpha", "Institutional Synthetics",
+    "Consortium Payment Trend", "Sample 1", "STATE VIEW", "Conf."
+  ],
+
+  "sentinel": {
+    "probability": 0.4321,
+    "threshold": 0.2222,
+    "decision": "Manual review",
+    "multiplier_a": 1.77,
+    "multiplier_b": 0.33
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "winner": "LogReg",
+  "selection_rule": "LightGBM used if val ROC-AUC > LogReg + 0.01, else LogReg",
+  "models": [
+    {
+      "name": "LogReg",
+      "roc_auc": 0.7425,
+      "pr_auc": 0.221,
+      "fit_time": 29.9
+    },
+    {
+      "name": "LightGBM",
+      "roc_auc": 0.7437,
+      "pr_auc": 0.228,
+      "fit_time": 16.0
+    }
+  ]
+}

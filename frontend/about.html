@@ -137,18 +137,18 @@
 <div class="w-full px-margin flex items-center justify-between h-16">
 <!-- Brand Logo Anchor -->
 <div class="flex items-center gap-space-lg">
-<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="#">
+<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="index.html">
 <span class="material-symbols-outlined text-secondary dark:text-secondary-fixed text-[26px]" style="font-variation-settings: 'FILL' 1;">shield</span>
 <span>RiskLens</span>
 </a>
 <!-- Desktop Nav Links -->
 <nav class="hidden md:flex items-center gap-space-lg ml-space-md">
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Home</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Risk Scorer</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Threshold Lab</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Model Insights</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="index.html">Home</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="risk_scorer.html">Risk Scorer</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="threshold_lab.html">Threshold Lab</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="model_insights.html">Model Insights</a>
 <!-- Active State: exact JSON execution -->
-<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="#">About</a>
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="about.html">About</a>
 </nav>
 </div>
 <!-- Trailing Controls & CTAs -->
@@ -156,7 +156,7 @@
 <!-- Model Status Badge -->
 <div class="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low dark:bg-primary border border-outline-variant dark:border-outline text-on-surface-variant dark:text-outline-variant">
 <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-<span class="font-table-header text-table-header">Model v2.4 Active</span>
+<span class="font-table-header text-table-header">Model Active</span>
 </div>
 <!-- Dark Mode Toggle Button -->
 <button aria-label="Toggle visual theme" class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all duration-150 active:scale-[0.98]" id="themeToggleBtn" type="button">
@@ -166,11 +166,10 @@
 <button aria-label="System notifications" class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all duration-150 active:scale-[0.98]" type="button">
 <span class="material-symbols-outlined">notifications</span>
 </button>
-<!-- Primary Header Action -->
-<button class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary-container text-surface-container-lowest dark:bg-secondary dark:text-on-secondary font-body-sm-medium text-body-sm-medium hover:bg-primary dark:hover:bg-secondary-fixed-dim transition-all shadow-sm active:scale-[0.98]" type="button">
-<span class="material-symbols-outlined text-[18px]">publish</span>
-<span>Deploy Policy</span>
-</button>
+<a href="risk_scorer.html" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary-container text-surface-container-lowest dark:bg-secondary dark:text-on-secondary font-body-sm-medium text-body-sm-medium hover:bg-primary dark:hover:bg-secondary-fixed-dim transition-all shadow-sm active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]">speed</span>
+<span>Risk Scorer</span>
+</a>
 </div>
 </div>
 </header>
@@ -501,7 +500,7 @@
 </div>
 <h3 class="font-headline-sm text-headline-sm text-primary dark:text-surface-bright">Proxy Variable Bias</h3>
 <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant leading-relaxed">
-            Even when explicit protected attributes (e.g., gender, ethnicity) are purged, residential ZIP codes and occupation classes can encode historical marginalization. Our governance suite mandates Four-Fifths rule testing across synthetic cohort segments.
+            Even when explicit protected attributes (e.g., gender, ethnicity) are purged, residential ZIP codes and occupation classes can encode historical marginalization. Our governance suite mandates fairness auditing across demographic cohort segments.
           </p>
 </div>
 </div>
@@ -555,7 +554,7 @@
 </div>
 </div>
 <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant pt-1">
-                Specialist in ethical algorithmic auditing, disparate impact remediation, and explainable AI under Federal Reserve SR 11-7 standards.
+                Specialist in ethical algorithmic auditing, disparate impact remediation, and explainable AI under regulatory model risk governance standards.
               </p>
 </div>
 </div>
@@ -573,7 +572,7 @@
 </li>
 <li class="flex justify-between py-1 border-b border-outline-variant/30">
 <span class="font-medium">Inference Latency</span>
-<span class="font-table-header text-primary dark:text-surface-bright">&lt; 14ms (Single Dossier SHAP)</span>
+<span class="font-table-header text-primary dark:text-surface-bright">&lt; 14ms (Single Instance Inference)</span>
 </li>
 <li class="flex justify-between py-1 border-b border-outline-variant/30">
 <span class="font-medium">Hyperparameter Engine</span>
@@ -607,7 +606,7 @@
 </div>
 <!-- Links from JSON -->
 <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors hover:text-secondary dark:hover:text-secondary-fixed" href="#">Model Card v2.4</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors hover:text-secondary dark:hover:text-secondary-fixed" href="#">Model Card</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors hover:text-secondary dark:hover:text-secondary-fixed" href="#">Fair Lending Governance</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors hover:text-secondary dark:hover:text-secondary-fixed" href="#">API Reference</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors hover:text-secondary dark:hover:text-secondary-fixed" href="#">Audit Log</a>

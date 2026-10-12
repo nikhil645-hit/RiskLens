@@ -13,6 +13,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -129,17 +131,17 @@
 <div class="w-full px-margin flex items-center justify-between h-16">
 <!-- Brand & Title -->
 <div class="flex items-center gap-space-lg">
-<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="#">
+<a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-surface-bright flex items-center gap-space-xs tracking-tight" href="index.html">
 <span class="material-symbols-outlined text-secondary dark:text-secondary-fixed text-2xl" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
 <span>RiskLens</span>
 </a>
 <!-- Web Navigation Links -->
 <nav class="hidden md:flex items-center gap-6 ml-4">
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Home</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Risk Scorer</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">Threshold Lab</a>
-<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="#">Model Insights</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="#">About</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="index.html">Home</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="risk_scorer.html">Risk Scorer</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="threshold_lab.html">Threshold Lab</a>
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed font-body-bold text-body-bold py-2" href="model_insights.html">Model Insights</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-base text-body-base hover:text-on-surface dark:hover:text-surface-bright py-2 transition-colors" href="about.html">About</a>
 </nav>
 </div>
 <!-- Trailing Action Controls -->
@@ -147,7 +149,7 @@
 <!-- Secondary Badge Status -->
 <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-caps font-label-caps bg-surface-container dark:bg-primary text-secondary dark:text-secondary-fixed border border-outline-variant dark:border-outline">
 <span class="h-2 w-2 rounded-full bg-secondary-fixed"></span>
-          Model v2.4 Active
+          Model Active
         </span>
 <!-- Dark Mode Toggle Button -->
 <button class="p-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-primary hover:text-on-surface dark:hover:text-surface-bright transition-all" id="theme-toggle" title="Toggle color theme">
@@ -159,9 +161,9 @@
 <span class="material-symbols-outlined">notifications</span>
 </button>
 <!-- Primary CTA -->
-<button class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary px-4 py-2 rounded-lg font-body-bold text-body-sm shadow-sm active:scale-[0.98] transition-transform">
-          Deploy Policy
-        </button>
+<a href="risk_scorer.html" class="bg-primary dark:bg-secondary text-on-primary dark:text-on-secondary px-4 py-2 rounded-lg font-body-bold text-body-sm shadow-sm active:scale-[0.98] transition-transform inline-block">
+          Risk Scorer
+        </a>
 </div>
 </div>
 </header>
@@ -439,7 +441,7 @@
 <line stroke="#94A3B8" stroke-dasharray="5 4" stroke-width="2" x1="40" x2="380" y1="260" y2="20"></line>
 <!-- Baseline Logistic Regression (AUC = 0.650) -->
 <path d="M 40 260 Q 120 180 200 130 T 380 20" fill="none" stroke="#F59E0B" stroke-dasharray="4 2" stroke-width="2.5"></path>
-<!-- Model v2.4 Champion (AUC = 0.784) -->
+<!-- Champion Model (AUC = 0.784) -->
 <path class="dark:stroke-[#71F8E4]" d="M 40 260 C 60 120, 110 50, 200 40 C 260 35, 320 25, 380 20" fill="none" stroke="#006B5F" stroke-width="3.5"></path>
 <!-- Shaded AUC Area -->
 <path d="M 40 260 C 60 120, 110 50, 200 40 C 260 35, 320 25, 380 20 L 380 260 Z" fill="url(#roc-gradient)" opacity="0.12"></path>
@@ -460,7 +462,7 @@
 <div class="mt-4 pt-4 border-t border-outline-variant/60 dark:border-outline/40 flex flex-wrap items-center justify-between gap-3 text-xs">
 <div class="flex items-center gap-2">
 <span class="w-3.5 h-1 bg-secondary dark:bg-secondary-fixed rounded"></span>
-<span class="font-semibold text-primary dark:text-surface-bright">Model v2.4 (AUC 0.784)</span>
+<span class="font-semibold text-primary dark:text-surface-bright">Champion Model (AUC 0.784)</span>
 </div>
 <div class="flex items-center gap-2">
 <span class="w-3.5 h-1 bg-amber-500 rounded border-dashed"></span>
@@ -512,7 +514,7 @@
 <!-- Natural Prevalence Baseline (y = 0.0807 -> 240px) -->
 <line stroke="#EF4444" stroke-dasharray="4 4" stroke-width="2" x1="40" x2="380" y1="240" y2="240"></line>
 <text class="text-[10px] fill-[#EF4444] font-semibold" text-anchor="end" x="375" y="235">Prevalence Baseline (0.080)</text>
-<!-- Model v2.4 Precision-Recall Curve -->
+<!-- Champion Precision-Recall Curve -->
 <path class="dark:stroke-[#71F8E4]" d="M 40 40 C 70 45, 120 70, 180 130 C 240 180, 310 220, 380 240" fill="none" stroke="#006B5F" stroke-width="3.5"></path>
 <!-- Baseline Logistic Regression PR Curve -->
 <path d="M 40 100 C 90 120, 170 190, 260 225 C 320 235, 360 238, 380 240" fill="none" stroke="#F59E0B" stroke-dasharray="4 2" stroke-width="2.5"></path>
@@ -527,7 +529,7 @@
 <div class="mt-4 pt-4 border-t border-outline-variant/60 dark:border-outline/40 flex flex-wrap items-center justify-between gap-3 text-xs">
 <div class="flex items-center gap-2">
 <span class="w-3.5 h-1 bg-secondary dark:bg-secondary-fixed rounded"></span>
-<span class="font-semibold text-primary dark:text-surface-bright">Model v2.4 (PR-AUC 0.392)</span>
+<span class="font-semibold text-primary dark:text-surface-bright">Champion Model (PR-AUC 0.392)</span>
 </div>
 <div class="flex items-center gap-2">
 <span class="w-3.5 h-1 bg-amber-500 rounded border-dashed"></span>
@@ -573,138 +575,7 @@
 </div>
 <!-- Horizontal Bar Plot Container -->
 <div class="space-y-4 pt-2" id="odds-chart-container">
-<!-- Factor 1 (Adverse) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">EXT_SOURCE_2 (Low Score)</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center">
-<!-- Empty for positive side -->
-</div>
-<div class="w-1/2 pl-2 flex items-center">
-<div class="h-6 rounded-r bg-error flex items-center px-2 transition-all duration-500" style="width: 78%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 2.38</span>
-</div>
-</div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-on-surface-variant font-medium">+138%</div>
-</div>
-<!-- Factor 2 (Adverse) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Annuity / Total Income (DTI)</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center"></div>
-<div class="w-1/2 pl-2 flex items-center">
-<div class="h-6 rounded-r bg-error flex items-center px-2 transition-all duration-500" style="width: 58%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 1.76</span>
-</div>
-</div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-on-surface-variant font-medium">+76%</div>
-</div>
-<!-- Factor 3 (Adverse) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Days Employed (Short Tenured)</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center"></div>
-<div class="w-1/2 pl-2 flex items-center">
-<div class="h-6 rounded-r bg-error flex items-center px-2 transition-all duration-500" style="width: 44%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 1.48</span>
-</div>
-</div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-on-surface-variant font-medium">+48%</div>
-</div>
-<!-- Factor 4 (Adverse) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Organization Type: High Volatility</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center"></div>
-<div class="w-1/2 pl-2 flex items-center">
-<div class="h-6 rounded-r bg-error flex items-center px-2 transition-all duration-500" style="width: 32%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 1.31</span>
-</div>
-</div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-on-surface-variant font-medium">+31%</div>
-</div>
-<!-- Factor 5 (Adverse) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Prior Credit Inquiries (Past 6M)</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center"></div>
-<div class="w-1/2 pl-2 flex items-center">
-<div class="h-6 rounded-r bg-error flex items-center px-2 transition-all duration-500" style="width: 22%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 1.21</span>
-</div>
-</div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-on-surface-variant font-medium">+21%</div>
-</div>
-<div class="py-1"></div>
-<!-- Factor 6 (Protective) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">EXT_SOURCE_3 (High Score)</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center">
-<div class="h-6 rounded-l bg-secondary flex items-center justify-end px-2 transition-all duration-500" style="width: 72%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 0.44</span>
-</div>
-</div>
-<div class="w-1/2 pl-2 flex items-center"></div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-secondary dark:text-secondary-fixed font-medium">-56%</div>
-</div>
-<!-- Factor 7 (Protective) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Higher Education Degree</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center">
-<div class="h-6 rounded-l bg-secondary flex items-center justify-end px-2 transition-all duration-500" style="width: 52%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 0.62</span>
-</div>
-</div>
-<div class="w-1/2 pl-2 flex items-center"></div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-secondary dark:text-secondary-fixed font-medium">-38%</div>
-</div>
-<!-- Factor 8 (Protective) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Owns Real Estate Asset</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center">
-<div class="h-6 rounded-l bg-secondary flex items-center justify-end px-2 transition-all duration-500" style="width: 40%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 0.72</span>
-</div>
-</div>
-<div class="w-1/2 pl-2 flex items-center"></div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-secondary dark:text-secondary-fixed font-medium">-28%</div>
-</div>
-<!-- Factor 9 (Protective) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Applicant Age &gt; 45 Years</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center">
-<div class="h-6 rounded-l bg-secondary flex items-center justify-end px-2 transition-all duration-500" style="width: 32%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 0.81</span>
-</div>
-</div>
-<div class="w-1/2 pl-2 flex items-center"></div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-secondary dark:text-secondary-fixed font-medium">-19%</div>
-</div>
-<!-- Factor 10 (Protective) -->
-<div class="grid grid-cols-12 items-center gap-2 text-body-sm">
-<div class="col-span-4 md:col-span-3 text-right pr-3 font-semibold text-primary dark:text-surface-bright">Vehicle / Car Ownership</div>
-<div class="col-span-7 md:col-span-8 flex items-center">
-<div class="w-1/2 flex justify-end pr-2 border-r-2 border-primary/40 dark:border-surface-bright/40 h-8 items-center">
-<div class="h-6 rounded-l bg-secondary flex items-center justify-end px-2 transition-all duration-500" style="width: 18%;">
-<span class="text-white text-xs font-mono font-bold odds-val">OR 0.89</span>
-</div>
-</div>
-<div class="w-1/2 pl-2 flex items-center"></div>
-</div>
-<div class="col-span-1 text-right font-mono text-xs text-secondary dark:text-secondary-fixed font-medium">-11%</div>
+  <canvas id="oddsChart" style="max-height: 450px;"></canvas>
 </div>
 </div>
 <div class="p-4 rounded-lg bg-surface-container-low dark:bg-primary/40 border border-outline-variant/60 flex items-center justify-between text-xs text-on-surface-variant dark:text-outline-variant">
@@ -727,7 +598,7 @@
 <tr class="bg-surface-container-low dark:bg-primary/50 text-on-surface-variant dark:text-outline-variant border-b border-outline-variant">
 <th class="py-3 px-4 font-table-header uppercase">Evaluation Dimension</th>
 <th class="py-3 px-4 font-table-header uppercase text-primary dark:text-surface-bright">L2 Logistic Regression</th>
-<th class="py-3 px-4 font-table-header uppercase text-secondary dark:text-secondary-fixed">LightGBM Classifier (v2.4)</th>
+<th class="py-3 px-4 font-table-header uppercase text-secondary dark:text-secondary-fixed">LightGBM Classifier</th>
 <th class="py-3 px-4 font-table-header uppercase">Delta / Governance Verdict</th>
 </tr>
 </thead>
@@ -853,7 +724,7 @@
 </div>
 <!-- Footer Navigation and GitHub Link -->
 <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Model Card v2.4</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Model Card</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Fair Lending Governance</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">API Reference</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-surface-bright font-body-sm text-body-sm transition-colors" href="#">Audit Log</a>
@@ -892,6 +763,46 @@
       btnElement.classList.remove('text-on-surface-variant', 'dark:text-outline-variant');
     }
 
+    // Fetch real data and draw Chart.js
+    async function loadChartData() {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/explain');
+        const data = await res.json();
+        
+        const isCoef = oddsMode === 'coef';
+        const top_10 = data.top_10_risk;
+        const bottom_10 = data.top_10_safe;
+        
+        // Combine them
+        const combined = [...top_10, ...bottom_10].sort((a,b) => b.coefficient - a.coefficient);
+        const labels = combined.map(f => f.feature);
+        const values = combined.map(f => isCoef ? f.coefficient : f.odds_ratio);
+        
+        // Draw Chart
+        const ctx = document.getElementById('oddsChart').getContext('2d');
+        if (window.oddsChartInst) window.oddsChartInst.destroy();
+        
+        window.oddsChartInst = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: isCoef ? 'Standardized Coefficient (β)' : 'Odds Ratio [exp(β)]',
+                    data: values,
+                    backgroundColor: combined.map(f => f.coefficient > 0 ? '#ba1a1a' : '#006b5f')
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     // Odds Ratio vs Beta Coefficients toggle
     let oddsMode = 'odds';
     function toggleOddsMode(mode) {
@@ -906,26 +817,8 @@
         coefBtn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold bg-surface-container-lowest dark:bg-primary-container text-primary dark:text-surface-bright shadow-sm transition-all';
         oddsBtn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold text-on-surface-variant dark:text-outline-variant transition-all hover:text-on-surface';
       }
-
-      const oddsValues = [
-        { or: 'OR 2.38', coef: 'β +0.87' },
-        { or: 'OR 1.76', coef: 'β +0.57' },
-        { or: 'OR 1.48', coef: 'β +0.39' },
-        { or: 'OR 1.31', coef: 'β +0.27' },
-        { or: 'OR 1.21', coef: 'β +0.19' },
-        { or: 'OR 0.44', coef: 'β -0.82' },
-        { or: 'OR 0.62', coef: 'β -0.48' },
-        { or: 'OR 0.72', coef: 'β -0.33' },
-        { or: 'OR 0.81', coef: 'β -0.21' },
-        { or: 'OR 0.89', coef: 'β -0.12' }
-      ];
-
-      const labels = document.querySelectorAll('.odds-val');
-      labels.forEach((label, idx) => {
-        if (oddsValues[idx]) {
-          label.textContent = mode === 'odds' ? oddsValues[idx].or : oddsValues[idx].coef;
-        }
-      });
+      
+      loadChartData();
     }
 
     // Dark Mode Toggle Logic
@@ -933,5 +826,8 @@
     themeToggleBtn.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
     });
+    
+    // Initial fetch
+    loadChartData();
   </script>
 </body></html>

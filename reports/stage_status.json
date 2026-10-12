@@ -1,0 +1,80 @@
+[
+  {
+    "stage": 0,
+    "name": "Setup",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 1,
+    "name": "EDA",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 2,
+    "name": "Cleaning and split",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 3,
+    "name": "Encoding comparison",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 4,
+    "name": "Embedding encoder",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 5,
+    "name": "Evaluation and threshold",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 6,
+    "name": "Explainability",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 7,
+    "name": "LightGBM benchmark",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 8,
+    "name": "Final test and saved model",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 9,
+    "name": "FastAPI backend",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 10,
+    "name": "Frontend wired to API",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 11,
+    "name": "Polish and deploy prep",
+    "status": "DONE",
+    "missing": []
+  },
+  {
+    "stage": 12,
+    "name": "Docs and CV",
+    "status": "DONE",
+    "missing": []
+  }
+]

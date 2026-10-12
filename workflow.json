@@ -1,0 +1,266 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "RiskLens End-to-End Underwriting & Scoring Workflow",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "workflow.html"
+  },
+  "lanes": [
+    { "id": "ui", "label": "Underwriter Client Layer" },
+    { "id": "gateway", "label": "FastAPI Ingestion & Validation" },
+    { "id": "ml_core", "label": "Calibrated ML Scoring Pipeline" },
+    { "id": "governance", "label": "Decision Governance & Policy Gate", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "intake", "label": "Intake & Telemetry", "fromCol": 0, "toCol": 1 },
+    { "id": "validation", "label": "Validation & Feature Engineering", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "scoring", "label": "Calibrated Inference & Decision", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "ui_group", "label": "Reactive UI Workspace", "lane": "ui", "fromCol": 0, "toCol": 1 },
+    { "id": "api_group", "label": "FastAPI Gateway", "lane": "gateway", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "pipeline_group", "label": "Scikit-Learn Pipeline", "lane": "ml_core", "fromCol": 3, "toCol": 5, "variant": "emphasis" },
+    { "id": "policy_group", "label": "Asymmetric Loss Matrix", "lane": "governance", "fromCol": 4, "toCol": 5, "variant": "security" }
+  ],
+  "mainPath": [
+    "applicant",
+    "form_app",
+    "api_predict",
+    "vectorizer",
+    "logistic_scorer",
+    "isotonic_cal",
+    "decision_gate",
+    "client_result"
+  ],
+  "nodes": [
+    {
+      "id": "applicant",
+      "lane": "ui",
+      "col": 0,
+      "type": "external",
+      "label": "Loan Underwriter",
+      "sublabel": "enters parameters",
+      "width": 132
+    },
+    {
+      "id": "form_app",
+      "lane": "ui",
+      "col": 1,
+      "type": "frontend",
+      "label": "Risk Scorer UI",
+      "sublabel": "web workspace",
+      "tag": "pure telemetry",
+      "width": 132
+    },
+    {
+      "id": "cache_sample",
+      "lane": "gateway",
+      "col": 1,
+      "type": "database",
+      "label": "Sample Preset",
+      "sublabel": "sample_request.json",
+      "width": 132
+    },
+    {
+      "id": "api_predict",
+      "lane": "gateway",
+      "col": 2,
+      "type": "backend",
+      "label": "POST /predict",
+      "sublabel": "FastAPI endpoint",
+      "tag": "Pydantic validation",
+      "width": 132
+    },
+    {
+      "id": "validation_err",
+      "lane": "governance",
+      "col": 2,
+      "type": "security",
+      "label": "Validation Guard",
+      "sublabel": "HTTP 422 error",
+      "tag": "blocks bad inputs",
+      "width": 132
+    },
+    {
+      "id": "vectorizer",
+      "lane": "gateway",
+      "col": 3,
+      "type": "backend",
+      "label": "Feature Vectorizer",
+      "sublabel": "DTI & day offsets",
+      "tag": "schema alignment",
+      "width": 132
+    },
+    {
+      "id": "imputer",
+      "lane": "ml_core",
+      "col": 3,
+      "type": "database",
+      "label": "Median Imputer",
+      "sublabel": "missing values",
+      "tag": "117-col baseline",
+      "width": 132
+    },
+    {
+      "id": "logistic_scorer",
+      "lane": "ml_core",
+      "col": 4,
+      "type": "backend",
+      "label": "Logistic Classifier",
+      "sublabel": "regularized L2",
+      "tag": "linear log-odds",
+      "width": 132
+    },
+    {
+      "id": "isotonic_cal",
+      "lane": "ml_core",
+      "col": 5,
+      "type": "backend",
+      "label": "Isotonic Calibrator",
+      "sublabel": "calibrated score",
+      "tag": "P(defaulter)",
+      "width": 132
+    },
+    {
+      "id": "decision_gate",
+      "lane": "governance",
+      "col": 5,
+      "type": "security",
+      "label": "Cost-Optimal Gate",
+      "sublabel": "threshold = 0.160",
+      "tag": "Approved / Rejected",
+      "width": 132
+    },
+    {
+      "id": "shap_explainer",
+      "lane": "governance",
+      "col": 4,
+      "type": "messagebus",
+      "label": "Factor Explainer",
+      "sublabel": "odds multipliers",
+      "tag": "top 3 drivers",
+      "width": 132
+    },
+    {
+      "id": "client_result",
+      "lane": "ui",
+      "col": 5,
+      "type": "frontend",
+      "label": "Telemetry Panel",
+      "sublabel": "needle gauge",
+      "tag": "verdict display",
+      "width": 132
+    }
+  ],
+  "edges": [
+    {
+      "id": "applicant-form",
+      "from": "applicant",
+      "to": "form_app",
+      "label": "enters inputs",
+      "variant": "default"
+    },
+    {
+      "id": "preset-form",
+      "from": "cache_sample",
+      "to": "form_app",
+      "label": "load preset",
+      "variant": "dashed"
+    },
+    {
+      "id": "form-predict",
+      "from": "form_app",
+      "to": "api_predict",
+      "label": "POST JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "predict-guard",
+      "from": "api_predict",
+      "to": "validation_err",
+      "label": "invalid ranges",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "predict-vector",
+      "from": "api_predict",
+      "to": "vectorizer",
+      "label": "validated schema",
+      "variant": "default"
+    },
+    {
+      "id": "impute-vector",
+      "from": "imputer",
+      "to": "vectorizer",
+      "label": "align 117 cols",
+      "variant": "dashed"
+    },
+    {
+      "id": "vector-score",
+      "from": "vectorizer",
+      "to": "logistic_scorer",
+      "label": "scaled array",
+      "variant": "emphasis"
+    },
+    {
+      "id": "score-calibrate",
+      "from": "logistic_scorer",
+      "to": "isotonic_cal",
+      "label": "raw log-odds",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cal-gate",
+      "from": "isotonic_cal",
+      "to": "decision_gate",
+      "label": "P(default)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "score-shap",
+      "from": "logistic_scorer",
+      "to": "shap_explainer",
+      "variant": "dashed"
+    },
+    {
+      "id": "shap-gate",
+      "from": "shap_explainer",
+      "to": "decision_gate",
+      "label": "odds ratios",
+      "variant": "dashed"
+    },
+    {
+      "id": "gate-result",
+      "from": "decision_gate",
+      "to": "client_result",
+      "variant": "emphasis",
+      "role": "return",
+      "fromSide": "right",
+      "toSide": "right",
+      "route": "outside-right",
+      "width": 1.2
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Single Decision Authority",
+      "items": [
+        "FastAPI is the sole arbiter: all probability scoring and verdicts execute in backend",
+        "Frontend is purely visual telemetry: zero client overrides or invented credit scores"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Asymmetric Loss & Explainability",
+      "items": [
+        "5:1 False Negative to False Positive loss matrix yields optimal threshold at 0.160",
+        "Top 3 risk drivers computed as exp(contribution) odds multipliers for compliance"
+      ]
+    }
+  ]
+}

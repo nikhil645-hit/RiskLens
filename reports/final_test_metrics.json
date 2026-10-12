@@ -1,0 +1,37 @@
+{
+  "model": "LogReg",
+  "calibrated": true,
+  "threshold": 0.16,
+  "cost_ratio_used_for_threshold": "5:1",
+  "test_roc_auc": 0.7431,
+  "test_pr_auc": 0.2069,
+  "test_flag_rate": 0.1054,
+  "test_precision": 0.248,
+  "test_recall": 0.3238,
+  "test_f1": 0.2809,
+  "confusion_matrix": {
+    "tp": 1206,
+    "fp": 3656,
+    "fn": 2518,
+    "tn": 38747
+  },
+  "dropped_columns": [
+    "AMT_GOODS_PRICE",
+    "CODE_GENDER",
+    "NAME_FAMILY_STATUS"
+  ],
+  "benchmark": {
+    "logreg": {
+      "name": "LogReg",
+      "roc_auc": 0.7425,
+      "pr_auc": 0.221,
+      "fit_time": 29.9
+    },
+    "lgbm": {
+      "name": "LightGBM",
+      "roc_auc": 0.7437,
+      "pr_auc": 0.228,
+      "fit_time": 16.0
+    }
+  }
+}

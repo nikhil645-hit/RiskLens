@@ -1,0 +1,29 @@
+{
+  "model": "LogReg",
+  "calibrated": true,
+  "base_rate_validation": 0.0807,
+  "mean_predicted_validation": 0.0807,
+  "calibration_ratio": 1.0,
+  "chosen_cost_ratio": "5:1",
+  "chosen_threshold": 0.16,
+  "scenarios": {
+    "3:1": {
+      "threshold": 0.23,
+      "flag_rate": 0.0356,
+      "precision": 0.3327,
+      "recall": 0.1469
+    },
+    "5:1": {
+      "threshold": 0.16,
+      "flag_rate": 0.1051,
+      "precision": 0.253,
+      "recall": 0.3295
+    },
+    "10:1": {
+      "threshold": 0.09,
+      "flag_rate": 0.3078,
+      "precision": 0.1674,
+      "recall": 0.6383
+    }
+  }
+}
