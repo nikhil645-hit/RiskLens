@@ -1,10 +1,13 @@
 # RiskLens — Credit Risk Scoring Engine & Underwriter Telemetry Platform
 
+[![Production](https://img.shields.io/badge/Vercel-Live%20Production-success?logo=vercel)](https://risk-lens-taupe.vercel.app/)
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.3+-F7931E.svg)](https://scikit-learn.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+**Live Demo**: [https://risk-lens-taupe.vercel.app/](https://risk-lens-taupe.vercel.app/) | **Interactive Scorer**: [https://risk-lens-taupe.vercel.app/risk_scorer.html](https://risk-lens-taupe.vercel.app/risk_scorer.html) | **Architecture Diagram**: [https://risk-lens-taupe.vercel.app/workflow.html](https://risk-lens-taupe.vercel.app/workflow.html)
 
 > **Disclaimer**: *Educational project. Not for real lending decisions.* (In compliance with regulatory and project fair-lending guidelines).
 
