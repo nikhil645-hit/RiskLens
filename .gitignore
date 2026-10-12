@@ -12,3 +12,5 @@ application_*.csv
 .archify/
 workflow.*.json
 !workflow.json
+
+.vercel
