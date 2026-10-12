@@ -6,3 +6,7 @@ node_modules/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+application_*.csv
+.archify/
+workflow.*.json
+!workflow.json
