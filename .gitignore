@@ -16,3 +16,5 @@ workflow.*.json
 .vercel
 .agents/
 design/extracted/
+reports/
+scripts/
