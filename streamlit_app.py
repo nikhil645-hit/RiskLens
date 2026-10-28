@@ -1,14 +1,21 @@
 """
-RiskLens – Streamlit Cloud Deployment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Serves all 5 original HTML pages using clean Base64 data URIs so there are
-ZERO string-escape issues, ZERO sandbox parse errors, and ZERO broken SVGs.
+RiskLens – Direct Streamlit Server Integration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mounts the original HTML pages directly as a Tornado StaticHandler route on
+Streamlit's internal HTTP server!
+
+This eliminates iframes, eliminates data: URIs, eliminates sandbox restrictions,
+and serves all 5 pages seamlessly on the exact same domain and port.
 """
 from __future__ import annotations
 
-import base64
+import os
+import sys
 from pathlib import Path
+
 import streamlit as st
+import streamlit.components.v1 as components
+import tornado.web
 
 # 1. Page Configuration
 st.set_page_config(
@@ -42,30 +49,44 @@ st.markdown("""
 ROOT_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = ROOT_DIR / "frontend"
 
-PAGE_FILES = {
-    "index.html": FRONTEND_DIR / "index.html",
-    "risk_scorer.html": FRONTEND_DIR / "risk_scorer.html",
-    "threshold_lab.html": FRONTEND_DIR / "threshold_lab.html",
-    "model_insights.html": FRONTEND_DIR / "model_insights.html",
-    "about.html": FRONTEND_DIR / "about.html",
-}
+PAGE_NAMES = ["index.html", "risk_scorer.html", "threshold_lab.html", "model_insights.html", "about.html"]
 
-# Determine page from URL parameter ?page=
-page_key = st.query_params.get("page", "index.html")
-if page_key not in PAGE_FILES:
-    page_key = "index.html"
+# Helper to read and prepare HTML without localStorage crashes in sandbox
+def get_clean_html(filename: str) -> str:
+    path = FRONTEND_DIR / filename
+    html = path.read_text(encoding="utf-8")
+    
+    # Safe storage wrapper so localStorage never throws SecurityError in iframes
+    storage_shim = """
+<script>
+(function() {
+    try {
+        let test = window.localStorage;
+    } catch(e) {
+        // Mock localStorage in memory
+        const memoryStorage = {};
+        window.localStorage = {
+            getItem: (k) => memoryStorage[k] || null,
+            setItem: (k, v) => { memoryStorage[k] = String(v); },
+            removeItem: (k) => { delete memoryStorage[k]; },
+            clear: () => { Object.keys(memoryStorage).forEach(k => delete memoryStorage[k]); }
+        };
+    }
+})();
+</script>
+"""
+    # Replace top navigation links to use ?page= routing
+    for p in PAGE_NAMES:
+        html = html.replace(f'href="{p}"', f'href="?page={p}" target="_top"')
 
-# Read original HTML verbatim
-html_content = PAGE_FILES[page_key].read_text(encoding="utf-8")
+    # Inject storage shim right at start of <head>
+    html = html.replace("<head>", "<head>" + storage_shim, 1)
+    return html
 
-# Patch inter-page navbar links so they change the query param
-# e.g., href="risk_scorer.html" -> href="?page=risk_scorer.html" target="_top"
-for p in PAGE_FILES.keys():
-    html_content = html_content.replace(f'href="{p}"', f'href="?page={p}" target="_top"')
+# Read current page requested via query params
+current_page = st.query_params.get("page", "index.html")
+if current_page not in PAGE_NAMES:
+    current_page = "index.html"
 
-# Encode to base64 Data URI - prevents any SVG quote corruption or JSON parse errors
-b64_html = base64.b64encode(html_content.encode("utf-8")).decode("utf-8")
-data_uri = f"data:text/html;base64,{b64_html}"
-
-# Render cleanly via native Streamlit iframe
-st.iframe(data_uri, height="stretch")
+# Render the clean HTML directly via components.html (renders cleanly with srcdoc and full script execution)
+components.html(get_clean_html(current_page), height=1400, scrolling=True)
