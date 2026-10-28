@@ -1,11 +1,7 @@
 """
-RiskLens – Direct Streamlit Server Integration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Mounts the original HTML pages directly as a Tornado StaticHandler route on
-Streamlit's internal HTTP server!
-
-This eliminates iframes, eliminates data: URIs, eliminates sandbox restrictions,
-and serves all 5 pages seamlessly on the exact same domain and port.
+RiskLens – Streamlit Cloud Deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Zero extra dependencies. Uses standard Streamlit components to serve all 5 original HTML pages cleanly.
 """
 from __future__ import annotations
 
@@ -15,7 +11,6 @@ from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
-import tornado.web
 
 # 1. Page Configuration
 st.set_page_config(
@@ -51,7 +46,6 @@ FRONTEND_DIR = ROOT_DIR / "frontend"
 
 PAGE_NAMES = ["index.html", "risk_scorer.html", "threshold_lab.html", "model_insights.html", "about.html"]
 
-# Helper to read and prepare HTML without localStorage crashes in sandbox
 def get_clean_html(filename: str) -> str:
     path = FRONTEND_DIR / filename
     html = path.read_text(encoding="utf-8")
@@ -63,7 +57,6 @@ def get_clean_html(filename: str) -> str:
     try {
         let test = window.localStorage;
     } catch(e) {
-        // Mock localStorage in memory
         const memoryStorage = {};
         window.localStorage = {
             getItem: (k) => memoryStorage[k] || null,
@@ -88,5 +81,5 @@ current_page = st.query_params.get("page", "index.html")
 if current_page not in PAGE_NAMES:
     current_page = "index.html"
 
-# Render the clean HTML directly via components.html (renders cleanly with srcdoc and full script execution)
+# Render the clean HTML directly via components.html
 components.html(get_clean_html(current_page), height=1400, scrolling=True)
