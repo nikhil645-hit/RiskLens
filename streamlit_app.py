@@ -1,19 +1,20 @@
 """
-RiskLens – Streamlit Launcher
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Starts the FastAPI backend using .venv python and mounts it in full-screen iframe.
+RiskLens – Streamlit Launcher for Cloud & Local
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Starts the FastAPI backend inside the Streamlit container and embeds it seamlessly.
 """
 from __future__ import annotations
 
-import os
 import sys
-import subprocess
+import threading
 import time
 from pathlib import Path
 import urllib.request
 
 import streamlit as st
+import uvicorn
 
+# 1. Page Configuration
 st.set_page_config(
     page_title="RiskLens | Enterprise Credit Risk Scorer",
     page_icon="🏦",
@@ -21,6 +22,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# 2. Hide all Streamlit UI wrappers completely
 st.markdown("""
 <style>
     #MainMenu, header, footer { display: none !important; }
@@ -42,6 +44,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 BACKEND_PORT = 8000
 
 def check_backend_running() -> bool:
@@ -51,18 +56,31 @@ def check_backend_running() -> bool:
     except Exception:
         return False
 
-# Ensure backend running via virtualenv python
-venv_python = ROOT_DIR / ".venv" / "Scripts" / "python.exe"
-if not venv_python.exists():
-    venv_python = Path(sys.executable)
+# 3. Start backend thread (works in Streamlit Cloud Linux containers and locally)
+@st.cache_resource
+def start_backend():
+    if check_backend_running():
+        return True
 
-if not check_backend_running():
-    cmd = [str(venv_python), "-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", str(BACKEND_PORT)]
-    proc = subprocess.Popen(cmd, cwd=str(ROOT_DIR))
-    for _ in range(50):
+    def _run():
+        import backend.main
+        uvicorn.run(
+            backend.main.app,
+            host="127.0.0.1",
+            port=BACKEND_PORT,
+            log_level="error",
+        )
+
+    t = threading.Thread(target=_run, daemon=True)
+    t.start()
+
+    for _ in range(40):
         time.sleep(0.2)
         if check_backend_running():
             break
+    return True
 
-# Embed full original website
+start_backend()
+
+# 4. Render the web application
 st.iframe(f"http://127.0.0.1:{BACKEND_PORT}/", height="stretch")
